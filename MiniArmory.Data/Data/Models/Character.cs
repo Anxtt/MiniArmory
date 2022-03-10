@@ -6,7 +6,7 @@ namespace MiniArmory.Data.Data.Models
     public class Character
     {
         [Key]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         [StringLength(16)]
@@ -29,6 +29,12 @@ namespace MiniArmory.Data.Data.Models
         public int RaceId { get; set; }
 
         public Race Race { get; set; }
+
+        [Required]
+        [ForeignKey(nameof(User))]
+        public Guid UserId { get; set; }
+
+        public User User { get; set; }
 
         [Required]
         [Range(0, 4000)]

@@ -1,24 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Identity;
 
 namespace MiniArmory.Data.Data.Models
 {
-    public class User
+    public class User : IdentityUser<Guid>
     {
-        [Key]
-        [StringLength(36)]
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-
         [Required]
         [StringLength(32)]
-        public string Username { get; set; }
-
-        [Required]
-        [StringLength(60)]
-        public string Email { get; set; }
-
-        [Required]
-        [StringLength(64)]
-        public string Password { get; set; }
+        public override string UserName { get; set; }
 
         public IEnumerable<Character> Characters { get; set; } = new List<Character>();
     }
