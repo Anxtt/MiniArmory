@@ -12,13 +12,11 @@ namespace MiniArmory.Web.Controllers
             => this.realmService = realmService;
 
         [HttpGet]
-        public IActionResult Add()
-        {
-            return View();
-        }
+        public IActionResult AddRealm() 
+            => View();
 
         [HttpPost]
-        public IActionResult Add(RealmFormModel model)
+        public IActionResult AddRealm(RealmFormModel model)
         {
             this.realmService.Add(model);
 

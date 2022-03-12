@@ -12,11 +12,11 @@ namespace MiniArmory.Web.Controllers
             => this.spellService = spellService;
 
         [HttpGet]
-        public IActionResult Add()
+        public IActionResult AddSpell()
             => this.View();
 
         [HttpPost]
-        public IActionResult Add(SpellFormModel model)
+        public IActionResult AddSpell(SpellFormModel model)
         {
             this.spellService.Add(model);
 

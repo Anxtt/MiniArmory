@@ -22,6 +22,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<MiniArmoryDbContext>();
 builder.Services.AddScoped<ISpellService, SpellService>();
 builder.Services.AddScoped<IRealmService, RealmService>();
+builder.Services.AddScoped<IClassService, ClassService>();
 
 var app = builder.Build();
 
