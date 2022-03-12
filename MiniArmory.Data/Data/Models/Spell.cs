@@ -31,7 +31,11 @@ namespace MiniArmory.Data.Data.Models
         [Required]
         public bool IsRacial { get; set; }
 
-        [Required]
+        [ForeignKey(nameof(Race))]
+        public int RaceId { get; set; }
+
+        public Race Race { get; set; }
+
         [ForeignKey(nameof(Class))]
         public int ClassId { get; set; }
 

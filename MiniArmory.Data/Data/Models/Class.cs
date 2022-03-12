@@ -26,7 +26,5 @@ namespace MiniArmory.Data.Data.Models
         public ICollection<Character> Characters { get; set; } = new List<Character>();
 
         public ICollection<Spell> Spells { get; set; } = new List<Spell>();
-
-        public ICollection<Race> Races { get; set; } = new List<Race>();
     }
 }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MiniArmory.Data.Data.Models
 {
@@ -32,9 +27,5 @@ namespace MiniArmory.Data.Data.Models
         public int FactionId { get; set; }
 
         public Faction Faction { get; set; }
-
-        public ICollection<Class> Classes { get; set; } = new List<Class>();
-
-        public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
 }

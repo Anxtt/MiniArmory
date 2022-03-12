@@ -25,10 +25,10 @@ namespace MiniArmory.Data.Data.Models
         public Class Class { get; set; }
 
         [Required]
-        [ForeignKey(nameof(Race))]
-        public int RaceId { get; set; }
+        [ForeignKey(nameof(Faction))]
+        public int FactionId { get; set; }
 
-        public Race Race { get; set; }
+        public Faction Faction { get; set; }
 
         [Required]
         [ForeignKey(nameof(User))]

@@ -16,5 +16,7 @@ namespace MiniArmory.Data.Data.Models
         public string Image { get; set; }
 
         public ICollection<Race> Races { get; set; } = new List<Race>();
+
+        public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
 }
