@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using MiniArmory.Core.Services;
+using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
 
@@ -16,6 +18,10 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
     .AddEntityFrameworkStores<MiniArmoryDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<MiniArmoryDbContext>();
+builder.Services.AddScoped<ISpellService, SpellService>();
+builder.Services.AddScoped<IRealmService, RealmService>();
 
 var app = builder.Build();
 

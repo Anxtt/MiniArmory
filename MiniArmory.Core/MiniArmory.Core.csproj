@@ -21,8 +21,4 @@
     <ProjectReference Include="..\MiniArmory.Data\MiniArmory.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Services\Contracts\" />
-  </ItemGroup>
-
 </Project>
