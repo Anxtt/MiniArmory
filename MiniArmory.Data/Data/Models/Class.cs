@@ -12,8 +12,12 @@ namespace MiniArmory.Data.Data.Models
         public string Name { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(500)]
         public string Description { get; set; }
+
+        [Required]
+        [StringLength(500)]
+        public string Image { get; set; }
 
         [Required]
         [StringLength(20)]
