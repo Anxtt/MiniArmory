@@ -21,8 +21,10 @@ namespace MiniArmory.Core.Services
         {
             Class classEntity = new Class()
             {
-                Description = model.Description,
                 Name = model.Name,
+                Description = model.Description,
+                Image = model.Image,
+                Specialisation = model.Specialisation,
                 SpecialisationDescription = model.SpecialisationDescription,
                 SpecialisationImage = model.SpecialisationImage
             };
