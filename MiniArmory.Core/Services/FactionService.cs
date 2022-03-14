@@ -21,6 +21,7 @@ namespace MiniArmory.Core.Services
         {
             Faction faction = new Faction()
             {
+                Name = model.Name,
                 Description = model.Description,
                 Image = model.Image
             };
