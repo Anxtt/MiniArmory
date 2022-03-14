@@ -2,8 +2,7 @@
 
 namespace MiniArmory.Core.Services.Contracts
 {
-    public interface ISpellService
+    public interface ISpellService : IRepository<SpellFormModel>
     {
-        void Add(SpellFormModel model);
     }
 }

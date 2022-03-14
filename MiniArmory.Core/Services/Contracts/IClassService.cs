@@ -2,8 +2,7 @@
 
 namespace MiniArmory.Core.Services.Contracts
 {
-    public interface IClassService
+    public interface IClassService : IRepository<ClassFormModel>
     {
-        void Add(ClassFormModel model);
     }
 }

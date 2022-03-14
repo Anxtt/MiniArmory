@@ -2,8 +2,7 @@
 
 namespace MiniArmory.Core.Services.Contracts
 {
-    public interface IRealmService
+    public interface IRealmService : IRepository<RealmFormModel>
     {
-        void Add(RealmFormModel model);
     }
 }

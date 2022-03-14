@@ -18,7 +18,7 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public IActionResult AddFaction(FactionFormModel model)
         {
-            this.factionService.AddFaction(model);
+            this.factionService.Add(model);
 
             return this.View();
         }
