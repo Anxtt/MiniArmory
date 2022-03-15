@@ -7,6 +7,6 @@ namespace MiniArmory.Core.Services.Contracts
     {
         IEnumerable<ClassSpellFormModel> GetClasses(); 
 
-        IEnumerable<object> GetRaces(); 
+        IEnumerable<RaceSpellFormModel> GetRaces(); 
     }
 }

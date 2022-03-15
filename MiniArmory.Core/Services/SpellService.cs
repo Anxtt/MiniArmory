@@ -56,11 +56,11 @@ namespace MiniArmory.Core.Services
             return classes;
         }
 
-        public IEnumerable<object> GetRaces()
+        public IEnumerable<RaceSpellFormModel> GetRaces()
         {
             var classes = this.db
                 .Races
-                .Select(x => new
+                .Select(x => new RaceSpellFormModel()
                 {
                     Id = x.Id,
                     Name = x.Name
