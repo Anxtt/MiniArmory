@@ -18,7 +18,7 @@ namespace MiniArmory.Data.Data.Models
 
         [Required]
         [Range(0, 600)]
-        public sbyte Cooldown { get; set; }
+        public short Cooldown { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -32,7 +32,7 @@ namespace MiniArmory.Data.Data.Models
         public bool IsRacial { get; set; }
 
         [ForeignKey(nameof(Race))]
-        public int RaceId { get; set; }
+        public int? RaceId { get; set; }
 
         public Race Race { get; set; }
 
