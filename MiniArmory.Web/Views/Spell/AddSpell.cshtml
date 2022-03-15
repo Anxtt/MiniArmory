@@ -37,10 +37,20 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Class" class="dropdown"></label>
+                <select class="form-control" id="Class" name="Class"></select>
+                <span asp-validation-for="Class" class="text-danger"></span>
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="IsRacial" /> @Html.DisplayNameFor(model => model.IsRacial)
                 </label>
+            </div>
+            <div class="form-group" id="RaceWrapper">
+                <label asp-for="Race" class="dropdown"></label>
+                <select class="form-control" id="Race" name="Race"></select>
+                <span asp-validation-for="Race" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -54,5 +64,59 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script>
+    $(document).ready(function () {
+        $("#RaceWrapper").hide();
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/GetClasses",
+            success: function (classes) 
+            {
+                var s = '<option value="-1">Class</option>';
+                console.log(classes);
+                for (var i = 0; i < classes.length; i++) 
+                {
+                    s += '<option value="' + classes[i].Id + '">' + classes[i].Name + '</option>';
+                }
+                $("#Class").html(s);
+            }
+        })
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/GetRaces",
+            success: function (races) 
+            {
+                var s = '<option value="-1">Race</option>';
+                console.log(races);
+                for (var i = 0; i < races.length; i++) 
+                {
+                    s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
+                    console.log(s);
+                }
+                $("#Race").html(s);
+            }
+        })
+    })
+
+    $("#IsRacial").on("click", function () {
+        let checked = $("#IsRacial").is(":checked");
+
+        if(checked)
+        {
+            $("#RaceWrapper").show();
+        }
+        else
+        {
+            $("#RaceWrapper").hide();
+        }
+    })
+</script>
 }

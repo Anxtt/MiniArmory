@@ -14,7 +14,7 @@ namespace MiniArmory.Core.Models
 
         [Required]
         [Range(0, 600)]
-        public sbyte Cooldown { get; set; }
+        public short Cooldown { get; set; }
 
         [Required]
         [StringLength(200)]
@@ -25,6 +25,12 @@ namespace MiniArmory.Core.Models
         public string Description { get; set; }
 
         [Required]
+        public string Class { get; set; }
+
+        [Required]
         public bool IsRacial { get; set; }
+
+        [Required]
+        public string Race { get; set; }
     }
 }
