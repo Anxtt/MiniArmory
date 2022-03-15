@@ -22,5 +22,19 @@ namespace MiniArmory.Web.Controllers
 
             return View();
         }
+
+        public IActionResult GetClasses()
+        {
+            var classes = this.spellService.GetClasses();
+
+            return Json(classes);
+        }
+
+        public IActionResult GetRaces()
+        {
+            var races = this.spellService.GetRaces();
+
+            return Json(races);
+        }
     }
 }
