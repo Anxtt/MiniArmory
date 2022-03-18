@@ -16,7 +16,6 @@ namespace MiniArmory.Data.Data.Models
         [StringLength(200)]
         public string Description { get; set; }
 
-        [Required]
         [ForeignKey(nameof(RacialSpell))]
         public int SpellId { get; set; }
 

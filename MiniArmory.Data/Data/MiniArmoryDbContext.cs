@@ -34,6 +34,10 @@ namespace MiniArmory.Data.Data
                 .HasForeignKey<Spell>(x => x.RaceId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            builder.Entity<Spell>()
+                .HasIndex(x => x.RaceId)
+                .IsUnique(false);
+
             builder.Entity<Character>()
                 .HasOne(x => x.User)
                 .WithMany(x => x.Characters)
