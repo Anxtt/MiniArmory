@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using MiniArmory.Data.Data.Models.Enums;
 
 namespace MiniArmory.Data.Data.Models
 {
@@ -9,12 +8,16 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        public GroundMountSpeed GroundSpeed { get; set; }
-    
-        [Required]
-        public bool CanFly { get; set; }
+        [StringLength(30)]
+        public string Name { get; set; }
 
-        public FlyingMountSpeed FlyingSpeed { get; set; }
+        [Required]
+        [Range(80, 100)]
+        public sbyte GroundSpeed { get; set; }
+
+        [Required]
+        [Range(80, 100)]
+        public sbyte FlyingSpeed { get; set; }
 
         public string Faction { get; set; }
 

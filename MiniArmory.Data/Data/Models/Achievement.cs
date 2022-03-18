@@ -12,6 +12,7 @@ namespace MiniArmory.Data.Data.Models
         public string Name { get; set; }
 
         [Required]
+        [Range(5, 50)]
         public byte Points { get; set; }
 
         [Required]
@@ -19,6 +20,7 @@ namespace MiniArmory.Data.Data.Models
         public string Description { get; set; }
 
         [Required]
+        [StringLength(30)]
         public string Category { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
