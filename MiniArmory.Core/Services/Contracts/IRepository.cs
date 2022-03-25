@@ -2,6 +2,6 @@
 {
     public interface IRepository<T> where T : class
     {
-        void Add(T model);
+        Task Add(T model);
     }
 }

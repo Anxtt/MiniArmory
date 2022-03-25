@@ -25,10 +25,10 @@ namespace MiniArmory.Core.Models
         public string Description { get; set; }
 
         [Required]
-        public string Class { get; set; }
+        public string Type { get; set; }
 
         [Required]
-        public bool IsRacial { get; set; }
+        public string Class { get; set; }
 
         [Required]
         public string Race { get; set; }

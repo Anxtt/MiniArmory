@@ -29,7 +29,8 @@ namespace MiniArmory.Data.Data.Models
         public string Description { get; set; }
 
         [Required]
-        public bool IsRacial { get; set; }
+        [StringLength(15)]
+        public string Type { get; set; }
 
         [ForeignKey(nameof(Race))]
         public int? RaceId { get; set; }

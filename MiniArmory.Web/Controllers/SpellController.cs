@@ -16,23 +16,34 @@ namespace MiniArmory.Web.Controllers
             => this.View();
 
         [HttpPost]
-        public IActionResult AddSpell(SpellFormModel model)
+        public async Task<IActionResult> AddSpell(SpellFormModel model)
         {
-            this.spellService.Add(model);
+            await this.spellService.Add(model);
 
-            return View();
+            return View(model);
         }
 
-        public IActionResult GetClasses()
+        public async Task<IActionResult> SpellTypes()
         {
-            var classes = this.spellService.GetClasses();
+            string[] types = new string[]
+            {
+                "Class",
+                "Race"
+            };
+
+            return Json(types);
+        }
+
+        public async Task<IActionResult> GetClasses()
+        {
+            var classes = await this.spellService.GetClasses();
 
             return Json(classes);
         }
 
-        public IActionResult GetRaces()
+        public async Task<IActionResult> GetRaces()
         {
-            var races = this.spellService.GetRaces();
+            var races = await this.spellService.GetRaces();
 
             return Json(races);
         }

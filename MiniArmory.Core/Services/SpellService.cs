@@ -1,4 +1,5 @@
-﻿using MiniArmory.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
@@ -12,60 +13,67 @@ namespace MiniArmory.Core.Services
         public SpellService(MiniArmoryDbContext db)
             => this.db = db;
 
-        public void Add(SpellFormModel model)
+        public async Task Add(SpellFormModel model)
         {
             Spell spell = new Spell()
             {
                 Cooldown = model.Cooldown,
                 Description = model.Description,
-                IsRacial = model.IsRacial,
                 Name = model.Name,
                 Range = model.Range,
+                Type = model.Type,
                 Tooltip = model.Tooltip
             };
 
-            Class classEntity = this.db
-                .Classes
-                .First(x => x.Id == int.Parse(model.Class));
-
-            if (!model.IsRacial && model.Class != null)
+            if (model.Type == "Class")
             {
+                Class classEntity = await this.db
+                    .Classes
+                    .FirstAsync<Class>(x => x.Id == int.Parse(model.Class));
+
                 spell.ClassId = classEntity.Id;
+                spell.Class = classEntity;
             }
-
-            if (model.IsRacial)
+            else if (model.Type == "Race")
             {
-                //spell.RaceId = model.RacialId;
+                Race race = await this.db
+                    .Races
+                    .Include(x => x.Faction)
+                    .Include(x => x.RacialSpell)
+                    .FirstAsync<Race>(x => x.Id == int.Parse(model.Race));
+
+                spell.RaceId = race.Id;
+                spell.Race = race;
             }
 
-            this.db.Spells.Add(spell);
-            this.db.SaveChanges();
+            await this.db.Spells.AddAsync(spell);
+            await this.db.SaveChangesAsync();
         }
 
-        public IEnumerable<ClassSpellFormModel> GetClasses()
+        public async Task<IEnumerable<ClassSpellFormModel>> GetClasses()
         {
-            var classes = this.db
+            var classes = await this.db
                 .Classes
                 .Select(x => new ClassSpellFormModel()
                 {
                     Id = x.Id,
                     Name = x.Name
                 })
-                .ToList();
+                .ToListAsync();
 
             return classes;
         }
 
-        public IEnumerable<RaceSpellFormModel> GetRaces()
+        public async Task<IEnumerable<RaceSpellFormModel>> GetRaces()
         {
-            var classes = this.db
+            var classes = await this.db
                 .Races
                 .Select(x => new RaceSpellFormModel()
                 {
                     Id = x.Id,
                     Name = x.Name
                 })
-                .ToList();
+                .ToListAsync();
 
             return classes;
         }

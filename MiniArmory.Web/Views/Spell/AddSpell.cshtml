@@ -38,14 +38,14 @@
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Type" class="dropdown"></label>
+                <select class="form-control" id="Type" name="Type"></select>
+                <span asp-validation-for="Type" class="text-danger"></span>
+            </div>
+            <div class="form-group" id="ClassWrapper">
                 <label asp-for="Class" class="dropdown"></label>
                 <select class="form-control" id="Class" name="Class"></select>
                 <span asp-validation-for="Class" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsRacial" /> @Html.DisplayNameFor(model => model.IsRacial)
-                </label>
             </div>
             <div class="form-group" id="RaceWrapper">
                 <label asp-for="Race" class="dropdown"></label>
@@ -71,16 +71,17 @@
 <script>
     $(document).ready(function () {
         $("#RaceWrapper").hide();
+        $("#ClassWrapper").hide();
 
         $.ajax({
             type: "POST",
             dataType: "json",
             url: "/Spell/GetClasses",
-            success: function (classes) 
+            success: function (classes)
             {
                 var s = '<option value="-1">Class</option>';
                 console.log(classes);
-                for (var i = 0; i < classes.length; i++) 
+                for (var i = 0; i < classes.length; i++)
                 {
                     s += '<option value="' + classes[i].Id + '">' + classes[i].Name + '</option>';
                 }
@@ -92,11 +93,11 @@
             type: "POST",
             dataType: "json",
             url: "/Spell/GetRaces",
-            success: function (races) 
+            success: function (races)
             {
                 var s = '<option value="-1">Race</option>';
                 console.log(races);
-                for (var i = 0; i < races.length; i++) 
+                for (var i = 0; i < races.length; i++)
                 {
                     s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
                     console.log(s);
@@ -104,19 +105,38 @@
                 $("#Race").html(s);
             }
         })
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/SpellTypes",
+            success: function (types)
+            {
+                var s = '<option value="-1">Type</option>';
+                console.log(types);
+                for (var i = 0; i < types.length; i++)
+                {
+                    s += '<option value="' + types[i] + '">' + types[i] + '</option>';
+                    console.log(s);
+                }
+                $("#Type").html(s);
+            }
+        })
     })
 
-    $("#IsRacial").on("click", function () {
-        let checked = $("#IsRacial").is(":checked");
-
-        if(checked)
-        {
+    $("select#Type").on('change',function(){
+        if($(this).val()=="Class"){
+            $("#RaceWrapper").hide();
+            $("#ClassWrapper").show();
+        }
+        else if($(this).val()=="Race"){
+            $("#ClassWrapper").hide();
             $("#RaceWrapper").show();
         }
-        else
-        {
+        else if($(this).val()=="-1"){
+            $("#ClassWrapper").hide();
             $("#RaceWrapper").hide();
         }
-    })
+    });
 </script>
 }
