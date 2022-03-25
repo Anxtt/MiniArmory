@@ -11,14 +11,13 @@ namespace MiniArmory.Web.Controllers
         public FactionController(IFactionService factionService) 
             => this.factionService = factionService;
 
-        [HttpGet]
         public IActionResult AddFaction()
             => this.View();
 
         [HttpPost]
-        public IActionResult AddFaction(FactionFormModel model)
+        public async Task<IActionResult> AddFaction(FactionFormModel model)
         {
-            this.factionService.Add(model);
+            await this.factionService.Add(model);
 
             return this.View();
         }

@@ -12,14 +12,14 @@ namespace MiniArmory.Web.Controllers
             => this.mountSevice = mountSevice;
 
         public IActionResult AddMount() 
-            => View(); 
+            => this.View(); 
         
         [HttpPost]
-        public IActionResult AddMount(MountFormModel model)
+        public async Task<IActionResult> AddMount(MountFormModel model)
         {
-            this.mountSevice.Add(model);
+            await this.mountSevice.Add(model);
 
-            return View();
+            return this.View();
         }
     }
 }

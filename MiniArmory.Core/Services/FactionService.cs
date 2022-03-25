@@ -12,7 +12,7 @@ namespace MiniArmory.Core.Services
         public FactionService(MiniArmoryDbContext db) 
             => this.db = db;
 
-        public void Add(FactionFormModel model)
+        public async Task Add(FactionFormModel model)
         {
             Faction faction = new Faction()
             {
@@ -21,8 +21,8 @@ namespace MiniArmory.Core.Services
                 Image = model.Image
             };
 
-            this.db.Factions.Add(faction);
-            this.db.SaveChanges();
+            await this.db.Factions.AddAsync(faction);
+            await this.db.SaveChangesAsync();
         }
     }
 }

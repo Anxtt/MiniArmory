@@ -17,7 +17,7 @@ namespace MiniArmory.Core.Services
         public RealmService(MiniArmoryDbContext db) 
             => this.db = db;
 
-        public void Add(RealmFormModel model)
+        public async Task Add(RealmFormModel model)
         {
             Realm realm = new Realm()
             {
@@ -26,8 +26,8 @@ namespace MiniArmory.Core.Services
                 Population = model.Population
             };
         
-            this.db.Realms.Add(realm);
-            this.db.SaveChanges();
+            await this.db.Realms.AddAsync(realm);
+            await this.db.SaveChangesAsync();
         }
     }
 }

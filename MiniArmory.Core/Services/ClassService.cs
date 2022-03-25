@@ -17,7 +17,7 @@ namespace MiniArmory.Core.Services
         public ClassService(MiniArmoryDbContext db)
             => this.db = db;
 
-        public void Add(ClassFormModel model)
+        public async Task Add(ClassFormModel model)
         {
             Class classEntity = new Class()
             {
@@ -29,8 +29,8 @@ namespace MiniArmory.Core.Services
                 SpecialisationImage = model.SpecialisationImage
             };
 
-            this.db.Classes.Add(classEntity);
-            this.db.SaveChanges();
+            await this.db.Classes.AddAsync(classEntity);
+            await this.db.SaveChangesAsync();
         }
 }
 }

@@ -11,17 +11,15 @@ namespace MiniArmory.Web.Controllers
         public AchievementController(IAchievementService achievementService) 
             => this.achievementService = achievementService;
 
-        public IActionResult AddAchievement()
-        {
-            return View();
-        }
+        public IActionResult AddAchievement() 
+            => this.View();
+
         [HttpPost]
-
-        public IActionResult AddAchievement(AchievementFormModel model)
+        public async Task<IActionResult> AddAchievement(AchievementFormModel model)
         {
-            this.achievementService.Add(model);
+            await this.achievementService.Add(model);
 
-            return View();
+            return this.View();
         }
     }
 }

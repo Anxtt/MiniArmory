@@ -12,7 +12,7 @@ namespace MiniArmory.Core.Services
         public MountService(MiniArmoryDbContext db)
             => this.db = db;
 
-        public void Add(MountFormModel model)
+        public async Task Add(MountFormModel model)
         {
             Mount mount = new Mount()
             {
@@ -23,8 +23,8 @@ namespace MiniArmory.Core.Services
                 Name = model.Name
             };
 
-            this.db.Mounts.Add(mount);
-            this.db.SaveChanges();
+            await this.db.Mounts.AddAsync(mount);
+            await this.db.SaveChangesAsync();
         }
     }
 }

@@ -11,14 +11,13 @@ namespace MiniArmory.Web.Controllers
         public ClassController(IClassService classService) 
             => this.classService = classService;
 
-        [HttpGet]
         public IActionResult AddClass() 
-            => View();
+            => this.View();
 
         [HttpPost]
-        public IActionResult AddClass(ClassFormModel model)
+        public async Task<IActionResult> AddClass(ClassFormModel model)
         {
-            this.classService.Add(model);
+            await this.classService.Add(model);
 
             return this.View();
         }

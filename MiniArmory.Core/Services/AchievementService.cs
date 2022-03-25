@@ -12,7 +12,7 @@ namespace MiniArmory.Core.Services
         public AchievementService(MiniArmoryDbContext db) 
             => this.db = db;
 
-        public void Add(AchievementFormModel model)
+        public async Task Add(AchievementFormModel model)
         {
             Achievement achi = new Achievement()
             {
@@ -22,8 +22,8 @@ namespace MiniArmory.Core.Services
                 Points = model.Points
             };
 
-            this.db.Achievements.Add(achi);
-            this.db.SaveChanges();
+            await this.db.Achievements.AddAsync(achi);
+            await this.db.SaveChangesAsync();
         }
     }
 }
