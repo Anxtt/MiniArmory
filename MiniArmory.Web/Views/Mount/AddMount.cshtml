@@ -1,0 +1,53 @@
+﻿@model MiniArmory.Core.Models.MountFormModel
+
+@{
+    ViewData["Title"] = "AddMount";
+}
+
+<h1>AddMount</h1>
+
+<h4>MountFormModel</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddMount">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GroundSpeed" class="control-label"></label>
+                <input asp-for="GroundSpeed" class="form-control" />
+                <span asp-validation-for="GroundSpeed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FlyingSpeed" class="control-label"></label>
+                <input asp-for="FlyingSpeed" class="form-control" />
+                <span asp-validation-for="FlyingSpeed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Faction" class="control-label"></label>
+                <input asp-for="Faction" class="form-control" />
+                <span asp-validation-for="Faction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image" class="control-label"></label>
+                <input asp-for="Image" class="form-control" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

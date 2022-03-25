@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
@@ -15,6 +16,7 @@ builder.Services.AddDbContext<MiniArmoryDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<MiniArmoryDbContext>();
 
 builder.Services.AddControllersWithViews();
@@ -29,6 +31,8 @@ builder.Services.AddScoped<ISpellService, SpellService>();
 builder.Services.AddScoped<IRealmService, RealmService>();
 builder.Services.AddScoped<IClassService, ClassService>();
 builder.Services.AddScoped<IFactionService, FactionService>();
+builder.Services.AddScoped<IMountService, MountService>();
+builder.Services.AddScoped<IAchievementService, AchievementService>();
 
 var app = builder.Build();
 
