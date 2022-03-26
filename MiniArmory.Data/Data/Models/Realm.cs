@@ -12,10 +12,8 @@ namespace MiniArmory.Data.Data.Models
         public string Name { get; set; }
 
         [Required]
+        [StringLength(30)]
         public string Language { get; set; }
-
-        [Required]
-        public string Population { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
     }

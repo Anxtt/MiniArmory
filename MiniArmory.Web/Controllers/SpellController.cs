@@ -23,7 +23,7 @@ namespace MiniArmory.Web.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> SpellTypes()
+        public IActionResult SpellTypes()
         {
             string[] types = new string[]
             {

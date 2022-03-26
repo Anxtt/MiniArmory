@@ -22,8 +22,7 @@ namespace MiniArmory.Core.Services
             Realm realm = new Realm()
             {
                 Language = model.Language,
-                Name = model.Name,
-                Population = model.Population
+                Name = model.Name
             };
         
             await this.db.Realms.AddAsync(realm);
