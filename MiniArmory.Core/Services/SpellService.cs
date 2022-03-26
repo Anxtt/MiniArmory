@@ -50,6 +50,17 @@ namespace MiniArmory.Core.Services
             await this.db.SaveChangesAsync();
         }
 
+        public async Task<IEnumerable<SpellViewModel>> AllSpells()
+            => await this.db
+            .Spells
+            .Select(x => new SpellViewModel()
+            {
+                Name = x.Name,
+                Description = x.Description,
+                Tooltip = x.Tooltip
+            })
+            .ToListAsync();
+
         public async Task<IEnumerable<ClassSpellFormModel>> GetClasses()
         {
             var classes = await this.db

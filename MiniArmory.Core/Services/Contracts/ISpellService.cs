@@ -7,5 +7,7 @@ namespace MiniArmory.Core.Services.Contracts
         Task<IEnumerable<ClassSpellFormModel>> GetClasses(); 
 
         Task<IEnumerable<RaceSpellFormModel>> GetRaces();
+
+        Task<IEnumerable<SpellViewModel>> AllSpells();
     }
 }
