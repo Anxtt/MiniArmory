@@ -1,4 +1,5 @@
-﻿using MiniArmory.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
@@ -26,5 +27,18 @@ namespace MiniArmory.Core.Services
             await this.db.Mounts.AddAsync(mount);
             await this.db.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<MountViewModel>> AllMounts()
+            => await this.db
+            .Mounts
+            .Select(x => new MountViewModel()
+            {
+                Faction = x.Faction,
+                FlyingSpeed = x.FlyingSpeed,
+                GroundSpeed = x.GroundSpeed,
+                Image = x.Image,
+                Name = x.Name
+            })
+            .ToListAsync();
     }
 }

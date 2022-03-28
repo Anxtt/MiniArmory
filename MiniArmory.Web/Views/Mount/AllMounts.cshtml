@@ -1,0 +1,31 @@
+﻿@using MiniArmory.Core.Models
+@model List<MountViewModel>
+
+@{
+    ViewData["Title"] = "All Spells";
+}
+
+<div class="row">
+    <div class="form-group">
+        @foreach (var mount in Model)
+        {
+            <div class="card d-inline-flex bg-dark text-white">
+                <div class="row">
+                    <div class="col-md-7">
+                        <img src="@mount.Image" alt="Mount image" style="width: 20rem;">
+                    </div>
+
+                    <div class="col-md-5">
+                        <p>@mount.Name</p>
+                        @if(@mount.Faction != "NULL")
+                        {
+                            <p>Faction: @mount.Faction</p>
+                        }
+                        <p>Ground speed: @mount.GroundSpeed</p>
+                        <p>Flying speed: @mount.FlyingSpeed</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
