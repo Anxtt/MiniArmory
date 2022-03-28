@@ -19,7 +19,8 @@ namespace MiniArmory.Data.Data.Models
         [Range(80, 100)]
         public sbyte FlyingSpeed { get; set; }
 
-        public string Faction { get; set; }
+        [StringLength(20)]
+        public string? Faction { get; set; }
 
         [Required]
         [StringLength(200)]

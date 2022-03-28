@@ -15,6 +15,11 @@ namespace MiniArmory.Core.Services
 
         public async Task Add(MountFormModel model)
         {
+            if (model.Faction == "-1")
+            {
+                model.Faction = null;
+            }
+
             Mount mount = new Mount()
             {
                 FlyingSpeed = model.FlyingSpeed,
@@ -37,6 +42,16 @@ namespace MiniArmory.Core.Services
                 FlyingSpeed = x.FlyingSpeed,
                 GroundSpeed = x.GroundSpeed,
                 Image = x.Image,
+                Name = x.Name
+            })
+            .ToListAsync();
+
+        public async Task<IEnumerable<FactionMountFormModel>> GetFactions()
+            => await this.db
+            .Factions
+            .Select(x => new FactionMountFormModel()
+            {
+                Id = x.Id,
                 Name = x.Name
             })
             .ToListAsync();

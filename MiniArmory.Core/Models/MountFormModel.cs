@@ -5,7 +5,7 @@ namespace MiniArmory.Core.Models
     public class MountFormModel
     {
         [Required]
-        [StringLength(30)]
+        [StringLength(60)]
         public string Name { get; set; }
 
         [Required]
