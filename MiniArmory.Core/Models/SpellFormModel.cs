@@ -25,14 +25,12 @@ namespace MiniArmory.Core.Models
         public string Description { get; set; }
 
         [Required]
-        [MinLength(4)]
+        [RegularExpression("^[A-Z{1}a-z]+$", ErrorMessage = "The type must be different than the default option.")]
         public string Type { get; set; }
 
-        [Required]
-        [MinLength(4)]
-        public string Class { get; set; }
+        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select a class.")]
+        public string? Class { get; set; }
 
-        [Required]
-        public string Race { get; set; }
+        public string? Race { get; set; }
     }
 }

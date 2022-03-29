@@ -70,9 +70,6 @@
 
 <script>
     $(document).ready(function () {
-        $("#RaceWrapper").hide();
-        $("#ClassWrapper").hide();
-
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -121,16 +118,22 @@
 
     $("select#Type").on('change',function(){
         if($(this).val()=="Class"){
+            $("#Race").prop('disabled', true);
             $("#RaceWrapper").hide();
             $("#ClassWrapper").show();
+            $("#Class").prop('disabled', false);
         }
         else if($(this).val()=="Race"){
+            $("#Class").prop('disabled', true);
             $("#ClassWrapper").hide();
             $("#RaceWrapper").show();
+            $("#Race").prop('disabled', false);
         }
         else if($(this).val()=="-1"){
-            $("#ClassWrapper").hide();
-            $("#RaceWrapper").hide();
+            $("#ClassWrapper").show();
+            $("#Class").prop('disabled', false);
+            $("#RaceWrapper").show();
+            $("#Race").prop('disabled', false);
         }
     });
 </script>
