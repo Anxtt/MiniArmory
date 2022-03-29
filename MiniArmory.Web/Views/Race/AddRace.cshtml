@@ -1,0 +1,85 @@
+﻿@model MiniArmory.Core.Models.RaceFormModel
+
+@{
+    ViewData["Title"] = "AddRace";
+}
+
+<h1>Race creation</h1>
+
+<h4>Race characteristics</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddRace">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RacialSpell" class="dropdown"></label>
+                <select class="form-control" id="RacialSpell" name="RacialSpell"></select>
+                <span asp-validation-for="RacialSpell" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Faction" class="dropdown"></label>
+                <select class="form-control" id="Faction" name="Faction"></select>
+                <span asp-validation-for="Faction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Race/GetRacialSpells",
+            success: function (racialSpells)
+            {
+                var s = '<option value="-1">RacialSpell</option>';
+                console.log(racialSpells);
+                for (var i = 0; i < racialSpells.length; i++)
+                {
+                    s += '<option value="' + racialSpells[i].Id + '">' + racialSpells[i].Name + '</option>';
+                }
+                $("#RacialSpell").html(s);
+            }
+        })
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Mount/GetFactions",
+            success: function (factions)
+            {
+                var s = '<option value="-1">Faction</option>';
+                for (var i = 0; i < factions.length; i++)
+                {
+                    s += '<option value="' + factions[i].Id + '">' + factions[i].Name + '</option>';
+                }
+                $("#Faction").html(s);
+            }
+        })
+    });
+</script>
+}

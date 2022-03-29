@@ -26,5 +26,9 @@ namespace MiniArmory.Data.Data.Models
         public int FactionId { get; set; }
 
         public Faction Faction { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string Arms { get; set; }
     }
 }
