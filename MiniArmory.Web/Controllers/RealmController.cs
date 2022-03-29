@@ -17,6 +17,11 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRealm(RealmFormModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
             await this.realmService.Add(model);
 
             return this.View();

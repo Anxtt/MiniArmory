@@ -17,6 +17,11 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddAchievement(AchievementFormModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
             await this.achievementService.Add(model);
 
             return this.View();

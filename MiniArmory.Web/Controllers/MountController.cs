@@ -17,9 +17,15 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMount(MountFormModel model)
         {
-            await this.mountService.Add(model);
+            if (!ModelState.IsValid)
+            {
+                return this.View(model);
+            }
 
-            return this.View();
+            await this.mountService.Add(model);
+            var mounts = await this.mountService.AllMounts();
+
+            return this.View("AllMounts", mounts);
         }
         
         public async Task<IActionResult> AllMounts()

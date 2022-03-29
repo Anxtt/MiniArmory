@@ -18,9 +18,14 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddSpell(SpellFormModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
             await this.spellService.Add(model);
 
-            return View(model);
+            return this.View(model);
         }
 
         public async Task<IActionResult> AllSpells()
