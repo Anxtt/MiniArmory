@@ -21,5 +21,12 @@ namespace MiniArmory.Web.Controllers
 
             return this.View();
         }
+
+        public async Task<IActionResult> AllClasses()
+        {
+            var classes = await this.classService.AllClasses();
+
+            return this.View(classes);
+        }
     }
 }

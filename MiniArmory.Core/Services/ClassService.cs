@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
@@ -32,5 +28,19 @@ namespace MiniArmory.Core.Services
             await this.db.Classes.AddAsync(classEntity);
             await this.db.SaveChangesAsync();
         }
-}
+
+        public async Task<IEnumerable<ClassViewModel>> AllClasses()
+            => await this.db
+            .Classes
+            .Select(x => new ClassViewModel()
+            {
+                Description = x.Description,
+                Name = x.Name,
+                Specialisation = x.Specialisation,
+                Image = x.Image,
+                SpecialisationDescription = x.SpecialisationDescription,
+                SpecialisationImage = x.SpecialisationImage
+            })
+            .ToListAsync();
+    }
 }
