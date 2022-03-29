@@ -25,6 +25,69 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="AchievementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Achievement
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Achievement" asp-action="AddAchievement">Add Achievement</a></li>
+                                <li><a class="dropdown-item" asp-controller="Achievement" asp-action="AllAchievements">All Achievements</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="ClassDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Class
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Class" asp-action="AddClass">Add Class</a></li>
+                                <li><a class="dropdown-item" asp-controller="Class" asp-action="AllClasses">All Classes</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="SpellDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Spell
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Spell" asp-action="AddSpell">Add Spell</a></li>
+                                <li><a class="dropdown-item" asp-controller="Spell" asp-action="AllSpells">All Spells</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="FactionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Faction
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Faction" asp-action="AddFaction">Add Faction</a></li>
+                                <li><a class="dropdown-item" asp-controller="Faction" asp-action="AllFactions">All Factions</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="RaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Race
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Race" asp-action="AddRace">Add Race</a></li>
+                                <li><a class="dropdown-item" asp-controller="Race" asp-action="AllRaces">All Races</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="MountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Mount
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Mount" asp-action="AddMount">Add Mount</a></li>
+                                <li><a class="dropdown-item" asp-controller="Mount" asp-action="AllMounts">All Mounts</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="RealmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Realm
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Realm" asp-action="AddRealm">Add Realm</a></li>
+                                <li><a class="dropdown-item" asp-controller="Realm" asp-action="AllRealms">All Realms</a></li>
+                            </ul>
+                        </li>
                     </ul>
                     <partial name="_LoginPartial" />
                 </div>

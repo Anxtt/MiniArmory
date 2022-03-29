@@ -4,9 +4,9 @@
     ViewData["Title"] = "Add";
 }
 
-<h1>Add</h1>
+<h1>Spell creation</h1>
 
-<h4>SpellFormModel</h4>
+<h4>Spell characteristics</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -80,7 +80,6 @@
             success: function (classes)
             {
                 var s = '<option value="-1">Class</option>';
-                console.log(classes);
                 for (var i = 0; i < classes.length; i++)
                 {
                     s += '<option value="' + classes[i].Id + '">' + classes[i].Name + '</option>';
@@ -96,11 +95,9 @@
             success: function (races)
             {
                 var s = '<option value="-1">Race</option>';
-                console.log(races);
                 for (var i = 0; i < races.length; i++)
                 {
                     s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
-                    console.log(s);
                 }
                 $("#Race").html(s);
             }
@@ -113,11 +110,9 @@
             success: function (types)
             {
                 var s = '<option value="-1">Type</option>';
-                console.log(types);
                 for (var i = 0; i < types.length; i++)
                 {
                     s += '<option value="' + types[i] + '">' + types[i] + '</option>';
-                    console.log(s);
                 }
                 $("#Type").html(s);
             }
