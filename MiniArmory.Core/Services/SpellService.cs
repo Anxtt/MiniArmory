@@ -29,18 +29,18 @@ namespace MiniArmory.Core.Services
             {
                 Class classEntity = await this.db
                     .Classes
-                    .FirstAsync<Class>(x => x.Id == int.Parse(model.Class));
+                    .FirstAsync(x => x.Id == int.Parse(model.Class));
 
                 spell.ClassId = classEntity.Id;
                 spell.Class = classEntity;
             }
-            else if (model.Type == "Race")
+            else if (model.Type == "Race" && model.Race != "-1")
             {
                 Race race = await this.db
                     .Races
                     .Include(x => x.Faction)
                     .Include(x => x.RacialSpell)
-                    .FirstAsync<Race>(x => x.Id == int.Parse(model.Race));
+                    .FirstAsync(x => x.Id == int.Parse(model.Race));
 
                 spell.RaceId = race.Id;
                 spell.Race = race;
@@ -61,32 +61,24 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
-        public async Task<IEnumerable<ClassSpellFormModel>> GetClasses()
-        {
-            var classes = await this.db
+        public async Task<IEnumerable<JsonFormModel>> GetClasses()
+            => await this.db
                 .Classes
-                .Select(x => new ClassSpellFormModel()
+                .Select(x => new JsonFormModel()
                 {
                     Id = x.Id,
                     Name = x.Name
                 })
                 .ToListAsync();
 
-            return classes;
-        }
-
-        public async Task<IEnumerable<RaceSpellFormModel>> GetRaces()
-        {
-            var classes = await this.db
+        public async Task<IEnumerable<JsonFormModel>> GetRaces()
+            => await this.db
                 .Races
-                .Select(x => new RaceSpellFormModel()
+                .Select(x => new JsonFormModel()
                 {
                     Id = x.Id,
                     Name = x.Name
                 })
                 .ToListAsync();
-
-            return classes;
-        }
     }
 }

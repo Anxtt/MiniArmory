@@ -35,11 +35,11 @@ namespace MiniArmory.Data.Data.Models
         [ForeignKey(nameof(Race))]
         public int? RaceId { get; set; }
 
-        public Race Race { get; set; }
+        public Race? Race { get; set; }
 
         [ForeignKey(nameof(Class))]
-        public int ClassId { get; set; }
+        public int? ClassId { get; set; }
 
-        public Class Class { get; set; }
+        public Class? Class { get; set; }
     }
 }

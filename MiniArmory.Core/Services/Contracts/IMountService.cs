@@ -6,6 +6,6 @@ namespace MiniArmory.Core.Services.Contracts
     {
         Task<IEnumerable<MountViewModel>> AllMounts();
 
-        Task<IEnumerable<FactionMountFormModel>> GetFactions();
+        Task<IEnumerable<JsonFormModel>> GetFactions();
     }
 }

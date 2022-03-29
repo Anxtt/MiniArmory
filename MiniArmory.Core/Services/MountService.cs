@@ -46,10 +46,10 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
-        public async Task<IEnumerable<FactionMountFormModel>> GetFactions()
+        public async Task<IEnumerable<JsonFormModel>> GetFactions()
             => await this.db
             .Factions
-            .Select(x => new FactionMountFormModel()
+            .Select(x => new JsonFormModel()
             {
                 Id = x.Id,
                 Name = x.Name

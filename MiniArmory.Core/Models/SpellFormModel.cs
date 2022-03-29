@@ -25,9 +25,11 @@ namespace MiniArmory.Core.Models
         public string Description { get; set; }
 
         [Required]
+        [MinLength(4)]
         public string Type { get; set; }
 
         [Required]
+        [MinLength(4)]
         public string Class { get; set; }
 
         [Required]

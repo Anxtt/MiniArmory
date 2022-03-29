@@ -1,6 +1,6 @@
 ﻿namespace MiniArmory.Core.Models
 {
-    public class FactionMountFormModel
+    public class JsonFormModel
     {
         public int Id { get; set; }
 
