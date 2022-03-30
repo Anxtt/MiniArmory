@@ -26,5 +26,13 @@ namespace MiniArmory.Web.Controllers
 
             return this.View();
         }
+
+
+        public async Task<IActionResult> AllAchievements()
+        {
+            var achies = await this.achievementService.AllAchievements();
+
+            return this.View(achies);
+        }
     }
 }

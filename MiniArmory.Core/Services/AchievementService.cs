@@ -1,4 +1,5 @@
-﻿using MiniArmory.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
@@ -25,5 +26,17 @@ namespace MiniArmory.Core.Services
             await this.db.Achievements.AddAsync(achi);
             await this.db.SaveChangesAsync();
         }
+
+        public async Task<IEnumerable<AchievementViewModel>> AllAchievements()
+            => await this.db
+            .Achievements
+            .Select(x => new AchievementViewModel()
+            {
+                Category = x.Category,
+                Description = x.Description,
+                Name = x.Name,
+                Points = x.Points
+            })
+            .ToListAsync();
     }
 }
