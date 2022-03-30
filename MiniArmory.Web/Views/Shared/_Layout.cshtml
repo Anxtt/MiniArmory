@@ -18,13 +18,8 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <ul class="navbar-nav flex-grow-1 justify-content-center">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="AchievementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Achievement
@@ -52,15 +47,17 @@
                                 <li><a class="dropdown-item" asp-controller="Spell" asp-action="AllSpells">All Spells</a></li>
                             </ul>
                         </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="FactionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                Faction
-                            </a>
-                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" asp-controller="Faction" asp-action="AddFaction">Add Faction</a></li>
-                                <li><a class="dropdown-item" asp-controller="Faction" asp-action="AllFactions">All Factions</a></li>
-                            </ul>
-                        </li>
+                        @if (this.User.IsInRole("Owner"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle text-dark" href="#" id="FactionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Faction
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-controller="Faction" asp-action="AddFaction">Add Faction</a></li>
+                                </ul>
+                            </li>
+                        }
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="RaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Race
