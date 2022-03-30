@@ -55,6 +55,25 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
+        public async Task<RaceViewModel> GetRace(int id)
+            => await this.db
+            .Races
+            .Include(x => x.Faction)
+            .Include(x => x.RacialSpell)
+            .Select(x => new RaceViewModel()
+            {
+                Id = x.Id,
+                Arms = x.Arms,
+                Description = x.Description,
+                Faction = x.Faction.Name,
+                FactionImage = x.Faction.Image,
+                Name = x.Name,
+                RacialSpell = x.RacialSpell.Name,
+                RacialSpellDescription = x.RacialSpell.Description,
+                RacialSpellImage = x.RacialSpell.Tooltip
+            })
+            .FirstAsync(x => x.Id == id);
+
         public async Task<IEnumerable<JsonFormModel>> GetRacialSpells()
             => await this.db
             .Spells

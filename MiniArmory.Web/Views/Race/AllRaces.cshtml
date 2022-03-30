@@ -17,7 +17,7 @@
         @foreach (var race in Model.Where(x => x.Faction == "Alliance"))
         {
             <div class="d-inline-block col-5 text-center">
-                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="" style="height:10rem; width: 10rem" /></a>
+                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="Race arms" style="height:10rem; width: 10rem" /></a>
                 <p class="text-light">@race.Description</p>
             </div>
         }
@@ -37,7 +37,7 @@
         @foreach (var race in Model.Where(x => x.Faction == "Horde"))
         {
             <div class="d-inline-block col-5 text-center">
-                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="" style="height:10rem; width: 10rem" /></a>
+                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="Race arms" style="height:10rem; width: 10rem" /></a>
                 <p class="text-light">@race.Description</p>
             </div>
         }

@@ -1,0 +1,47 @@
+﻿@using MiniArmory.Core.Models
+@model RaceViewModel
+
+@{
+    ViewData["Title"] = "Race Details";
+}
+
+@if (Model.Faction == "Alliance")
+{
+    <div class="d-inline-block col-12">
+        <h2 class="text-center text-primary">@Model.Name</h2>
+        <div style="
+    background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-blue.9de312ba15472b63bc7e9d3f62b64c65.jpg');
+    height: 100%;
+    width: 100%;">
+            <div class="text-center">
+                <img src="" alt="Race model" style="width: 15rem; height: 19rem;" />
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.Description</p>
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.Faction</p>
+                <img src="@Model.FactionImage" />
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.RacialSpell</p>
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.RacialSpellDescription</p>
+                <img src="@Model.RacialSpellImage" />
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-inline-block col-12">
+        <h2 class="text-center text-primary">@Model.Name</h2>
+        <div style="
+    background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-red.ed195e1c1da9da078315cae0469323e1.jpg');
+    height: 100%;
+    width: 100%;">
+            <div class="text-center">
+                <img src="" alt="Race model" style="width: 15rem; height: 19rem;" />
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.Description</p>
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.Faction</p>
+                <img src="@Model.FactionImage" />
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.RacialSpell</p>
+                <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.RacialSpellDescription</p>
+                <img src="@Model.RacialSpellImage" />
+            </div>
+        </div>
+    </div>
+}

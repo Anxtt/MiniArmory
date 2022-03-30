@@ -7,5 +7,7 @@ namespace MiniArmory.Core.Services.Contracts
         Task<IEnumerable<RaceViewModel>> AllRaces();
 
         Task<IEnumerable<JsonFormModel>> GetRacialSpells();
+
+        Task<RaceViewModel> GetRace(int id);
     }
 }

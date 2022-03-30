@@ -9,20 +9,19 @@
     <div class="form-group">
         @foreach (var mount in Model)
         {
-            <div class="card d-inline-flex bg-dark text-white">
+            <div class="card d-inline-flex bg-dark text-white" style="width: 31rem; height: 11rem;">
                 <div class="row">
-                    <div class="col-md-7">
-                        <img src="@mount.Image" alt="Mount image" style="width: 20rem;">
-                    </div>
-
-                    <div class="col-md-5">
-                        <p>@mount.Name</p>
-                        @if(@mount.Faction != null)
-                        {
-                            <p>Faction: @mount.Faction</p>
-                        }
-                        <p>Ground speed: @mount.GroundSpeed</p>
-                        <p>Flying speed: @mount.FlyingSpeed</p>
+                    <div class="col-6 d-inline-flex">
+                        <img src="@mount.Image" alt="Mount image" style="height: 11rem;">
+                        <div class="col-6">
+                            <p style="width: 9rem;">@mount.Name</p>
+                            @if (@mount.Faction != null)
+                            {
+                                <p style="width: 9rem;">Faction: @mount.Faction</p>
+                            }
+                            <p style="width: 9rem;">Ground speed: @mount.GroundSpeed</p>
+                            <p style="width: 9rem;">Flying speed: @mount.FlyingSpeed</p>
+                        </div>
                     </div>
                 </div>
             </div>

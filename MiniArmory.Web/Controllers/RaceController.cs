@@ -35,9 +35,11 @@ namespace MiniArmory.Web.Controllers
             return this.View(races);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            return View();
+            var race = await this.raceService.GetRace(id);
+
+            return this.View(race);
         }
 
         public async Task<IActionResult> GetRacialSpells()
