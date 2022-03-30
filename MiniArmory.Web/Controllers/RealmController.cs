@@ -26,5 +26,12 @@ namespace MiniArmory.Web.Controllers
 
             return this.View();
         }
+
+        public async Task<IActionResult> AllRealms()
+        {
+            var realms = await this.realmService.AllRealms();
+
+            return this.View(realms);
+        }
     }
 }

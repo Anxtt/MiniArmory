@@ -4,5 +4,6 @@ namespace MiniArmory.Core.Services.Contracts
 {
     public interface IRealmService : IRepository<RealmFormModel>
     {
+        Task<IEnumerable<RealmViewModel>> AllRealms();
     }
 }

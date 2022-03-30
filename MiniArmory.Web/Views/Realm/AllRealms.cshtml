@@ -1,0 +1,28 @@
+﻿@using MiniArmory.Core.Models
+@model List<RealmViewModel>
+
+@{
+    ViewData["Title"] = "All Realms";
+}
+
+<div class="card-body table-responsive p-0">
+    <table class="table table-hover text-nowrap">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Language</th>
+                <th>Population</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var realm in Model)
+            {
+                <tr>
+                    <td>@realm.Name</td>
+                    <td>@realm.Language</td>
+                    <td>@realm.Population</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
