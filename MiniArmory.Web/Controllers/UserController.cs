@@ -21,6 +21,15 @@ namespace MiniArmory.Web.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Roles()
+        {
+            var user = await userManager.FindByNameAsync(this.User.Identity.Name);
+
+            await userManager.AddToRoleAsync(user, "Owner");
+
+            return RedirectToPage("Home/Index");
+        }
+
         public async Task<IActionResult> CreateRole()
         {
             await roleManager.CreateAsync(new IdentityRole<Guid>()
