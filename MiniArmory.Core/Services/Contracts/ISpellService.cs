@@ -2,8 +2,10 @@
 
 namespace MiniArmory.Core.Services.Contracts
 {
-    public interface ISpellService : IRepository<SpellFormModel>
+    public interface ISpellService
     {
+        Task Add(SpellFormModel model);
+
         Task<IEnumerable<JsonFormModel>> GetClasses(); 
 
         Task<IEnumerable<JsonFormModel>> GetRaces();

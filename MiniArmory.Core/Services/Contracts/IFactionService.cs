@@ -2,7 +2,8 @@
 
 namespace MiniArmory.Core.Services.Contracts
 {
-    public interface IFactionService : IRepository<FactionFormModel>
+    public interface IFactionService
     {
+        Task Add(FactionFormModel model);
     }
 }

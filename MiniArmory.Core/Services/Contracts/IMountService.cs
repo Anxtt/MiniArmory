@@ -2,8 +2,10 @@
 
 namespace MiniArmory.Core.Services.Contracts
 {
-    public interface IMountService : IRepository<MountFormModel>
+    public interface IMountService
     {
+        Task Add(MountFormModel model);
+
         Task<IEnumerable<MountViewModel>> AllMounts();
 
         Task<IEnumerable<JsonFormModel>> GetFactions();
