@@ -24,7 +24,7 @@ namespace MiniArmory.Web.Controllers
 
             await this.realmService.Add(model);
 
-            return this.View();
+            return this.RedirectToAction(nameof(AllRealms));
         }
 
         public async Task<IActionResult> AllRealms()

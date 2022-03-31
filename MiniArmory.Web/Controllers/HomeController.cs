@@ -13,15 +13,11 @@ namespace MiniArmory.Web.Controllers
             _logger = logger;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+        public IActionResult Index() 
+            => this.View();
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+        public IActionResult Privacy() 
+            => this.View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

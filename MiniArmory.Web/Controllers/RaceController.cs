@@ -25,7 +25,7 @@ namespace MiniArmory.Web.Controllers
             await this.raceService.Add(model);
             var races = await this.raceService.AllRaces();
 
-            return this.View("AllRaces", races);
+            return this.RedirectToAction(nameof(AllRaces));
         }
 
         public async Task<IActionResult> AllRaces()

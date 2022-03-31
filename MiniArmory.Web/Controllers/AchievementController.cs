@@ -24,7 +24,7 @@ namespace MiniArmory.Web.Controllers
 
             await this.achievementService.Add(model);
 
-            return this.View();
+            return this.RedirectToAction(nameof(AllAchievements));
         }
 
 

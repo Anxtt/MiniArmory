@@ -25,7 +25,7 @@ namespace MiniArmory.Web.Controllers
 
             await this.spellService.Add(model);
 
-            return this.View(model);
+            return this.RedirectToAction(nameof(AllSpells));
         }
 
         public async Task<IActionResult> AllSpells()

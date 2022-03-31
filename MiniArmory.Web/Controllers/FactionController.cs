@@ -27,7 +27,7 @@ namespace MiniArmory.Web.Controllers
 
             await this.factionService.Add(model);
 
-            return this.View();
+            return this.RedirectToAction("AllRaces", "Race");
         }
     }
 }

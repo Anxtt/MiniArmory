@@ -25,7 +25,7 @@ namespace MiniArmory.Web.Controllers
             await this.mountService.Add(model);
             var mounts = await this.mountService.AllMounts();
 
-            return this.View("AllMounts", mounts);
+            return this.RedirectToAction(nameof(AllMounts));
         }
         
         public async Task<IActionResult> AllMounts()

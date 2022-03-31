@@ -17,9 +17,14 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddClass(ClassFormModel model)
         {
+            if (!ModelState.IsValid)
+            {
+                return this.View(model);
+            }
+
             await this.classService.Add(model);
 
-            return this.View();
+            return this.RedirectToAction(nameof(AllClasses));
         }
 
         public async Task<IActionResult> AllClasses()
