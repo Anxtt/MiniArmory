@@ -1,0 +1,43 @@
+﻿@using MiniArmory.Core.Models
+@model List<LeaderboardViewModel>
+
+@{
+    ViewData["Title"] = "PvP Leaderboard";
+    int i = 1;
+}
+
+<div class="card-body table-responsive p-0">
+    <table class="table table-hover text-nowrap">
+        <thead>
+            <tr>
+                <th class="text-center">Rank</th>
+                <th class="text-center">Rating</th>
+                <th class="text-center">Name</th>
+                <th class="text-center">Realm</th>
+                <th class="text-center">Class</th>
+                <th class="text-center">Faction</th>
+                <th class="text-center">Wins</th>
+                <th class="text-center">Losses</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var player in Model
+            .OrderByDescending(x => x.Rating)
+            .ThenBy(x => x.Name))
+            {
+                <tr>
+                    <td class="text-center">@i</td>
+                    <td class="text-center">@player.Rating</td>
+                    <td class="text-center">@player.Name</td>
+                    <td class="text-center">@player.Realm</td>
+                    <td class="text-center"><img src="@player.Class" alt="Class image" style="height: 3rem;"/></td>
+                    <td class="text-center"><img src="@player.Faction" alt="Faction image" style="height: 4rem;"/></td>
+                    <td class="text-center">@player.Win</td>
+                    <td class="text-center">@player.Loss</td>
+                </tr>
+
+                i++;
+            }
+        </tbody>
+    </table>
+</div>
