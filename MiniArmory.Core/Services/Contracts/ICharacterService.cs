@@ -6,8 +6,10 @@ namespace MiniArmory.Core.Services.Contracts
     {
         Task Add(CharacterFormModel model, Guid id);
 
-        Task<IEnumerable<LeaderboardViewModel>> SearchCharacters(string chars);
+        Task<CharacterViewModel> FindCharacterById(Guid id);
 
+        Task<IEnumerable<CharacterViewModel>> SearchCharacters(string chars);
+        
         Task<IEnumerable<LeaderboardViewModel>> LeaderboardStats();
 
         Task<IEnumerable<JsonFormModel>> GetRealms();

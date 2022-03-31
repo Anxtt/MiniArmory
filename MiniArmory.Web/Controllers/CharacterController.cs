@@ -41,7 +41,14 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> Details(Guid id)
         {
-            return this.View();
+            if (string.IsNullOrWhiteSpace(id.ToString()))
+            {
+                return this.View(id);
+            }
+
+            var model = await this.charService.FindCharacterById(id);
+
+            return this.View(model);
         }
 
         public async Task<IActionResult> Search(string chars)
@@ -51,16 +58,16 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            var characters = await this.charService.SearchCharacters(chars);
+            var models = await this.charService.SearchCharacters(chars);
 
-            return this.View(characters);
+            return this.View(models);
         }
 
         public async Task<IActionResult> Leaderboard()
         {
-            var chars = await this.charService.LeaderboardStats();
+            var models = await this.charService.LeaderboardStats();
 
-            return this.View(chars);
+            return this.View(models);
         }
 
         public async Task<IActionResult> GetRealms()

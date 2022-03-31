@@ -1,5 +1,5 @@
 ﻿@using MiniArmory.Core.Models
-@model List<LeaderboardViewModel>
+@model List<CharacterViewModel>
 
 @{
     ViewData["Title"] = "MiniArmory Characters";
@@ -9,22 +9,18 @@
     <div class="form-group">
         @foreach (var character in Model)
         {
-            <p>ClassImage</p>
-            <p>Name</p>
-            <p>Realm</p>
-
             <a asp-controller="Character" asp-action="Details" asp-route-id="@character.Id">
                 <div class="card d-inline-flex bg-primary text-white" style="width: 25rem; height: 7rem; border: 2px solid #808080">
                     <div class="row">
                         <div class="col-md-7">
-                            <img src="@character.Class" alt="Class image" style="width: 5rem; border: 1px solid #808080">
+                            <img src="@character.ClassImage" alt="Class image" style="width: 5rem; border: 1px solid #808080">
                         </div>
 
                         <div class="col-md-5">
                             <p>@character.Name</p>
                         </div>
 
-                        <p class="text-black">@character.Realm</p>
+                        <p class="text-black">@character.RealmName</p>
                     </div>
                 </div>
             </a>
