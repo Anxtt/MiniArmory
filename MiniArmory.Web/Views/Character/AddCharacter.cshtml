@@ -1,0 +1,119 @@
+﻿@model MiniArmory.Core.Models.CharacterFormModel
+
+@{
+    ViewData["Title"] = "Add Character";
+}
+
+<h1>Character creation</h1>
+
+<h4>Character characteristics</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddCharacter">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Realm" class="dropdown"></label>
+                <select class="form-control" id="Realm" name="Realm"></select>
+                <span asp-validation-for="Realm" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Faction" class="dropdown"></label>
+                <select class="form-control" id="Faction" name="Faction"></select>
+                <span asp-validation-for="Faction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Race" class="dropdown"></label>
+                <select class="form-control" id="Race" name="Race"></select>
+                <span asp-validation-for="Race" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Class" class="dropdown"></label>
+                <select class="form-control" id="Class" name="Class"></select>
+                <span asp-validation-for="Class" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Character/GetRealms",
+            success: function (realms)
+            {
+                var s = '<option value="-1">Realm</option>';
+                for (var i = 0; i < realms.length; i++)
+                {
+                    s += '<option value="' + realms[i].Id + '">' + realms[i].Name + '</option>';
+                }
+                $("#Realm").html(s);
+            }
+        })
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Mount/GetFactions",
+            success: function (factions)
+            {
+                var s = '<option value="-1">Faction</option>';
+                for (var i = 0; i < factions.length; i++)
+                {
+                    s += '<option value="' + factions[i].Id + '">' + factions[i].Name + '</option>';
+                }
+                $("#Faction").html(s);
+            }
+        })
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/GetRaces",
+            success: function (races)
+            {
+                var s = '<option value="-1">Race</option>';
+                for (var i = 0; i < races.length; i++)
+                {
+                    s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
+                }
+                $("#Race").html(s);
+            }
+        })
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/GetClasses",
+            success: function (classes)
+            {
+                var s = '<option value="-1">Class</option>';
+                for (var i = 0; i < classes.length; i++)
+                {
+                    s += '<option value="' + classes[i].Id + '">' + classes[i].Name + '</option>';
+                }
+                $("#Class").html(s);
+            }
+        })
+    });
+</script>
+}

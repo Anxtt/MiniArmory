@@ -29,6 +29,7 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddScoped<MiniArmoryDbContext>();
 builder.Services.AddScoped<IAchievementService, AchievementService>();
 builder.Services.AddScoped<IClassService, ClassService>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
 builder.Services.AddScoped<IFactionService, FactionService>();
 builder.Services.AddScoped<IMountService, MountService>();
 builder.Services.AddScoped<IRaceService, RaceService>();

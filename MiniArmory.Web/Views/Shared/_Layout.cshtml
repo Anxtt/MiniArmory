@@ -21,6 +21,14 @@
                     <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     <ul class="navbar-nav flex-grow-1 justify-content-center">
                         <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-dark" href="#" id="CharacterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Characters
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Character" asp-action="AddCharacter">Add Character</a></li>
+                                <li><a class="dropdown-item" asp-controller="Character" asp-action="Leaderboard">PvP Leaderboard</a></li>
+                            </ul>
+                        </li><li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="AchievementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Achievement
                             </a>
