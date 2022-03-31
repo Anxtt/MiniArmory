@@ -36,11 +36,10 @@ namespace MiniArmory.Web.Controllers
 
             await this.charService.Add(model, user.Id);
 
-            return this.RedirectToAction(nameof(CharacterDetails));
+            return this.RedirectToAction(nameof(Details));
         }
 
-        [Authorize]
-        public async Task<IActionResult> CharacterDetails()
+        public async Task<IActionResult> Details(Guid id)
         {
             return this.View();
         }
@@ -54,7 +53,7 @@ namespace MiniArmory.Web.Controllers
 
             var characters = await this.charService.SearchCharacters(chars);
 
-            return this.View();
+            return this.View(characters);
         }
 
         public async Task<IActionResult> Leaderboard()

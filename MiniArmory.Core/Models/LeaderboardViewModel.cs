@@ -4,8 +4,7 @@ namespace MiniArmory.Core.Models
 {
     public class LeaderboardViewModel
     {
-        [Range(1, int.MaxValue)]
-        public int Rank { get; set; }
+        public Guid Id { get; set; }
 
         public short Rating { get; set; }
 

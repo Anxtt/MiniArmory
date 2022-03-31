@@ -47,6 +47,7 @@ namespace MiniArmory.Core.Services
             .Include(x => x.Realm)
             .Select(x => new LeaderboardViewModel()
             {
+                Id = x.Id,
                 Class = x.Class.Image,
                 Faction = x.Faction.Image,
                 Name = x.Name,
@@ -61,12 +62,16 @@ namespace MiniArmory.Core.Services
             => await this.db
             .Characters
             .Include(x => x.Class)
+            .Include(x => x.Faction)
+            .Include(x => x.Realm)
             .Where(x => x.Name.ToLower().Contains(chars.ToLower()))
             .Select(x => new LeaderboardViewModel()
             {
+                Id = x.Id,
                 Name = x.Name,
                 Rating = x.Rating,
-                Class = x.Class.Image,
+                Realm = x.Realm.Name,
+                Class = x.Class.Image
             })
             .ToListAsync();
     }
