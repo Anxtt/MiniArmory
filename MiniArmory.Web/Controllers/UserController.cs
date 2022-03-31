@@ -16,11 +16,6 @@ namespace MiniArmory.Web.Controllers
             this.userManager = userManager;
         }
 
-        public IActionResult Index()
-        {
-            return View();
-        }
-
         public async Task<IActionResult> Roles()
         {
             var user = await userManager.FindByNameAsync(this.User.Identity.Name);

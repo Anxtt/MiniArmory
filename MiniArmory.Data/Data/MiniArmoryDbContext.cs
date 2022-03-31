@@ -45,6 +45,12 @@ namespace MiniArmory.Data.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             builder.Entity<Character>()
+                .HasOne(x => x.Race)
+                .WithMany(x => x.Characters)
+                .HasForeignKey(x => x.RaceId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Character>()
                 .HasOne(x => x.Class)
                 .WithMany(x => x.Characters)
                 .HasForeignKey(x => x.ClassId)
