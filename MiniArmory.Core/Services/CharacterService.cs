@@ -56,5 +56,18 @@ namespace MiniArmory.Core.Services
                 Win = x.Win
             })
             .ToListAsync();
+
+        public async Task<IEnumerable<LeaderboardViewModel>> SearchCharacters(string chars)
+            => await this.db
+            .Characters
+            .Include(x => x.Class)
+            .Where(x => x.Name.ToLower().Contains(chars.ToLower()))
+            .Select(x => new LeaderboardViewModel()
+            {
+                Name = x.Name,
+                Rating = x.Rating,
+                Class = x.Class.Image,
+            })
+            .ToListAsync();
     }
 }

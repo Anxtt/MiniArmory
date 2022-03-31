@@ -12,7 +12,7 @@ namespace MiniArmory.Web.Controllers
         private readonly ICharacterService charService;
         private readonly UserManager<User> userManager;
 
-        public CharacterController(ICharacterService charService, 
+        public CharacterController(ICharacterService charService,
             UserManager<User> userManager)
         {
             this.charService = charService;
@@ -22,7 +22,7 @@ namespace MiniArmory.Web.Controllers
         [Authorize]
         public IActionResult AddCharacter()
             => this.View();
-    
+
         [Authorize]
         [HttpPost]
         public async Task<IActionResult> AddCharacter(CharacterFormModel model)
@@ -35,6 +35,24 @@ namespace MiniArmory.Web.Controllers
             var user = await userManager.FindByNameAsync(this.User.Identity.Name);
 
             await this.charService.Add(model, user.Id);
+
+            return this.RedirectToAction(nameof(CharacterDetails));
+        }
+
+        [Authorize]
+        public async Task<IActionResult> CharacterDetails()
+        {
+            return this.View();
+        }
+
+        public async Task<IActionResult> Search(string chars)
+        {
+            if (string.IsNullOrWhiteSpace(chars))
+            {
+                return this.View();
+            }
+
+            var characters = await this.charService.SearchCharacters(chars);
 
             return this.View();
         }

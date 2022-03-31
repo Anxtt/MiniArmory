@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MiniArmory.Web</title>
+    <title>@ViewData["Title"] - MiniArmory</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MiniArmory.Web.styles.css" asp-append-version="true" />
@@ -12,7 +12,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MiniArmory.Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MiniArmory</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -28,7 +28,8 @@
                                 <li><a class="dropdown-item" asp-controller="Character" asp-action="AddCharacter">Add Character</a></li>
                                 <li><a class="dropdown-item" asp-controller="Character" asp-action="Leaderboard">PvP Leaderboard</a></li>
                             </ul>
-                        </li><li class="nav-item dropdown">
+                        </li>
+                        <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-dark" href="#" id="AchievementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Achievement
                             </a>
@@ -94,6 +95,10 @@
                             </ul>
                         </li>
                     </ul>
+                    <form asp-controller="Character" asp-action="Search" class="form d-inline-flex">
+                        <input class="form-control mr-sm-2" type="search" name="chars" placeholder="Find a character.." aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
