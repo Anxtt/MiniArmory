@@ -51,6 +51,29 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
+        public async Task<IActionResult> Leaderboard()
+        {
+            var models = await this.charService.LeaderboardStats();
+
+            return this.View(models);
+        }
+
+        public async Task<IActionResult> PlayArena()
+        {
+            var user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
+
+            var models = await this.charService.OwnCharacters(user.Id);
+
+            return this.View(models);
+        }
+
+        public async Task<IActionResult> Ranking()
+        {
+            var models = await this.charService.AchievementStats();
+
+            return this.View(models);
+        }
+
         public async Task<IActionResult> Search(string chars)
         {
             if (string.IsNullOrWhiteSpace(chars))
@@ -59,13 +82,6 @@ namespace MiniArmory.Web.Controllers
             }
 
             var models = await this.charService.SearchCharacters(chars);
-
-            return this.View(models);
-        }
-
-        public async Task<IActionResult> Leaderboard()
-        {
-            var models = await this.charService.LeaderboardStats();
 
             return this.View(models);
         }

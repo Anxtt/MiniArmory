@@ -2,12 +2,12 @@
 @model List<LeaderboardViewModel>
 
 @{
-    ViewData["Title"] = "PvP Leaderboard";
+    ViewData["Title"] = "Achievement Ranking";
     int i = 1;
 }
 
 <div class="card-body table-responsive p-0">
-    <h2 class="text-center">PvP Leaderboard</h2>
+    <h2 class="text-center">Achievements Ranking</h2>
     <table class="table table-hover text-nowrap">
         <thead>
             <tr>
@@ -16,9 +16,7 @@
                 <th class="text-center">Realm</th>
                 <th class="text-center">Class</th>
                 <th class="text-center">Faction</th>
-                <th class="text-center">Rating</th>
-                <th class="text-center">Wins</th>
-                <th class="text-center">Losses</th>
+                <th class="text-center">Achievement Points</th>
             </tr>
         </thead>
         <tbody>
@@ -28,13 +26,11 @@
             {
                 <tr>
                     <td class="text-center">@i</td>
-                    <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-dark">@player.Name</a></td>
+                    <td class="text-center"><a asp-controller="Character" asp-action="Achievements" asp-route-id="@player.Id" class="text-decoration-none text-dark">@player.Name</a></td>
                     <td class="text-center">@player.Realm</td>
-                    <td class="text-center"><img src="@player.Class" alt="Class image" style="height: 3rem;" /></td>
-                    <td class="text-center"><img src="@player.Faction" alt="Faction image" style="height: 4rem;" /></td>
+                    <td class="text-center"><img src="@player.Class" alt="Class image" style="height: 3rem;"/></td>
+                    <td class="text-center"><img src="@player.Faction" alt="Faction image" style="height: 4rem;"/></td>
                     <td class="text-center">@player.Rating</td>
-                    <td class="text-center text-success">@player.Win</td>
-                    <td class="text-center text-danger">@player.Loss</td>
                 </tr>
 
                 i++;

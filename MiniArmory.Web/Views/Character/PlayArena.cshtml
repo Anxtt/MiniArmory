@@ -1,0 +1,44 @@
+﻿@using MiniArmory.Core.Models
+@model List<LeaderboardViewModel>
+
+@{
+    ViewData["Title"] = "Face your enemies";
+}
+
+<div class="card-body table-responsive p-0">
+    @if (Model.Count >= 1)
+    {
+        <table class="table table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Realm</th>
+                    <th class="text-center">Class</th>
+                    <th class="text-center">Faction</th>
+                    <th class="text-center">Rating</th>
+                    <th class="text-center">Play Arena</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var player in Model
+               .OrderByDescending(x => x.Rating)
+               .ThenBy(x => x.Name))
+                {
+                    <tr>
+                        <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-dark">@player.Name</a></td>
+                        <td class="text-center">@player.Realm</td>
+                        <td class="text-center"><img src="@player.Class" alt="Class image" style="height: 3rem;" /></td>
+                        <td class="text-center"><img src="@player.Faction" alt="Faction image" style="height: 4rem;" /></td>
+                        <td class="text-center">@player.Rating</td>
+                        <td class="text-center text-success"><button type="button" class="btn btn-info" name="play">Info</button></td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2 class="text-center">You don't have characters to play with yet.</h2>
+        <h2 class="text-center">Go create some <a asp-controller="Character" asp-action="AddCharacter">Here</a></h2>
+    }
+</div>
