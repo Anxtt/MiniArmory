@@ -48,6 +48,22 @@ namespace MiniArmory.Core.Services
             await this.db.SaveChangesAsync();
         }
 
+        public async Task EarnRating(Guid id)
+        {
+            Character character = await this.db
+                .Characters
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            var(rating, win, loss) = CalculateRating(character.Rating);
+
+            character.Rating = rating;
+            character.Win += win;
+            character.Loss += loss;
+
+            await this.db.SaveChangesAsync();
+        }
+
         public async Task<CharacterViewModel> FindCharacterById(Guid id)
             => await this.db
             .Characters
@@ -139,5 +155,36 @@ namespace MiniArmory.Core.Services
                 ClassImage = x.Class.Image
             })
             .ToListAsync();
+
+        private (short rating, short win, short loss) CalculateRating(short rating)
+        {
+            Random rnd = new Random();
+
+            short winLose = (short)rnd.Next(-21, 21);
+            short win = 0;
+            short loss = 0;
+
+            if (winLose >= 0)
+            {
+                win++;
+            }
+            else
+            {
+                loss++;
+            }
+
+            if (rating >= 1800)
+            {
+                rating += winLose;
+            }
+            else
+            {
+                win = 1;
+                loss = 0;
+                rating += 50;
+            }
+
+            return (rating, win, loss);
+        }
     }
 }

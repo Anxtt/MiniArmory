@@ -9,6 +9,8 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<LeaderboardViewModel>> AchievementStats();
 
+        Task EarnRating(Guid id);
+
         Task<CharacterViewModel> FindCharacterById(Guid id);
 
         Task<IEnumerable<LeaderboardViewModel>> LeaderboardStats();

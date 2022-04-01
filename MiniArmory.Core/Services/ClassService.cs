@@ -91,6 +91,7 @@ namespace MiniArmory.Core.Services
         public async Task<IEnumerable<JsonFormModel>> GetSpells()
             => await this.db
             .Spells
+            .Where(x => x.Type == "Class")
             .Select(x => new JsonFormModel()
             {
                 Id = x.Id,

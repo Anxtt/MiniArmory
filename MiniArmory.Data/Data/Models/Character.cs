@@ -44,7 +44,7 @@ namespace MiniArmory.Data.Data.Models
 
         [Required]
         [Range(0, 4000)]
-        public short Rating { get; set; }
+        public short Rating { get; set; } = 1000;
 
         [Required]
         public short Win { get; set; }

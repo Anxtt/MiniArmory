@@ -58,6 +58,14 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EarnRating(Guid id)
+        {
+            await this.charService.EarnRating(id);
+
+            return this.RedirectToAction(nameof(PlayArena));
+        }
+
         public async Task<IActionResult> PlayArena()
         {
             var user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
