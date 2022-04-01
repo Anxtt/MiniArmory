@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MiniArmory.Core.Models
+namespace MiniArmory.Core.Models.Realm
 {
     public class RealmFormModel
     {

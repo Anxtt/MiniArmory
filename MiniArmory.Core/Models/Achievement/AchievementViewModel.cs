@@ -1,4 +1,4 @@
-﻿namespace MiniArmory.Core.Models
+﻿namespace MiniArmory.Core.Models.Achievement
 {
     public class AchievementViewModel
     {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MiniArmory.Core.Models;
+using MiniArmory.Core.Models.Realm;
 using MiniArmory.Core.Services.Contracts;
 
 namespace MiniArmory.Web.Controllers

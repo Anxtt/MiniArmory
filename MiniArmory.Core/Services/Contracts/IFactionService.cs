@@ -1,4 +1,4 @@
-﻿using MiniArmory.Core.Models;
+﻿using MiniArmory.Core.Models.Faction;
 
 namespace MiniArmory.Core.Services.Contracts
 {

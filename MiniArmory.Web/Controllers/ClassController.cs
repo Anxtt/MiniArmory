@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MiniArmory.Core.Models;
+using MiniArmory.Core.Models.Class;
 using MiniArmory.Core.Services.Contracts;
 
 namespace MiniArmory.Web.Controllers
@@ -32,6 +32,40 @@ namespace MiniArmory.Web.Controllers
             var classes = await this.classService.AllClasses();
 
             return this.View(classes);
+        }
+
+        public async Task<IActionResult> AddSpells(int id)
+        {
+            var classEntity = await this.classService.GetClass(id);
+
+            return this.View(classEntity);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddSpells(ClassViewModel model)
+        {
+            //if (!ModelState.IsValid)
+            //{
+            //    return this.View(model);
+            //}
+
+            await this.classService.AddSpells(model);
+
+            return this.Redirect(nameof(Details));
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var model = 2;
+
+            return this.View(model);
+        }
+
+        public async Task<IActionResult> GetSpells()
+        {
+            var models = await this.classService.GetSpells();
+
+            return Json(models);
         }
     }
 }

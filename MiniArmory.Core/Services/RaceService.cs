@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MiniArmory.Core.Models;
+using MiniArmory.Core.Models.Race;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;

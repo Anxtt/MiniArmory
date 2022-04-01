@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace MiniArmory.Core.Models
+﻿namespace MiniArmory.Core.Models.Character
 {
     public class LeaderboardViewModel
     {

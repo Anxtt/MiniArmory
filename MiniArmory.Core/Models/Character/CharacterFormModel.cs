@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MiniArmory.Core.Models
+namespace MiniArmory.Core.Models.Character
 {
     public class CharacterFormModel
     {
@@ -9,7 +9,7 @@ namespace MiniArmory.Core.Models
         public string Name { get; set; }
 
         [Required]
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select an option different than the default one.")] 
+        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select an option different than the default one.")]
         public int Realm { get; set; }
 
         [Required]

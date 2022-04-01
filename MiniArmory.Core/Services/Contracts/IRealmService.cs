@@ -1,4 +1,4 @@
-﻿using MiniArmory.Core.Models;
+﻿using MiniArmory.Core.Models.Realm;
 
 namespace MiniArmory.Core.Services.Contracts
 {

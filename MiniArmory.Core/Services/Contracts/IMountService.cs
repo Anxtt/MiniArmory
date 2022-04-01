@@ -1,4 +1,5 @@
 ﻿using MiniArmory.Core.Models;
+using MiniArmory.Core.Models.Mount;
 
 namespace MiniArmory.Core.Services.Contracts
 {

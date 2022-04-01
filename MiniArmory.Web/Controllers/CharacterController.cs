@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MiniArmory.Core.Models;
+using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data.Models;
 
