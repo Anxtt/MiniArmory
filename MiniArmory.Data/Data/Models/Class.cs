@@ -17,11 +17,11 @@ namespace MiniArmory.Data.Data.Models
 
         [Required]
         [StringLength(500)]
-        public string Image { get; set; }
+        public string ClassImage { get; set; }
 
         [Required]
         [StringLength(20)]
-        public string Specialisation { get; set; }
+        public string SpecialisationName { get; set; }
 
         [Required]
         [StringLength(500)]
@@ -30,6 +30,10 @@ namespace MiniArmory.Data.Data.Models
         [Required]
         [StringLength(500)]
         public string SpecialisationImage { get; set; }
+
+        [Required]
+        [StringLength(500)]
+        public string Image { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
 

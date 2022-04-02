@@ -10,7 +10,9 @@
 
         public string Image { get; set; }
 
-        public string Specialisation { get; set; }
+        public string ClassImage { get; set; }
+
+        public string SpecialisationName { get; set; }
 
         public string SpecialisationDescription { get; set; }
 

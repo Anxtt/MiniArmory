@@ -14,11 +14,15 @@ namespace MiniArmory.Core.Models.Class
 
         [Required]
         [StringLength(500)]
+        public string ClassImage { get; set; }
+
+        [Required]
+        [StringLength(500)]
         public string Image { get; set; }
 
         [Required]
         [StringLength(20)]
-        public string Specialisation { get; set; }
+        public string SpecialisationName { get; set; }
 
         [Required]
         [StringLength(500)]

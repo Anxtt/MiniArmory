@@ -21,7 +21,8 @@ namespace MiniArmory.Core.Services
                 Name = model.Name,
                 Description = model.Description,
                 Image = model.Image,
-                Specialisation = model.Specialisation,
+                ClassImage = model.ClassImage,
+                SpecialisationName = model.SpecialisationName,
                 SpecialisationDescription = model.SpecialisationDescription,
                 SpecialisationImage = model.SpecialisationImage
             };
@@ -60,8 +61,9 @@ namespace MiniArmory.Core.Services
                 Id = x.Id,
                 Description = x.Description,
                 Name = x.Name,
-                Specialisation = x.Specialisation,
+                SpecialisationName = x.SpecialisationName,
                 Image = x.Image,
+                ClassImage = x.ClassImage,
                 SpecialisationDescription = x.SpecialisationDescription,
                 SpecialisationImage = x.SpecialisationImage
             })
@@ -80,9 +82,10 @@ namespace MiniArmory.Core.Services
             {
                 Id = x.Id,
                 Description = x.Description,
+                ClassImage = x.ClassImage,
                 Image = x.Image,
                 Name = x.Name,
-                Specialisation = x.Specialisation,
+                SpecialisationName = x.SpecialisationName,
                 SpecialisationDescription = x.SpecialisationDescription,
                 SpecialisationImage = x.SpecialisationImage
             })
