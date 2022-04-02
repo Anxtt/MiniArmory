@@ -13,6 +13,10 @@ namespace MiniArmory.Data.Data.Models
         public string Name { get; set; }
 
         [Required]
+        [StringLength(500)]
+        public string Image { get; set; }
+
+        [Required]
         [ForeignKey(nameof(Realm))]
         public int RealmId { get; set; }
 
