@@ -8,6 +8,8 @@
 
         public string Description { get; set; }
 
+        public string Image { get; set; }
+
         public string Arms { get; set; }
 
         public string Faction { get; set; }

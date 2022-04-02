@@ -9,5 +9,7 @@
         public string Description { get; set; }
 
         public byte Points { get; set; }
+
+        public string Image { get; set; }
     }
 }

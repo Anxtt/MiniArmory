@@ -13,6 +13,14 @@ namespace MiniArmory.Core.Models.Race
         public string Description { get; set; }
 
         [Required]
+        [StringLength(500)]
+        public string Image { get; set; }
+
+        [Required]
+        [StringLength(200)]
+        public string Arms { get; set; }
+
+        [Required]
         [Display(Name = "Racial Spell")]
         [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select a racial spell.")]
         public string RacialSpell { get; set; }

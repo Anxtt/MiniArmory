@@ -32,6 +32,8 @@ namespace MiniArmory.Core.Services
                 Name = model.Name,
                 RacialSpell = spell,
                 SpellId = spell.Id,
+                Arms = model.Arms,
+                Image = model.Image,
             };
 
             await this.db.Races.AddAsync(race);
@@ -50,6 +52,7 @@ namespace MiniArmory.Core.Services
                 Name = x.Name,
                 Arms = x.Arms,
                 Id = x.Id,
+                Image = x.Image,
                 RacialSpell = x.RacialSpell.Name,
                 RacialSpellImage = x.RacialSpell.Tooltip,
                 RacialSpellDescription = x.RacialSpell.Description,
@@ -69,6 +72,7 @@ namespace MiniArmory.Core.Services
                 Faction = x.Faction.Name,
                 FactionImage = x.Faction.Image,
                 Name = x.Name,
+                Image = x.Image,
                 RacialSpell = x.RacialSpell.Name,
                 RacialSpellDescription = x.RacialSpell.Description,
                 RacialSpellImage = x.RacialSpell.Tooltip

@@ -23,5 +23,9 @@ namespace MiniArmory.Core.Models.Character
         [Required]
         [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select an option different than the default one.")]
         public int Class { get; set; }
+
+        [Required]
+        [StringLength(500)]
+        public string Image { get; set; }
     }
 }

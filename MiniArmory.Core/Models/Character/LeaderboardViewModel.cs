@@ -10,7 +10,7 @@
 
         public string Realm { get; set; }
 
-        public string Class { get; set; }
+        public string ClassImage { get; set; }
 
         public string Faction { get; set; }
 

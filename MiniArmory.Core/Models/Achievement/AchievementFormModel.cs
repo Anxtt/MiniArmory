@@ -19,5 +19,9 @@ namespace MiniArmory.Core.Models.Achievement
         [Required]
         [StringLength(30)]
         public string Category { get; set; }
+
+        [Required]
+        [StringLength(500)]
+        public string Image { get; set; }
     }
 }

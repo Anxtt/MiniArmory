@@ -20,7 +20,8 @@ namespace MiniArmory.Core.Services
                 Category = model.Category,
                 Name = model.Name,
                 Description = model.Description,
-                Points = model.Points
+                Points = model.Points,
+                Image = model.Image
             };
 
             await this.db.Achievements.AddAsync(achi);
@@ -35,7 +36,8 @@ namespace MiniArmory.Core.Services
                 Category = x.Category,
                 Description = x.Description,
                 Name = x.Name,
-                Points = x.Points
+                Points = x.Points,
+                Image = x.Image
             })
             .ToListAsync();
     }

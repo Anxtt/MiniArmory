@@ -8,6 +8,8 @@
 
         public string Name { get; set; }
 
+        public string Image { get; set; }
+
         public string RealmName { get; set; }
 
         public string ClassName { get; set; }
