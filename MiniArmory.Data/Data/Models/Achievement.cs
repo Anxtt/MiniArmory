@@ -23,6 +23,10 @@ namespace MiniArmory.Data.Data.Models
         [StringLength(30)]
         public string Category { get; set; }
 
+        [Required]
+        [StringLength(500)]
+        public string Image { get; set; }
+
         public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
 }
