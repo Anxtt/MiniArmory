@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MiniArmory.Core.Models;
+using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
@@ -47,6 +48,25 @@ namespace MiniArmory.Core.Services
             };
 
             await this.db.Characters.AddAsync(character);
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task AddAchievementToCharacter(Guid id, string achievement)
+        {
+            Character character = await this.db
+                .Characters
+                .Include(x => x.Mounts)
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            Achievement achie = await this.db
+                .Achievements
+                .Include(x => x.Characters)
+                .Where(x => x.Name == achievement)
+                .FirstAsync();
+
+            character.Achievements.Add(achie);
+
             await this.db.SaveChangesAsync();
         }
 
@@ -149,6 +169,21 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
+        public async Task<IEnumerable<AchievementViewModel>> OwnAchievements(Guid id)
+            => await this.db
+                .Achievements
+                .Include(x => x.Characters)
+                .Where(x => x.Characters.Any(z => z.Id == id))
+                .Select(x => new AchievementViewModel()
+                {
+                    Name = x.Name,
+                    Image = x.Image,
+                    Category = x.Category,
+                    Description = x.Description,
+                    Points = x.Points
+                })
+                .ToListAsync();
+
         public async Task<IEnumerable<LeaderboardViewModel>> OwnCharacters(Guid id)
              => await this.db
                  .Characters
@@ -202,9 +237,25 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
+        public async Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id)
+            => await this.db
+                .Achievements
+                .Include(x => x.Characters)
+                .Where(x => !x.Characters.Any(z => z.Id == id))
+                .Select(x => new AchievementViewModel()
+                {
+                    Name = x.Name,
+                    Image = x.Image,
+                    Category = x.Category,
+                    Description = x.Description,
+                    Points = x.Points
+                })
+                .ToListAsync();
+
         public async Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id)
             => await this.db
             .Mounts
+            .Include(x => x.Characters)
             .Where(x => !x.Characters.Any(z => z.Id == id))
             .Select(x => new MountViewModel()
             {

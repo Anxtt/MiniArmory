@@ -1,4 +1,5 @@
 ﻿using MiniArmory.Core.Models;
+using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Models.Mount;
 
@@ -7,6 +8,8 @@ namespace MiniArmory.Core.Services.Contracts
     public interface ICharacterService
     {
         Task Add(CharacterFormModel model, Guid id);
+
+        Task AddAchievementToCharacter(Guid id, string achievement);
 
         Task AddMountToCharacter(Guid id, string mountName);
 
@@ -24,7 +27,11 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<bool> RollForReward(string type);
 
+        Task<IEnumerable<AchievementViewModel>> OwnAchievements(Guid id);
+
         Task<IEnumerable<LeaderboardViewModel>> OwnCharacters(Guid id);
+
+        Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id);
 
         Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id);
 

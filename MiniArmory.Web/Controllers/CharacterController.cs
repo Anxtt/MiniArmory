@@ -59,7 +59,6 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            //20/80
             var mounts = await this.charService.UnownedMounts(id);
             var character = await this.charService.FindCharacterById(id);
 
@@ -75,7 +74,9 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMount(Guid id, string mountName)
         {
-            if (id == default(Guid))
+            if (id == default(Guid) ||
+                !await this.charService.DoesExist(id) ||
+                string.IsNullOrEmpty(mountName))
             {
                 return this.View();
             }
@@ -97,12 +98,55 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
+            var achies = await this.charService.UnownedAchievements(id);
+            var character = await this.charService.FindCharacterById(id);
+
+            AchievementCharacterViewModel model = new AchievementCharacterViewModel()
+            {
+                Character = character,
+                Achievements = achies
+            };
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddAchievement(Guid id, string achievement)
+        {
+            if (id == default(Guid) ||
+                !await this.charService.DoesExist(id) ||
+                string.IsNullOrEmpty(achievement))
+            { 
+                return this.View();
+            }
+
             if (await this.charService.RollForReward("Achievement") == false)
             {
                 return this.RedirectToAction(nameof(AddAchievement), id);
             }
 
+            await this.charService.AddAchievementToCharacter(id, achievement);
+
             return this.RedirectToAction(nameof(AddAchievement), id);
+        }
+
+        public async Task<IActionResult> Achievements(Guid id)
+        {
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            {
+                return this.View();
+            }
+
+            var achievements = await this.charService.OwnAchievements(id);
+            var character = await this.charService.FindCharacterById(id);
+
+            AchievementCharacterViewModel model = new AchievementCharacterViewModel()
+            {
+                Achievements = achievements,
+                Character = character
+            };
+
+            return this.View(model);
         }
 
         public async Task<IActionResult> Details(Guid id)
