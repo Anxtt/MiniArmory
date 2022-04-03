@@ -9,14 +9,18 @@ namespace MiniArmory.Web.Controllers
 {
     public class CharacterController : Controller
     {
-        private readonly ICharacterService charService;
         private readonly UserManager<User> userManager;
 
-        public CharacterController(ICharacterService charService,
-            UserManager<User> userManager)
+        private readonly ICharacterService charService;
+        private readonly IMountService mountService;
+
+        public CharacterController(UserManager<User> userManager, 
+            ICharacterService charService,
+            IMountService mountService)
         {
-            this.charService = charService;
             this.userManager = userManager;
+            this.charService = charService;
+            this.mountService = mountService;
         }
 
         [Authorize]
@@ -39,11 +43,73 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(Details));
         }
 
+        public async Task<IActionResult> EarnRewards()
+        {
+            var user = await userManager.FindByNameAsync(this.User.Identity.Name);
+
+            var models = await this.charService.OwnCharacters(user.Id);
+
+            return this.View(models);
+        }
+
+        public async Task<IActionResult> AddMount(Guid id)
+        {
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            {
+                return this.View();
+            }
+
+            //20/80
+            var mounts = await this.charService.UnownedMounts(id);
+            var character = await this.charService.FindCharacterById(id);
+
+            MountCharacterViewModel model = new MountCharacterViewModel()
+            {
+                Character = character,
+                Mounts = mounts
+            };
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddMount(Guid id, string mountName)
+        {
+            if (id == default(Guid))
+            {
+                return this.View();
+            }
+
+            if (await this.charService.RollForReward("Mount") == false)
+            {
+                return this.RedirectToAction(nameof(AddMount), id);
+            }
+
+            await this.charService.AddMountToCharacter(id, mountName);
+
+            return this.RedirectToAction(nameof(AddMount), id);
+        }
+
+        public async Task<IActionResult> AddAchievement(Guid id)
+        {
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            {
+                return this.View();
+            }
+
+            if (await this.charService.RollForReward("Achievement") == false)
+            {
+                return this.RedirectToAction(nameof(AddAchievement), id);
+            }
+
+            return this.RedirectToAction(nameof(AddAchievement), id);
+        }
+
         public async Task<IActionResult> Details(Guid id)
         {
-            if (string.IsNullOrWhiteSpace(id.ToString()))
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.View(id);
+                return this.View();
             }
 
             var model = await this.charService.FindCharacterById(id);
@@ -61,6 +127,11 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> EarnRating(Guid id)
         {
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            {
+                return this.View();
+            }
+
             await this.charService.EarnRating(id);
 
             return this.RedirectToAction(nameof(PlayArena));

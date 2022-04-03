@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Character;
+using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
@@ -23,7 +24,7 @@ namespace MiniArmory.Core.Services
             .Include(x => x.Realm)
             .Select(x => new LeaderboardViewModel()
             {
-                Class = x.Class.Image,
+                ClassImage = x.Class.ClassImage,
                 Faction = x.Faction.Image,
                 Id = x.Id,
                 Name = x.Name,
@@ -41,12 +42,41 @@ namespace MiniArmory.Core.Services
                 FactionId = model.Faction,
                 RaceId = model.Race,
                 ClassId = model.Class,
+                Image = model.Image,
                 UserId = id
             };
 
             await this.db.Characters.AddAsync(character);
             await this.db.SaveChangesAsync();
         }
+
+        public async Task AddMountToCharacter(Guid id, string mountName)
+        {
+            Character character = await this.db
+                .Characters
+                .Include(x => x.Mounts)
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            Mount mount = await this.db
+                .Mounts
+                .Include(x => x.Characters)
+                .Where(x => x.Name == mountName)
+                .FirstAsync();
+
+            character.Mounts.Add(mount);
+            character.Mounts
+                .Where(x => x.Name == mountName)
+                .First()
+                .IsCollected = true;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task<bool> DoesExist(Guid id)
+            => await this.db
+            .Characters
+            .AnyAsync(x => x.Id == id);
 
         public async Task EarnRating(Guid id)
         {
@@ -55,7 +85,7 @@ namespace MiniArmory.Core.Services
                 .Where(x => x.Id == id)
                 .FirstAsync();
 
-            var(rating, win, loss) = CalculateRating(character.Rating);
+            var (rating, win, loss) = CalculateRating(character.Rating);
 
             character.Rating = rating;
             character.Win += win;
@@ -79,10 +109,11 @@ namespace MiniArmory.Core.Services
                 Id = id,
                 Name = x.Name,
                 ClassName = x.Class.Name,
-                ClassImage = x.Class.Image,
+                ClassImage = x.Class.ClassImage,
                 FactionName = x.Faction.Name,
                 FactionImage = x.Faction.Image,
                 RealmName = x.Realm.Name,
+                Image = x.Image,
                 Rating = x.Rating,
                 Win = x.Win,
                 Loss = x.Loss
@@ -108,7 +139,7 @@ namespace MiniArmory.Core.Services
             .Select(x => new LeaderboardViewModel()
             {
                 Id = x.Id,
-                Class = x.Class.Image,
+                ClassImage = x.Class.ClassImage,
                 Faction = x.Faction.Image,
                 Name = x.Name,
                 Loss = x.Loss,
@@ -128,7 +159,7 @@ namespace MiniArmory.Core.Services
                  .Select(x => new LeaderboardViewModel()
                  {
                      Id = x.Id,
-                     Class = x.Class.Image,
+                     ClassImage = x.Class.ClassImage,
                      Faction = x.Faction.Image,
                      Name = x.Name,
                      Loss = x.Loss,
@@ -137,6 +168,21 @@ namespace MiniArmory.Core.Services
                      Win = x.Win
                  })
                  .ToListAsync();
+
+        public async Task<bool> RollForReward(string type)
+        {
+            Random rnd = new Random();
+
+            int chance = rnd.Next(0, 101);
+
+            if ((type == "Mount" && chance < 70) ||
+                (type == "Achievement" && chance < 50))
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         public async Task<IEnumerable<CharacterViewModel>> SearchCharacters(string chars)
             => await this.db
@@ -152,7 +198,18 @@ namespace MiniArmory.Core.Services
                 Rating = x.Rating,
                 RealmName = x.Realm.Name,
                 ClassName = x.Class.Name,
-                ClassImage = x.Class.Image
+                ClassImage = x.Class.ClassImage
+            })
+            .ToListAsync();
+
+        public async Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id)
+            => await this.db
+            .Mounts
+            .Where(x => !x.Characters.Any(z => z.Id == id))
+            .Select(x => new MountViewModel()
+            {
+                Name = x.Name,
+                Image = x.Image
             })
             .ToListAsync();
 

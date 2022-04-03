@@ -1,5 +1,40 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using MiniArmory.Core.Models.Character
+@model MountCharacterViewModel
+
 @{
+    ViewData["Title"] = "Add mounts to character";
 }
+
+
+<div class="row d-inline-flex ">
+    <div class="col-5 d-inline-block p-2">
+        <img src="@Model.Character.FactionImage" style="width: 6rem; height: 6rem;" class="d-inline-flex" />
+        <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Character.Id" class="d-inline-flex p-2 text-decoration-none">
+            @if (@Model.Character.FactionName == "Alliance")
+            {
+                <h3 class="text-primary">@Model.Character.Name</h3>
+            }
+            else
+            {
+                <h3 class="text-warning">@Model.Character.Name</h3>
+            }
+        </a>
+        <img src="@Model.Character.Image" style="width: 28rem; height: 28rem;" class="p-2" />
+    </div>
+
+    <div class="col-7 d-inline-block p-2" style="width: 47rem">
+        @foreach (var mount in Model.Mounts)
+        {
+            <form class="d-inline-block row-6" asp-action="AddMount" asp-controller="Character" asp-route-id="@Model.Character.Id" asp-route-mountName="@mount.Name">
+                <div class="text-center">
+                    <p style="width: 13rem;" class="text-center m-3">@mount.Name</p>
+
+                    <img src="@mount.Image" class="p-1" style="width: 15rem; height: 15rem;" />
+                </div>
+                <div class="text-center">
+                    <input class="btn-outline-dark" type="submit" formmethod="post" value="Take your chance">
+                </div>
+            </form>
+        }
+    </div>
+</div>

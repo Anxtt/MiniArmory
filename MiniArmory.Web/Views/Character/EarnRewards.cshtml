@@ -1,0 +1,36 @@
+﻿@using MiniArmory.Core.Models.Character
+@model IEnumerable<LeaderboardViewModel>
+@{
+    ViewData["Title"] = "Pick a Character";
+}
+
+<div class="row">
+    <div class="col-12">
+            <div class="card-body table-responsive p-0">
+                <table class="table table-hover text-nowrap">
+                    <thead>
+                        <tr>
+                            <th>Class</th>
+                            <th>Name</th>
+                            <th>Realm</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var character in Model.OrderBy(x => x.Name))
+                        {
+                            <tr>
+                                <td><img src="@character.ClassImage"/></td>
+                                <td>@character.Name</td>
+                                <td>@character.Realm</td>
+                                <td>
+                                    <a asp-action="AddMount" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs">Earn mounts</a>
+                                    <a asp-action="AddAchievement" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-warning btn-xs">Earn achievements</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+</div>
