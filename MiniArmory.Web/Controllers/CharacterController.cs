@@ -43,7 +43,7 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(Details));
         }
 
-        public async Task<IActionResult> EarnRewards()
+        public async Task<IActionResult> CharacterList()
         {
             var user = await userManager.FindByNameAsync(this.User.Identity.Name);
 
@@ -81,7 +81,7 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            if (await this.charService.RollForReward("Mount") == false)
+            if (this.charService.RollForReward("Mount") == false)
             {
                 return this.RedirectToAction(nameof(AddMount), id);
             }
@@ -120,7 +120,7 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            if (await this.charService.RollForReward("Achievement") == false)
+            if (this.charService.RollForReward("Achievement") == false)
             {
                 return this.RedirectToAction(nameof(AddAchievement), id);
             }
@@ -207,6 +207,14 @@ namespace MiniArmory.Web.Controllers
             var models = await this.charService.SearchCharacters(chars);
 
             return this.View(models);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SignUp(LFGFormModel model)
+        {
+            await this.charService.SignUp(model);
+
+            return this.View(model);
         }
 
         public async Task<IActionResult> GetRealms()

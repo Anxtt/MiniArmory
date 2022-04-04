@@ -25,7 +25,7 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<CharacterViewModel>> SearchCharacters(string chars);
 
-        Task<bool> RollForReward(string type);
+        bool RollForReward(string type);
 
         Task<IEnumerable<AchievementViewModel>> OwnAchievements(Guid id);
 
@@ -34,6 +34,8 @@ namespace MiniArmory.Core.Services.Contracts
         Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id);
 
         Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id);
+
+        Task SignUp(LFGFormModel model);
 
         Task<IEnumerable<JsonFormModel>> GetRealms();
     }

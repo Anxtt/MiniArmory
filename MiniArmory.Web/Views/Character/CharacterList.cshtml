@@ -13,7 +13,8 @@
                             <th>Class</th>
                             <th>Name</th>
                             <th>Realm</th>
-                            <th>Actions</th>
+                            <th>Rating</th>
+                            <th>Activity</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -23,7 +24,9 @@
                                 <td><img src="@character.ClassImage"/></td>
                                 <td>@character.Name</td>
                                 <td>@character.Realm</td>
+                                <td>@character.Rating</td>
                                 <td>
+                                    <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs">Team up</a>
                                     <a asp-action="AddMount" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs">Earn mounts</a>
                                     <a asp-action="AddAchievement" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-warning btn-xs">Earn achievements</a>
                                 </td>

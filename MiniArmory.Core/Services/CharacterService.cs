@@ -204,7 +204,7 @@ namespace MiniArmory.Core.Services
                  })
                  .ToListAsync();
 
-        public async Task<bool> RollForReward(string type)
+        public bool RollForReward(string type)
         {
             Random rnd = new Random();
 
@@ -263,6 +263,18 @@ namespace MiniArmory.Core.Services
                 Image = x.Image
             })
             .ToListAsync();
+
+        public async Task SignUp(LFGFormModel model)
+        {
+            Character character = await this.db
+                .Characters
+                .Where(x => x.Id == model.Id)
+                .FirstAsync();
+
+            character.IsLooking = true;
+
+            await this.db.SaveChangesAsync();
+        }
 
         private (short rating, short win, short loss) CalculateRating(short rating)
         {

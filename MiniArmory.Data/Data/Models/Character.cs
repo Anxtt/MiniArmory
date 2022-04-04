@@ -56,6 +56,8 @@ namespace MiniArmory.Data.Data.Models
         [Required]
         public short Loss { get; set; }
 
+        public bool IsLooking { get; set; }
+
         public ICollection<Mount> Mounts { get; set; } = new List<Mount>();
 
         public ICollection<Achievement> Achievements { get; set; } = new List<Achievement>();
