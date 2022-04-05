@@ -58,6 +58,10 @@ namespace MiniArmory.Data.Data.Models
 
         public bool IsLooking { get; set; }
 
+        [ForeignKey(nameof(Partner))]
+        public Guid? PartnerId { get; set; }
+        public Character? Partner { get; set; }
+
         public ICollection<Mount> Mounts { get; set; } = new List<Mount>();
 
         public ICollection<Achievement> Achievements { get; set; } = new List<Achievement>();

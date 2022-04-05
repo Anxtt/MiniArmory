@@ -1,0 +1,54 @@
+﻿@using MiniArmory.Core.Models.Character
+@model List<CharacterViewModel>
+
+@{
+    ViewData["Title"] = "Face your enemies";
+}
+
+<div class="card-body table-responsive p-0">
+    @if (Model.Count >= 1)
+    {
+        <table class="table table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th class="text-center">Name</th>
+                    <th class="text-center">Realm</th>
+                    <th class="text-center">Class</th>
+                    <th class="text-center">Faction</th>
+                    <th class="text-center">Rating</th>
+                    <th class="text-center">Wins</th>
+                    <th class="text-center">Losses</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var player in Model
+               .OrderByDescending(x => x.Rating)
+               .ThenBy(x => x.Name))
+                {
+                    <tr>
+                        <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-dark">@player.Name</a></td>
+                        <td class="text-center">@player.RealmName</td>
+                        <td class="text-center"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;" /></td>
+                        <td class="text-center"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" /></td>
+                        <td class="text-center">@player.Rating</td>
+                        <td class="text-center text-success">@player.Win</td>
+                        <td class="text-center text-danger">@player.Loss</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        <form class="text-center">
+            <button type="submit" formmethod="post" class="btn btn-info text-success" asp-controller="Character" asp-action="EarnRatingAsTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id">Play</button>
+        </form>
+
+        <form class="text-center">
+            <button type="submit" formmethod="post" class="btn btn-info text-warning" asp-controller="Character" asp-action="LeaveTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id">Leave Party</button>
+        </form>
+    }
+    else
+    {
+        <h2 class="text-center">You don't have a partner to play with yet.</h2>
+        <h2 class="text-center">Go create some <a asp-controller="Character" asp-action="CharacterList">Sign up here.</a></h2>
+    }
+</div>

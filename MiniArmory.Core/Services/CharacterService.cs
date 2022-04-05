@@ -55,7 +55,7 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
-                .Include(x => x.Mounts)
+                .Include(x => x.Achievements)
                 .Where(x => x.Id == id)
                 .FirstAsync();
 
@@ -107,7 +107,7 @@ namespace MiniArmory.Core.Services
 
             var (rating, win, loss) = CalculateRating(character.Rating);
 
-            character.Rating = rating;
+            character.Rating += rating;
             character.Win += win;
             character.Loss += loss;
 
@@ -276,6 +276,138 @@ namespace MiniArmory.Core.Services
             await this.db.SaveChangesAsync();
         }
 
+        public async Task<LFGFormModel> LFGCharacter(Guid id)
+            => await this.db
+                    .Characters
+                    .Include(x => x.Faction)
+                    .Include(x => x.Race)
+                    .Include(x => x.Class)
+                    .Include(x => x.Realm)
+                    .Where(x => x.Id == id)
+                    .Select(x => new LFGFormModel()
+                    {
+                        Id = x.Id,
+                        ClassImage = x.Class.ClassImage,
+                        FactionImage = x.Faction.Image,
+                        Image = x.Image,
+                        FactionName = x.Faction.Name,
+                        Name = x.Name,
+                        Loss = x.Loss,
+                        Rating = x.Rating,
+                        RealmName = x.Realm.Name,
+                        Win = x.Win,
+                        CharactersInLFG = this.db
+                                .Characters
+                                .Where(z => z.IsLooking == true && z.PartnerId == null)
+                                .Select(z => new LeaderboardViewModel()
+                                {
+                                    Id = z.Id,
+                                    ClassImage = z.Class.ClassImage,
+                                    Faction = z.Faction.Image,
+                                    Name = z.Name,
+                                    Loss = z.Loss,
+                                    Rating = z.Rating,
+                                    Realm = z.Realm.Name,
+                                    Win = z.Win,
+                                })
+                                .ToList()
+                    })
+                    .FirstAsync();
+
+        public async Task TeamUp(Guid id, Guid partnerId)
+        {
+            Character character = await this.db
+                .Characters
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            Character partner = await this.db
+                .Characters
+                .Where(x => x.Id == partnerId)
+                .FirstAsync();
+
+            character.Partner = partner;
+            partner.Partner = character;
+
+            character.IsLooking = false;
+            partner.IsLooking = false;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task<Tuple<bool, Guid?>> IsLooking(Guid id)
+            => await this.db
+               .Characters
+               .Where(x => x.Id == id)
+               .Select(x => new Tuple<bool, Guid?>(x.IsLooking, x.PartnerId))
+               .FirstAsync();
+
+        public async Task EarnRatingAsTeam(Guid id, Guid partnerId)
+        {
+            Character character = await this.db
+                .Characters
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            Character partner = await this.db
+                .Characters
+                .Where(x => x.Id == partnerId)
+                .FirstAsync();
+
+            var (rating, win, loss) = CalculateRating(character.Rating);
+
+            if (character.Rating < 1800)
+            {
+                character.Rating += rating;
+                character.Win += win;
+                character.Loss += loss;
+
+                partner.Win += win;
+            }
+            else if (partner.Rating < 1800)
+            {
+                (rating, win, loss) = CalculateRating(partner.Rating);
+
+                partner.Rating += rating;
+                partner.Win += win;
+                partner.Loss += loss;
+
+                character.Win += win;
+            }
+            else
+            {
+                character.Rating += rating;
+                character.Win += win;
+                character.Loss += loss;
+
+                partner.Rating += rating;
+                partner.Win += win;
+                partner.Loss += loss;
+            }
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task LeaveTeam(Guid id, Guid partnerId)
+        {
+            Character character = await this.db
+                .Characters
+                .Include(x => x.Partner)
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            Character partner = await this.db
+                .Characters
+                .Include(x => x.Partner)
+                .Where(x => x.Id == partnerId)
+                .FirstAsync();
+
+            character.Partner = null;
+            partner.Partner = null;
+
+            await this.db.SaveChangesAsync();
+        }
+
         private (short rating, short win, short loss) CalculateRating(short rating)
         {
             Random rnd = new Random();
@@ -293,18 +425,14 @@ namespace MiniArmory.Core.Services
                 loss++;
             }
 
-            if (rating >= 1800)
-            {
-                rating += winLose;
-            }
-            else
+            if (rating < 1800)
             {
                 win = 1;
                 loss = 0;
-                rating += 50;
+                winLose = 50;
             }
 
-            return (rating, win, loss);
+            return (winLose, win, loss);
         }
     }
 }

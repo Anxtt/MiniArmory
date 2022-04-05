@@ -168,6 +168,13 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        public async Task<IActionResult> LFG(Guid id)
+        {
+            var model = await this.charService.LFGCharacter(id);
+
+            return this.View(model);
+        }
+
         [HttpPost]
         public async Task<IActionResult> EarnRating(Guid id)
         {
@@ -190,6 +197,42 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> EarnRatingAsTeam(Guid id, Guid partnerId)
+        {
+            await this.charService.EarnRatingAsTeam(id, partnerId);
+
+            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> LeaveTeam(Guid id, Guid partnerId)
+        {
+            await this.charService.LeaveTeam(id, partnerId);
+
+            return this.RedirectToAction(nameof(CharacterList));
+        }
+
+        public async Task<IActionResult> PlayArenaAsTeam(Guid id, Guid partnerId)
+        {
+            var character = await this.charService.FindCharacterById(id);
+            var partner = await this.charService.FindCharacterById(partnerId);
+
+            List<CharacterViewModel> models = new List<CharacterViewModel>();
+
+            models.Add(character);
+            models.Add(partner);
+
+            return this.View(models);
+        }
+
+        public async Task<IActionResult> TeamUp(Guid id, Guid partnerId)
+        {
+            await this.charService.TeamUp(id, partnerId);
+
+            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
+        }
+
         public async Task<IActionResult> Ranking()
         {
             var models = await this.charService.AchievementStats();
@@ -209,12 +252,23 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
-        [HttpPost]
         public async Task<IActionResult> SignUp(LFGFormModel model)
         {
+            var (isLooking, partnerId) = await this.charService.IsLooking(model.Id);
+
+            if (partnerId != null)
+            {
+                return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = model.Id, partnerId = partnerId });
+            }
+
+            if (isLooking)
+            {
+                return this.RedirectToAction(nameof(LFG), new { id = model.Id });
+            }
+
             await this.charService.SignUp(model);
 
-            return this.View(model);
+            return this.RedirectToAction(nameof(LFG), new { id = model.Id });
         }
 
         public async Task<IActionResult> GetRealms()

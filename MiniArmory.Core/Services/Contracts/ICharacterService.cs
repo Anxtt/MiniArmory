@@ -21,7 +21,12 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<CharacterViewModel> FindCharacterById(Guid id);
 
+        //Task<bool> IsLooking(Guid id);
+        Task<Tuple<bool, Guid?>> IsLooking(Guid id);
+
         Task<IEnumerable<LeaderboardViewModel>> LeaderboardStats();
+
+        Task<LFGFormModel> LFGCharacter(Guid id);
 
         Task<IEnumerable<CharacterViewModel>> SearchCharacters(string chars);
 
@@ -38,5 +43,11 @@ namespace MiniArmory.Core.Services.Contracts
         Task SignUp(LFGFormModel model);
 
         Task<IEnumerable<JsonFormModel>> GetRealms();
+
+        Task TeamUp(Guid id, Guid partnerId);
+
+        Task EarnRatingAsTeam(Guid id, Guid partnerId);
+
+        Task LeaveTeam(Guid id, Guid partnerId);
     }
 }

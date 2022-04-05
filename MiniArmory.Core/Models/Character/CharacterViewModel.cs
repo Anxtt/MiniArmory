@@ -1,7 +1,7 @@
 ﻿namespace MiniArmory.Core.Models.Character
 {
     public class CharacterViewModel
-    {
+    { 
         public Guid Id { get; set; }
 
         public short Rating { get; set; }
