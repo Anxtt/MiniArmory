@@ -50,5 +50,7 @@ namespace MiniArmory.Core.Services.Contracts
         Task EarnRatingAsTeam(Guid id, Guid partnerId);
 
         Task LeaveTeam(Guid id, Guid partnerId);
+
+        Task Delete(Guid id);
     }
 }

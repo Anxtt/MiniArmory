@@ -154,6 +154,19 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> DeleteCharacter(Guid id)
+        {
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            {
+                return this.RedirectToAction(nameof(CharacterList));
+            }
+
+            await this.charService.Delete(id);
+
+            return this.RedirectToAction(nameof(CharacterList));
+        }
+
         public async Task<IActionResult> Details(Guid id)
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))

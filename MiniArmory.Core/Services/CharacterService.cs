@@ -441,5 +441,16 @@ namespace MiniArmory.Core.Services
 
             return (winLose, win, loss);
         }
+
+        public async Task Delete(Guid id)
+        {
+            Character character = await this.db
+                .Characters
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            this.db.Characters.Remove(character);
+            await this.db.SaveChangesAsync();
+        }
     }
 }
