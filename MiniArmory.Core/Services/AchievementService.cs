@@ -40,5 +40,10 @@ namespace MiniArmory.Core.Services
                 Image = x.Image
             })
             .ToListAsync();
+
+        public async Task<bool> DoesExist(string name)
+            => await this.db
+            .Achievements
+            .AnyAsync(x => x.Name == name);
     }
 }

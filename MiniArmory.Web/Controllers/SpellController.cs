@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniArmory.Core.Models.Spell;
 using MiniArmory.Core.Services.Contracts;
 
@@ -11,10 +12,11 @@ namespace MiniArmory.Web.Controllers
         public SpellController(ISpellService spellService)
             => this.spellService = spellService;
 
-        [HttpGet]
+        [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddSpell()
             => this.View();
 
+        [Authorize(Roles = "Owner, Admin")]
         [HttpPost]
         public async Task<IActionResult> AddSpell(SpellFormModel model)
         {

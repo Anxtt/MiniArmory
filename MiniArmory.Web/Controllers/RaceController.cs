@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniArmory.Core.Models.Race;
 using MiniArmory.Core.Services.Contracts;
 
@@ -11,19 +12,20 @@ namespace MiniArmory.Web.Controllers
         public RaceController(IRaceService raceService) 
             => this.raceService = raceService;
 
+        [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddRace()
             => this.View();
 
+        [Authorize(Roles = "Owner, Admin")]
         [HttpPost]
         public async Task<IActionResult> AddRace(RaceFormModel model) 
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || await this.raceService.DoesExist(model.Name))
             {
                 return this.View(model);
             }
 
             await this.raceService.Add(model);
-            var races = await this.raceService.AllRaces();
 
             return this.RedirectToAction(nameof(AllRaces));
         }

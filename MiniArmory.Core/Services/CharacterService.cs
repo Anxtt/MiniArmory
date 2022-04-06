@@ -98,6 +98,11 @@ namespace MiniArmory.Core.Services
             .Characters
             .AnyAsync(x => x.Id == id);
 
+        public async Task<bool> DoesExist(string name)
+            => await this.db
+            .Characters
+            .AnyAsync(x => x.Name == name);
+
         public async Task EarnRating(Guid id)
         {
             Character character = await this.db
@@ -283,6 +288,7 @@ namespace MiniArmory.Core.Services
                     .Include(x => x.Race)
                     .Include(x => x.Class)
                     .Include(x => x.Realm)
+                    .Include(x => x.User)
                     .Where(x => x.Id == id)
                     .Select(x => new LFGFormModel()
                     {
@@ -298,7 +304,8 @@ namespace MiniArmory.Core.Services
                         Win = x.Win,
                         CharactersInLFG = this.db
                                 .Characters
-                                .Where(z => z.IsLooking == true && z.PartnerId == null)
+                                .Include(z => z.User)
+                                .Where(z => z.IsLooking == true && z.PartnerId == null && z.User.Id != x.User.Id)
                                 .Select(z => new LeaderboardViewModel()
                                 {
                                     Id = z.Id,

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Services.Contracts;
 
@@ -11,13 +12,15 @@ namespace MiniArmory.Web.Controllers
         public AchievementController(IAchievementService achievementService) 
             => this.achievementService = achievementService;
 
+        [Authorize(Roles = "Admin, Owner")]
         public IActionResult AddAchievement() 
             => this.View();
 
+        [Authorize(Roles = "Admin, Owner")]
         [HttpPost]
         public async Task<IActionResult> AddAchievement(AchievementFormModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || await this.achievementService.DoesExist(model.Name))
             {
                 return this.View(model);
             }

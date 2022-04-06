@@ -59,6 +59,11 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
+        public async Task<bool> DoesExist(string name)
+            => await this.db
+            .Races
+            .AnyAsync(x => x.Name == name);
+
         public async Task<RaceViewModel> GetRace(int id)
             => await this.db
             .Races

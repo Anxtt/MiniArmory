@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
 
@@ -11,19 +12,20 @@ namespace MiniArmory.Web.Controllers
         public MountController(IMountService mountService) 
             => this.mountService = mountService;
 
+        [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddMount() 
             => this.View(); 
         
+        [Authorize(Roles = "Owner, Admin")]
         [HttpPost]
         public async Task<IActionResult> AddMount(MountFormModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || await this.mountService.DoesExist(model.Name))
             {
                 return this.View(model);
             }
 
             await this.mountService.Add(model);
-            var mounts = await this.mountService.AllMounts();
 
             return this.RedirectToAction(nameof(AllMounts));
         }

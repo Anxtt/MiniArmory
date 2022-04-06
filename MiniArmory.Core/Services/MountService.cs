@@ -47,6 +47,11 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
+        public async Task<bool> DoesExist(string name)
+            => await this.db
+            .Mounts
+            .AnyAsync(x => x.Name == name);
+
         public async Task<IEnumerable<JsonFormModel>> GetFactions()
             => await this.db
             .Factions

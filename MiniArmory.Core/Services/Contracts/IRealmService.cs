@@ -7,5 +7,7 @@ namespace MiniArmory.Core.Services.Contracts
         Task Add(RealmFormModel model);
 
         Task<IEnumerable<RealmViewModel>> AllRealms();
+
+        Task<bool> DoesExist(string name);
     }
 }

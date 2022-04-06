@@ -16,11 +16,11 @@ namespace MiniArmory.Web.Controllers
         public IActionResult AddFaction()
             => this.View();
 
-        [HttpPost]
         [Authorize(Roles = "Owner")]
+        [HttpPost]
         public async Task<IActionResult> AddFaction(FactionFormModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || await this.factionService.DoesExist(model.Name))
             {
                 return this.View(model);
             }

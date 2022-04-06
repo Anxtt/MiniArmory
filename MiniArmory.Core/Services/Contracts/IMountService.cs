@@ -9,6 +9,8 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<MountViewModel>> AllMounts();
 
+        Task<bool> DoesExist(string name);
+
         Task<IEnumerable<JsonFormModel>> GetFactions();
     }
 }

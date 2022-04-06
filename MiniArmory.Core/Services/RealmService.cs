@@ -37,5 +37,10 @@ namespace MiniArmory.Core.Services
                              "Low"
             })
             .ToListAsync();
+
+        public async Task<bool> DoesExist(string name)
+            => await this.db
+            .Realms
+            .AnyAsync(x => x.Name == name);
     }
 }

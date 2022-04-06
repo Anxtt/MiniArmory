@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniArmory.Core.Models.Realm;
 using MiniArmory.Core.Services.Contracts;
 
@@ -11,13 +12,15 @@ namespace MiniArmory.Web.Controllers
         public RealmController(IRealmService realmService)
             => this.realmService = realmService;
 
+        [Authorize(Roles = "Owner")]
         public IActionResult AddRealm() 
             => this.View();
 
+        [Authorize(Roles = "Owner")]
         [HttpPost]
         public async Task<IActionResult> AddRealm(RealmFormModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || await this.realmService.DoesExist(model.Name))
             {
                 return this.View(model);
             }

@@ -7,5 +7,7 @@ namespace MiniArmory.Core.Services.Contracts
         Task Add(AchievementFormModel model);
 
         Task<IEnumerable<AchievementViewModel>> AllAchievements();
+
+        Task<bool> DoesExist(string name);
     }
 }

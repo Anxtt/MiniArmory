@@ -17,11 +17,12 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<bool> DoesExist(Guid id);
 
+        Task<bool> DoesExist(string name);
+
         Task EarnRating(Guid id);
 
         Task<CharacterViewModel> FindCharacterById(Guid id);
 
-        //Task<bool> IsLooking(Guid id);
         Task<Tuple<bool, Guid?>> IsLooking(Guid id);
 
         Task<IEnumerable<LeaderboardViewModel>> LeaderboardStats();

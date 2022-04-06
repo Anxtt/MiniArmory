@@ -14,7 +14,7 @@ namespace MiniArmory.Web.Controllers
         private readonly ICharacterService charService;
         private readonly IMountService mountService;
 
-        public CharacterController(UserManager<User> userManager, 
+        public CharacterController(UserManager<User> userManager,
             ICharacterService charService,
             IMountService mountService)
         {
@@ -23,15 +23,15 @@ namespace MiniArmory.Web.Controllers
             this.mountService = mountService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public IActionResult AddCharacter()
             => this.View();
 
-        [Authorize]
+        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
         public async Task<IActionResult> AddCharacter(CharacterFormModel model)
         {
-            if (!ModelState.IsValid)
+            if (!ModelState.IsValid || await this.charService.DoesExist(model.Name))
             {
                 return this.View(model);
             }
@@ -43,6 +43,7 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(Details));
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> CharacterList()
         {
             var user = await userManager.FindByNameAsync(this.User.Identity.Name);
@@ -52,6 +53,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> AddMount(Guid id)
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
@@ -71,6 +73,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
         public async Task<IActionResult> AddMount(Guid id, string mountName)
         {
@@ -91,6 +94,7 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(AddMount), id);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> AddAchievement(Guid id)
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
@@ -110,13 +114,14 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
         public async Task<IActionResult> AddAchievement(Guid id, string achievement)
         {
             if (id == default(Guid) ||
                 !await this.charService.DoesExist(id) ||
                 string.IsNullOrEmpty(achievement))
-            { 
+            {
                 return this.View();
             }
 
@@ -168,6 +173,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> LFG(Guid id)
         {
             var model = await this.charService.LFGCharacter(id);
@@ -175,6 +181,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
         public async Task<IActionResult> EarnRating(Guid id)
         {
@@ -188,6 +195,7 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(PlayArena));
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> PlayArena()
         {
             var user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
@@ -197,6 +205,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
         public async Task<IActionResult> EarnRatingAsTeam(Guid id, Guid partnerId)
         {
@@ -205,6 +214,7 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
         public async Task<IActionResult> LeaveTeam(Guid id, Guid partnerId)
         {
@@ -213,6 +223,15 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(CharacterList));
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> TeamUp(Guid id, Guid partnerId)
+        {
+            await this.charService.TeamUp(id, partnerId);
+
+            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
+        }
+
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> PlayArenaAsTeam(Guid id, Guid partnerId)
         {
             var character = await this.charService.FindCharacterById(id);
@@ -224,13 +243,6 @@ namespace MiniArmory.Web.Controllers
             models.Add(partner);
 
             return this.View(models);
-        }
-
-        public async Task<IActionResult> TeamUp(Guid id, Guid partnerId)
-        {
-            await this.charService.TeamUp(id, partnerId);
-
-            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
         }
 
         public async Task<IActionResult> Ranking()
@@ -252,6 +264,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> SignUp(LFGFormModel model)
         {
             var (isLooking, partnerId) = await this.charService.IsLooking(model.Id);

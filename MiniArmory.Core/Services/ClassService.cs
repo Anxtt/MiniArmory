@@ -74,6 +74,11 @@ namespace MiniArmory.Core.Services
             throw new NotImplementedException();
         }
 
+        public async Task<bool> DoesExist(string name)
+            => await this.db
+            .Classes
+            .AnyAsync(x => x.Name == name);
+
         public async Task<ClassViewModel> GetClass(int id)
             => await this.db
             .Classes
