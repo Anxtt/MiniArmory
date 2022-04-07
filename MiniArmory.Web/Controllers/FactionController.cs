@@ -20,8 +20,13 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddFaction(FactionFormModel model)
         {
-            if (!ModelState.IsValid || await this.factionService.DoesExist(model.Name))
+            if (!ModelState.IsValid)
             {
+                if (await this.factionService.DoesExist(model.Name))
+                {
+                    ModelState.AddModelError("Name", "Invalid Name");
+                }
+
                 return this.View(model);
             }
 

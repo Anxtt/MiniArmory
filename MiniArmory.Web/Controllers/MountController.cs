@@ -20,8 +20,13 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMount(MountFormModel model)
         {
-            if (!ModelState.IsValid || await this.mountService.DoesExist(model.Name))
+            if (!ModelState.IsValid)
             {
+                if (await this.mountService.DoesExist(model.Name))
+                {
+                    ModelState.AddModelError("Name", "Invalid Name");
+                }
+
                 return this.View(model);
             }
 

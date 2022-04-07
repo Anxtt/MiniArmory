@@ -20,8 +20,13 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRealm(RealmFormModel model)
         {
-            if (!ModelState.IsValid || await this.realmService.DoesExist(model.Name))
+            if (!ModelState.IsValid)
             {
+                if (await this.realmService.DoesExist(model.Name))
+                {
+                    ModelState.AddModelError("Name", "Invalid Name");
+                }
+
                 return this.View(model);
             }
 

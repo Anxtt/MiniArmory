@@ -20,8 +20,13 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRace(RaceFormModel model) 
         {
-            if (!ModelState.IsValid || await this.raceService.DoesExist(model.Name))
+            if (!ModelState.IsValid)
             {
+                if (await this.raceService.DoesExist(model.Name))
+                {
+                    ModelState.AddModelError("Name", "Invalid Name");
+                }
+
                 return this.View(model);
             }
 

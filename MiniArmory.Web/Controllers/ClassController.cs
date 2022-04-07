@@ -20,8 +20,13 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddClass(ClassFormModel model)
         {
-            if (!ModelState.IsValid || await this.classService.DoesExist(model.Name))
+            if (!ModelState.IsValid)
             {
+                if (await this.classService.DoesExist(model.Name))
+                {
+                    ModelState.AddModelError("Name", "Invalid Name");
+                }
+
                 return this.View(model);
             }
 
