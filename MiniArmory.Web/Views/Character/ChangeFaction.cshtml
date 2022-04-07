@@ -1,0 +1,55 @@
+﻿@using MiniArmory.Core.Models.Character
+@model CharacterFormModel
+
+@{
+    ViewData["Title"] = $"Change race of {Model.Name}";
+}
+
+<h1>Character creation</h1>
+
+<h4>Character characteristics</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ChangeFaction">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Faction" class="dropdown"></label>
+                <select class="form-control" id="Faction" name="Faction"></select>
+                <span asp-validation-for="Faction" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Change" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Mount/GetFactions",
+            success: function (factions)
+            {
+                var s = '<option value="-1">Faction</option>';
+                for (var i = 0; i < factions.length; i++)
+                {
+                    s += '<option value="' + factions[i].Id + '">' + factions[i].Name + '</option>';
+                }
+                $("#Faction").html(s);
+            }
+        })
+    });
+</script>
+}

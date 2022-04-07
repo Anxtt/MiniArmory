@@ -31,8 +31,13 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> AddCharacter(CharacterFormModel model)
         {
-            if (!ModelState.IsValid || await this.charService.DoesExist(model.Name))
+            if (!ModelState.IsValid)
             {
+                if (await this.charService.DoesExist(model.Name))
+                {
+                    ModelState.AddModelError("Name", "Invalid Name");
+                }
+
                 return this.View(model);
             }
 
@@ -152,6 +157,57 @@ namespace MiniArmory.Web.Controllers
             };
 
             return this.View(model);
+        }
+
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> ChangeFaction(Guid id)
+        {
+            var model = await this.charService.GetCharacterForChange(id);
+
+            return this.View(model);
+        }
+
+        [Authorize(Roles = "Member, Admin, Owner")]
+        [HttpPost]
+        public async Task<IActionResult> ChangeFaction(Guid id, string faction)
+        {
+            await this.charService.ChangeFaction(id, faction);
+
+            return this.RedirectToAction(nameof(Details), id);
+        }
+        
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> ChangeName(Guid id)
+        {
+            var model = await this.charService.GetCharacterForChange(id);
+
+            return this.View(model);
+        }
+
+        [Authorize(Roles = "Member, Admin, Owner")]
+        [HttpPost]
+        public async Task<IActionResult> ChangeName(Guid id, string name)
+        {
+            await this.charService.ChangeName(id, name);
+
+            return this.RedirectToAction(nameof(Details), id);
+        }
+        
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> ChangeRace(Guid id)
+        {
+            var model = await this.charService.GetCharacterForChange(id);
+
+            return this.View(model);
+        }
+
+        [Authorize(Roles = "Member, Admin, Owner")]
+        [HttpPost]
+        public async Task<IActionResult> ChangeRace(Guid id, string race)
+        {
+            await this.charService.ChangeRace(id, race);
+
+            return this.RedirectToAction(nameof(Details), id);
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]

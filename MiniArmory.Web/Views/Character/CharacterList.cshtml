@@ -6,35 +6,43 @@
 
 <div class="row">
     <div class="col-12">
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
+        <div class="card-body table-responsive p-0">
+            <table class="table table-hover text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Class</th>
+                        <th>Name</th>
+                        <th>Realm</th>
+                        <th>Rating</th>
+                        <th>Activity</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var character in Model.OrderBy(x => x.Name))
+                    {
                         <tr>
-                            <th>Class</th>
-                            <th>Name</th>
-                            <th>Realm</th>
-                            <th>Rating</th>
-                            <th>Activity</th>
+                            <td><img src="@character.ClassImage" /></td>
+                            <td>@character.Name</td>
+                            <td>@character.Realm</td>
+                            <td>@character.Rating</td>
+                            <td>
+                                <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-success btn-xs">Team up</a>
+                                <a asp-action="AddMount" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs">Earn mounts</a>
+                                <a asp-action="AddAchievement" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-warning btn-xs">Earn achievements</a>
+                                <a asp-action="DeleteCharacter" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-danger btn-xs">Delete</a>
+                                <a class="btn btn-block btn-outline-success btn-xs dropdown-toggle text-dark" href="#" id="EditDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    Edit
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                    <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeName" asp-route-id="@character.Id" asp-route-name="@character.Name">Change Name</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeRace" asp-route-id="@character.Id">Change Race</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeFaction" asp-route-id="@character.Id">Change Faction</a></li>
+                                </ul>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var character in Model.OrderBy(x => x.Name))
-                        {
-                            <tr>
-                                <td><img src="@character.ClassImage"/></td>
-                                <td>@character.Name</td>
-                                <td>@character.Realm</td>
-                                <td>@character.Rating</td>
-                                <td>
-                                    <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-success btn-xs">Team up</a>
-                                    <a asp-action="AddMount" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs">Earn mounts</a>
-                                    <a asp-action="AddAchievement" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-warning btn-xs">Earn achievements</a>
-                                    <a asp-action="DeleteCharacter" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-danger btn-xs">Delete</a>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                    }
+                </tbody>
+            </table>
         </div>
+    </div>
 </div>
