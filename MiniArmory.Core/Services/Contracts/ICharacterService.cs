@@ -15,6 +15,12 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<LeaderboardViewModel>> AchievementStats();
 
+        Task ChangeFaction(Guid id, string factionId);
+
+        Task ChangeName(Guid id, string name);
+
+        Task ChangeRace(Guid id, string raceId);
+
         Task<bool> DoesExist(Guid id);
 
         Task<bool> DoesExist(string name);
@@ -22,6 +28,8 @@ namespace MiniArmory.Core.Services.Contracts
         Task EarnRating(Guid id);
 
         Task<CharacterViewModel> FindCharacterById(Guid id);
+
+        Task<CharacterFormModel> GetCharacterForChange(Guid id);
 
         Task<Tuple<bool, Guid?>> IsLooking(Guid id);
 

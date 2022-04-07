@@ -452,5 +452,55 @@ namespace MiniArmory.Core.Services
             this.db.Characters.Remove(character);
             await this.db.SaveChangesAsync();
         }
+
+        public async Task ChangeFaction(Guid id, string factionId)
+        {
+            Character character = await this.db
+                .Characters
+                .Include(x => x.Faction)
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            character.FactionId = int.Parse(factionId);
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task ChangeName(Guid id, string name)
+        {
+            Character character = await this.db
+                .Characters
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            character.Name = name;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task ChangeRace(Guid id, string raceId)
+        {
+            Character character = await this.db
+                .Characters
+                .Include(x => x.Race)
+                .Where(x => x.Id == id)
+                .FirstAsync();
+
+            character.RaceId = int.Parse(raceId);
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task<CharacterFormModel> GetCharacterForChange(Guid id)
+            => await this.db
+            .Characters
+            .Where(x => x.Id == id)
+            .Select(x => new CharacterFormModel()
+            {
+                Name = x.Name,
+                Faction = x.FactionId,
+                Race = x.RaceId
+            })
+            .FirstAsync();
     }
 }
