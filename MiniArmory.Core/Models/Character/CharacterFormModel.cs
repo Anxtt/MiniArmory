@@ -5,7 +5,7 @@ namespace MiniArmory.Core.Models.Character
     public class CharacterFormModel
     {
         [Required]
-        [StringLength(16)]
+        [StringLength(16, MinimumLength = 3)]
         public string Name { get; set; }
 
         [Required]
@@ -25,7 +25,7 @@ namespace MiniArmory.Core.Models.Character
         public int Class { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(500, MinimumLength = 30)]
         public string Image { get; set; }
     }
 }

@@ -5,7 +5,7 @@ namespace MiniArmory.Core.Models.Spell
     public class SpellFormModel
     {
         [Required]
-        [StringLength(30)]
+        [StringLength(30, MinimumLength = 4)]
         public string Name { get; set; }
 
         [Required]
@@ -17,11 +17,11 @@ namespace MiniArmory.Core.Models.Spell
         public short Cooldown { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(200, MinimumLength = 30)]
         public string Tooltip { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(200, MinimumLength = 50)]
         public string Description { get; set; }
 
         [Required]
