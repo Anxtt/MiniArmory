@@ -353,6 +353,7 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(LFG), new { id = model.Id });
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetRealms()
         {
             var realms = await this.charService.GetRealms();

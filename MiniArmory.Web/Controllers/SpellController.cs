@@ -37,6 +37,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(spells);
         }
 
+        [IgnoreAntiforgeryToken]
         public IActionResult SpellTypes()
         {
             string[] types = new string[]
@@ -48,6 +49,7 @@ namespace MiniArmory.Web.Controllers
             return Json(types);
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetClasses()
         {
             var classes = await this.spellService.GetClasses();
@@ -55,6 +57,7 @@ namespace MiniArmory.Web.Controllers
             return Json(classes);
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetRaces()
         {
             var races = await this.spellService.GetRaces();

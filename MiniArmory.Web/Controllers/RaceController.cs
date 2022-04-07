@@ -49,6 +49,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(race);
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetRacialSpells()
         {
             var racials = await this.raceService.GetRacialSpells();

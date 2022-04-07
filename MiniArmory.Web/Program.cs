@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
@@ -19,7 +20,11 @@ builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfi
     .AddRoles<IdentityRole<Guid>>()
     .AddEntityFrameworkStores<MiniArmoryDbContext>();
 
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(options =>
+{
+    options.Filters.Add<AutoValidateAntiforgeryTokenAttribute>();
+});
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = false;
@@ -41,6 +46,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseMigrationsEndPoint();
 }
 else

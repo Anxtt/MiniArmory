@@ -42,6 +42,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(mounts);
         }
         
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetFactions()
         {
             var factions = await this.mountService.GetFactions();

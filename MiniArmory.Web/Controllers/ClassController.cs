@@ -71,6 +71,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
+        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetSpells()
         {
             var models = await this.classService.GetSpells();
