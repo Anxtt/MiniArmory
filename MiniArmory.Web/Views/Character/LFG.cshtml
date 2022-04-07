@@ -53,7 +53,6 @@
                             <td class="text-center">@player.Rating</td>
                             <td class="text-center text-success">@player.Win</td>
                             <td class="text-center text-danger">@player.Loss</td>
-                            <td class="text-center text-danger">@player.Loss</td>
                             <form>
                             <td class="text-center text-success"><button type="submit" formmethod="post" class="btn btn-info" asp-controller="Character" asp-action="TeamUp" asp-route-id="@Model.Id" asp-route-partnerId="@player.Id">Party Up</button></td>
                             </form>
