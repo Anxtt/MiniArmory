@@ -16,20 +16,20 @@ namespace MiniArmory.Core.Services
         public CharacterService(MiniArmoryDbContext db)
             => this.db = db;
 
-        public async Task<IEnumerable<LeaderboardViewModel>> AchievementStats()
+        public async Task<IEnumerable<CharacterViewModel>> AchievementStats()
             => await this.db
             .Characters
             .Include(x => x.Achievements)
             .Include(x => x.Class)
             .Include(x => x.Faction)
             .Include(x => x.Realm)
-            .Select(x => new LeaderboardViewModel()
+            .Select(x => new CharacterViewModel()
             {
                 ClassImage = x.Class.ClassImage,
-                Faction = x.Faction.Image,
+                FactionImage = x.Faction.Image,
                 Id = x.Id,
                 Name = x.Name,
-                Realm = x.Realm.Name,
+                RealmName = x.Realm.Name,
                 Rating = x.Achievements.Sum(z => z.Points)
             })
             .ToListAsync();
@@ -155,20 +155,20 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
-        public async Task<IEnumerable<LeaderboardViewModel>> LeaderboardStats()
+        public async Task<IEnumerable<CharacterViewModel>> LeaderboardStats()
             => await this.db
             .Characters
             .Include(x => x.Faction)
             .Include(x => x.Class)
             .Include(x => x.Realm)
-            .Select(x => new LeaderboardViewModel()
+            .Select(x => new CharacterViewModel()
             {
                 Id = x.Id,
                 ClassImage = x.Class.ClassImage,
-                Faction = x.Faction.Image,
+                FactionImage = x.Faction.Image,
                 Name = x.Name,
                 Loss = x.Loss,
-                Realm = x.Realm.Name,
+                RealmName = x.Realm.Name,
                 Rating = x.Rating,
                 Win = x.Win
             })
@@ -189,21 +189,21 @@ namespace MiniArmory.Core.Services
                 })
                 .ToListAsync();
 
-        public async Task<IEnumerable<LeaderboardViewModel>> OwnCharacters(Guid id)
+        public async Task<IEnumerable<CharacterViewModel>> OwnCharacters(Guid id)
              => await this.db
                  .Characters
                  .Where(x => x.UserId == id)
                  .Include(x => x.Faction)
                  .Include(x => x.Class)
                  .Include(x => x.Realm)
-                 .Select(x => new LeaderboardViewModel()
+                 .Select(x => new CharacterViewModel()
                  {
                      Id = x.Id,
                      ClassImage = x.Class.ClassImage,
-                     Faction = x.Faction.Image,
+                     FactionImage = x.Faction.Image,
                      Name = x.Name,
                      Loss = x.Loss,
-                     Realm = x.Realm.Name,
+                     RealmName = x.Realm.Name,
                      Rating = x.Rating,
                      Win = x.Win
                  })
@@ -306,15 +306,15 @@ namespace MiniArmory.Core.Services
                                 .Characters
                                 .Include(z => z.User)
                                 .Where(z => z.IsLooking == true && z.PartnerId == null && z.User.Id != x.User.Id)
-                                .Select(z => new LeaderboardViewModel()
+                                .Select(z => new CharacterViewModel()
                                 {
                                     Id = z.Id,
                                     ClassImage = z.Class.ClassImage,
-                                    Faction = z.Faction.Image,
+                                    FactionImage = z.Faction.Image,
                                     Name = z.Name,
                                     Loss = z.Loss,
                                     Rating = z.Rating,
-                                    Realm = z.Realm.Name,
+                                    RealmName = z.Realm.Name,
                                     Win = z.Win,
                                 })
                                 .ToList()

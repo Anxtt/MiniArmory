@@ -4,7 +4,7 @@
     { 
         public Guid Id { get; set; }
 
-        public short Rating { get; set; }
+        public int Rating { get; set; }
 
         public string Name { get; set; }
 

@@ -2,6 +2,6 @@
 {
     public class LFGFormModel : CharacterViewModel
     {
-        public IEnumerable<LeaderboardViewModel> CharactersInLFG { get; set; }
+        public IEnumerable<CharacterViewModel> CharactersInLFG { get; set; }
     }
 }

@@ -1,5 +1,5 @@
 ﻿@using MiniArmory.Core.Models.Character
-@model IEnumerable<LeaderboardViewModel>
+@model IEnumerable<CharacterViewModel>
 @{
     ViewData["Title"] = "Pick a Character";
 }
@@ -23,7 +23,7 @@
                         <tr>
                             <td><img src="@character.ClassImage" /></td>
                             <td>@character.Name</td>
-                            <td>@character.Realm</td>
+                            <td>@character.RealmName</td>
                             <td>@character.Rating</td>
                             <td>
                                 <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-success btn-xs">Team up</a>

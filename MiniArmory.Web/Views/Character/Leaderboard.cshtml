@@ -1,5 +1,5 @@
 ﻿@using MiniArmory.Core.Models.Character
-@model List<LeaderboardViewModel>
+@model List<CharacterViewModel>
 
 @{
     ViewData["Title"] = "PvP Leaderboard";
@@ -29,9 +29,9 @@
                 <tr>
                     <td class="text-center">@i</td>
                     <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-dark">@player.Name</a></td>
-                    <td class="text-center">@player.Realm</td>
+                    <td class="text-center">@player.RealmName</td>
                     <td class="text-center"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;" /></td>
-                    <td class="text-center"><img src="@player.Faction" alt="Faction image" style="height: 4rem;" /></td>
+                    <td class="text-center"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" /></td>
                     <td class="text-center">@player.Rating</td>
                     <td class="text-center text-success">@player.Win</td>
                     <td class="text-center text-danger">@player.Loss</td>

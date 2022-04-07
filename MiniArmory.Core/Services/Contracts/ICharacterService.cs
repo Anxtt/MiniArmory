@@ -13,7 +13,7 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task AddMountToCharacter(Guid id, string mountName);
 
-        Task<IEnumerable<LeaderboardViewModel>> AchievementStats();
+        Task<IEnumerable<CharacterViewModel>> AchievementStats();
 
         Task ChangeFaction(Guid id, string factionId);
 
@@ -33,7 +33,7 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<Tuple<bool, Guid?>> IsLooking(Guid id);
 
-        Task<IEnumerable<LeaderboardViewModel>> LeaderboardStats();
+        Task<IEnumerable<CharacterViewModel>> LeaderboardStats();
 
         Task<LFGFormModel> LFGCharacter(Guid id);
 
@@ -43,7 +43,7 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<AchievementViewModel>> OwnAchievements(Guid id);
 
-        Task<IEnumerable<LeaderboardViewModel>> OwnCharacters(Guid id);
+        Task<IEnumerable<CharacterViewModel>> OwnCharacters(Guid id);
 
         Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id);
 
