@@ -5,23 +5,23 @@ namespace MiniArmory.Core.Models.Spell
     public class SpellFormModel
     {
         [Required]
-        [StringLength(30)]
+        [StringLength(30, MinimumLength = 4, ErrorMessage = "Must have a name between 4 and 30 characters.")]
         public string Name { get; set; }
 
         [Required]
-        [Range(5, 40)]
+        [Range(5, 40, ErrorMessage = "Must have a range between 5 and 40 yards.")]
         public sbyte Range { get; set; }
 
         [Required]
-        [Range(0, 600)]
+        [Range(0, 600, ErrorMessage = "Must have cooldown between 0 and 600 seconds.")]
         public short Cooldown { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(200, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
         public string Tooltip { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(200, MinimumLength = 50, ErrorMessage = "Must have a description between 50 and 200 characters.")]
         public string Description { get; set; }
 
         [Required]
