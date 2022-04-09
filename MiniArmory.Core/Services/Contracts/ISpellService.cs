@@ -7,6 +7,8 @@ namespace MiniArmory.Core.Services.Contracts
     {
         Task Add(SpellFormModel model);
 
+        Task<bool> DoesExist(string name);
+
         Task<IEnumerable<JsonFormModel>> GetClasses(); 
 
         Task<IEnumerable<JsonFormModel>> GetRaces();

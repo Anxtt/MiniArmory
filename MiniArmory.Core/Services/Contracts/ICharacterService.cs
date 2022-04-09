@@ -45,6 +45,8 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<CharacterViewModel>> OwnCharacters(Guid id);
 
+        Task<IEnumerable<MountViewModel>> OwnMounts(Guid id);
+
         Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id);
 
         Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id);

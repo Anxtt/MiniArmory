@@ -2,20 +2,31 @@
 @model ClassViewModel
 
 @{
-    ViewData["Title"] = "Race Details";
+    ViewData["Title"] = "Class Details";
 }
 
-<div class="d-inline-block col-12">
-    <h2 class="text-center text-primary">@Model.Name</h2>
-    <div style="
-    background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-blue.9de312ba15472b63bc7e9d3f62b64c65.jpg');
-    height: 100%;
-    width: 100%;">
-        <div class="text-center">
-            <img src="" alt="Race model" style="width: 15rem; height: 19rem;" />
-            <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.Description</p>
-            <p class="text-light col-12" style="height: 10rem; width: 40rem;">@Model.Name</p>
-            <img src="@Model.ClassImage" />
+<div class="border m-5" style="position: relative; top: -33px;">
+    <h2 class="text-center text-primary text-light">@Model.Name</h2>
+    <div class="text-center">
+        <div class="d-inline-block col-3 text-start" style="position: relative;">
+            <img src="@Model.ClassImage" class="d-inline-block col-3" style="align-content: start" />
+            <p class="text-light col-12" style="text-align: justify">@Model.Description</p>
+        </div>
+        <img src="@Model.Image" alt="class model" class="col-5 d-inline-block" style="position: relative;" />
+        <div class="d-inline-block col-3 text-start" style="position: relative;">
+            <img src="@Model.SpecialisationImage" class="d-inline-block" />
+            <p class="text-light col-12 pt-1" style="text-align: justify; font-weight: bold;">@Model.SpecialisationName</p>
+            <p class="text-light col-12" style="text-align: justify">@Model.SpecialisationDescription</p>
+
+            <div class="text-start d-block">
+                @foreach (var spell in Model.Spells)
+                {
+                    <div class="d-block">
+                    <p class="text-light" style="text-align: justify; font-weight: bold;">@spell.Name</p>
+                    </div>
+                    <img src="@spell.Tooltip" class="text-start"/>
+                }
+            </div>
         </div>
     </div>
 </div>

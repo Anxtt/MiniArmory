@@ -1,4 +1,6 @@
-﻿namespace MiniArmory.Core.Models.Class
+﻿using MiniArmory.Core.Models.Spell;
+
+namespace MiniArmory.Core.Models.Class
 {
     public class ClassViewModel
     {
@@ -18,6 +20,8 @@
 
         public string SpecialisationImage { get; set; }
 
-        public List<int> Spells { get; set; }
+        public List<int> SpellIds { get; set; }
+
+        public List<SpellViewModel> Spells { get; set; }
     }
 }
