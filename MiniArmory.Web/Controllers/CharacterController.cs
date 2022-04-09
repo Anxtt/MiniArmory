@@ -251,7 +251,27 @@ namespace MiniArmory.Web.Controllers
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> Mounts(Guid id)
+        {
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            {
+                return this.View();
+            }
+
+            var mounts = await this.charService.OwnMounts(id);
+            var character = await this.charService.FindCharacterById(id);
+
+            MountCharacterViewModel model = new MountCharacterViewModel()
+            {
+                Mounts = mounts,
+                Character = character
+            };
+
+            return this.View(model);
+        }
+
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> EarnRating(Guid id)
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))

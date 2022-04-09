@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Class;
+using MiniArmory.Core.Models.Spell;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
@@ -39,7 +40,7 @@ namespace MiniArmory.Core.Services
                 .Where(x => x.Id == model.Id)
                 .FirstAsync();
 
-            foreach (var spells in model.Spells)
+            foreach (var spells in model.SpellIds)
             {
                 Spell spell = await this.db
                     .Spells
@@ -69,10 +70,30 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
-        public Task<ClassViewModel> Details(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<ClassViewModel> Details(int id)
+            => await this.db
+                .Classes
+                .Where(x => x.Id == id)
+                .Include(x => x.Spells)
+                .Select(x => new ClassViewModel()
+                {
+                    ClassImage = x.ClassImage,
+                    Description = x.Description,
+                    Id = x.Id,
+                    Image = x.Image,
+                    Name = x.Name,
+                    SpecialisationDescription = x.SpecialisationDescription,
+                    SpecialisationName = x.SpecialisationName,
+                    SpecialisationImage = x.SpecialisationImage,
+                    Spells = x.Spells.Select(z => new SpellViewModel()
+                    {
+                        Description = z.Description,
+                        Name = z.Name,
+                        Tooltip = z.Tooltip
+                    })
+                    .ToList()
+                })
+                .FirstAsync();
 
         public async Task<bool> DoesExist(string name)
             => await this.db

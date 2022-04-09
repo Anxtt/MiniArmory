@@ -42,31 +42,9 @@ namespace MiniArmory.Web.Controllers
             return this.View(classes);
         }
 
-        [Authorize(Roles = "Admin, Owner")]
-        public async Task<IActionResult> AddSpells(int id)
-        {
-            var classEntity = await this.classService.GetClass(id);
-
-            return this.View(classEntity);
-        }
-
-        [Authorize(Roles = "Admin, Owner")]
-        [HttpPost]
-        public async Task<IActionResult> AddSpells(ClassViewModel model)
-        {
-            //if (!ModelState.IsValid)
-            //{
-            //    return this.View(model);
-            //}
-
-            await this.classService.AddSpells(model);
-
-            return this.Redirect(nameof(Details));
-        }
-
         public async Task<IActionResult> Details(int id)
         {
-            var model = 2;
+            var model = await this.classService.Details(id);
 
             return this.View(model);
         }

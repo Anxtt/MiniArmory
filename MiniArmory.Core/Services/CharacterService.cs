@@ -294,6 +294,7 @@ namespace MiniArmory.Core.Services
                     {
                         Id = x.Id,
                         ClassImage = x.Class.ClassImage,
+                        ClassName = x.Class.Name,
                         FactionImage = x.Faction.Image,
                         Image = x.Image,
                         FactionName = x.Faction.Name,
@@ -502,5 +503,20 @@ namespace MiniArmory.Core.Services
                 Race = x.RaceId
             })
             .FirstAsync();
+
+        public async Task<IEnumerable<MountViewModel>> OwnMounts(Guid id)
+            => await this.db
+            .Mounts
+            .Include(x => x.Characters)
+            .Where(x => x.Characters.Any(z => z.Id == id))
+            .Select(x => new MountViewModel()
+            {
+                Faction = x.Faction,
+                FlyingSpeed = x.FlyingSpeed,
+                GroundSpeed = x.GroundSpeed,
+                Image = x.Image,
+                Name = x.Name
+            })
+            .ToListAsync();
     }
 }

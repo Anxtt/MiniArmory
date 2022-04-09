@@ -22,6 +22,11 @@ namespace MiniArmory.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
+                if (await this.spellService.DoesExist(model.Name))
+                {
+                    ModelState.AddModelError(nameof(model.Name), "Invalid name.");
+                }
+
                 return this.View(model);
             }
 
