@@ -5,22 +5,22 @@
     ViewData["Title"] = "All Realms";
 }
 
-<div class="card-body table-responsive p-0">
+<div class="card-body table-responsive col-8 offset-2">
     <table class="table table-hover text-nowrap">
         <thead>
             <tr>
-                <th>Name</th>
-                <th>Language</th>
-                <th>Population</th>
+                <th class="text-light text-center">Name</th>
+                <th class="text-light text-center">Language</th>
+                <th class="text-light text-center">Population</th>
             </tr>
         </thead>
         <tbody>
             @foreach (var realm in Model)
             {
                 <tr>
-                    <td>@realm.Name</td>
-                    <td>@realm.Language</td>
-                    <td>@realm.Population</td>
+                    <td class="text-light text-center">@realm.Name</td>
+                    <td class="text-light text-center">@realm.Language</td>
+                    <td class="text-light text-center">@realm.Population</td>
                 </tr>
             }
         </tbody>

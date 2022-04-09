@@ -5,63 +5,59 @@
     ViewData["Title"] = "Add Spell";
 }
 
-<h1>Spell creation</h1>
+<h1 class="text-center text-light">Spell creation</h1>
 
-<h4>Spell characteristics</h4>
+<h4 class="text-center text-light">Spell characteristics</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div>
+    <div class="align-content-center">
         <form asp-action="AddSpell">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Range" class="control-label"></label>
                 <input asp-for="Range" class="form-control" />
                 <span asp-validation-for="Range" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Cooldown" class="control-label"></label>
                 <input asp-for="Cooldown" class="form-control" />
                 <span asp-validation-for="Cooldown" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Tooltip" class="control-label"></label>
                 <input asp-for="Tooltip" class="form-control" />
                 <span asp-validation-for="Tooltip" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Description" class="control-label"></label>
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Type" class="dropdown"></label>
                 <select class="form-control" id="Type" name="Type"></select>
                 <span asp-validation-for="Type" class="text-danger"></span>
             </div>
-            <div class="form-group" id="ClassWrapper">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light" id="ClassWrapper">
                 <label asp-for="Class" class="dropdown"></label>
                 <select class="form-control" id="Class" name="Class"></select>
                 <span asp-validation-for="Class" class="text-danger"></span>
             </div>
-            <div class="form-group" id="RaceWrapper">
+            <div class="form-group col-4 mb-2 offset-md-4 text-light" id="RaceWrapper">
                 <label asp-for="Race" class="dropdown"></label>
                 <select class="form-control" id="Race" name="Race"></select>
                 <span asp-validation-for="Race" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group col-4 text-center offset-md-4 text-light">
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
