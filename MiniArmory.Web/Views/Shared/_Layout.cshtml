@@ -8,20 +8,19 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MiniArmory.Web.styles.css" asp-append-version="true" />
 </head>
-<body>
+<body style="background-color: #212121;">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow" style="background-color: #212121;">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MiniArmory</a>
+                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MiniArmory</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                     <ul class="navbar-nav flex-grow-1 justify-content-center">
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="CharacterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="CharacterDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Characters
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -33,7 +32,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="AchievementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="AchievementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Achievement
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -42,7 +41,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="ClassDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="ClassDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Class
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -51,7 +50,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="SpellDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="SpellDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Spell
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -62,7 +61,7 @@
                         @if (this.User.IsInRole("Owner"))
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle text-dark" href="#" id="FactionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <a class="nav-link dropdown-toggle text-white" href="#" id="FactionDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                     Faction
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -71,7 +70,7 @@
                             </li>
                         }
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="RaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="RaceDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Race
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -80,7 +79,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="MountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="MountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Mount
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -89,7 +88,7 @@
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle text-dark" href="#" id="RealmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle text-white" href="#" id="RealmDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Realm
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
@@ -100,22 +99,22 @@
                     </ul>
                     <form asp-controller="Character" asp-action="Search" class="form d-inline-flex">
                         <input class="form-control mr-sm-2" type="search" name="chars" placeholder="Find a character.." aria-label="Search">
-                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                        <button class="btn btn-outline-light my-2 my-sm-0 ms-2" type="submit">Search</button>
                     </form>
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container-fluid m-0 p-0">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="border-top footer text-white" style="line-height: 66px;">
         <div class="container">
-            &copy; 2022 - MiniArmory.Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2022 - MiniArmory.Web
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
