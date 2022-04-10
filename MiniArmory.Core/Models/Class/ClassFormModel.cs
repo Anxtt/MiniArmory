@@ -14,11 +14,15 @@ namespace MiniArmory.Core.Models.Class
 
         [Required]
         [StringLength(500, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
+        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
+            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
         [Display(Name = "Class Image")]
         public string ClassImage { get; set; }
 
         [Required]
         [StringLength(500, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
+        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
+            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
         public string Image { get; set; }
 
         [Required]
@@ -33,6 +37,8 @@ namespace MiniArmory.Core.Models.Class
 
         [Required]
         [StringLength(500, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
+        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
+            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
         [Display(Name = "Specialisation Image")]
         public string SpecialisationImage { get; set; }
     }
