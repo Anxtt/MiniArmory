@@ -5,20 +5,20 @@
     ViewData["Title"] = "Face your enemies";
 }
 
-<div class="card-body table-responsive p-0">
+<div class="card-body table-responsive col-8 offset-2">
     @if (Model.Count >= 1)
     {
         <table class="table table-hover text-nowrap">
             <thead>
                 <tr>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">Realm</th>
-                    <th class="text-center">Class</th>
-                    <th class="text-center">Faction</th>
-                    <th class="text-center">Rating</th>
-                    <th class="text-center">Wins</th>
-                    <th class="text-center">Losses</th>
-                    <th class="text-center">Play Arena</th>
+                    <th class="text-center text-light">Name</th>
+                    <th class="text-center text-light">Realm</th>
+                    <th class="text-center text-light">Class</th>
+                    <th class="text-center text-light">Faction</th>
+                    <th class="text-center text-light">Rating</th>
+                    <th class="text-center text-light">Wins</th>
+                    <th class="text-center text-light">Losses</th>
+                    <th class="text-center text-light">Play Arena</th>
                 </tr>
             </thead>
             <tbody>
@@ -27,15 +27,15 @@
                         .ThenBy(x => x.Name))
                 {
                     <tr>
-                        <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-dark">@player.Name</a></td>
-                        <td class="text-center">@player.RealmName</td>
-                        <td class="text-center"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;" /></td>
-                        <td class="text-center"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" /></td>
-                        <td class="text-center">@player.Rating</td>
+                        <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-light">@player.Name</a></td>
+                        <td class="text-center text-light">@player.RealmName</td>
+                        <td class="text-center text-light"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;" /></td>
+                        <td class="text-center text-light"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" /></td>
+                        <td class="text-center text-light">@player.Rating</td>
                         <td class="text-center text-success">@player.Win</td>
                         <td class="text-center text-danger">@player.Loss</td>
-                        <form>
-                            <td class="text-center text-success"><button type="submit" formmethod="post" class="btn btn-info" asp-controller="Character" asp-action="EarnRating" asp-route-id="@player.Id">Play</button></td>
+                        <form asp-controller="Character" asp-action="EarnRating" asp-route-id="@player.Id">
+                            <td class="text-center text-success"><button type="submit" formmethod="post" class="btn btn-info">Play</button></td>
                         </form>
                     </tr>
                 }

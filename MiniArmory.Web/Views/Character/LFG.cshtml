@@ -6,55 +6,58 @@
 }
 
 
-<div class="row d-inline-flex ">
-    <div class="col-5 d-inline-block p-2">
-        <img src="@Model.FactionImage" style="width: 6rem; height: 6rem;" class="d-inline-flex" />
-        <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="d-inline-flex p-2 text-decoration-none">
+<div class="d-inline-flex pt-3">
+    <div class="col-4 d-inline-block border offset-1">
+        <img src="@Model.FactionImage" class="d-inline-flex col-2" />
+        <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="d-inline-block p-2 text-decoration-none">
             @if (@Model.FactionName == "Alliance")
             {
-                <h3 class="text-primary">@Model.Name</h3>
+                <h3 class="text-primary d-block">@Model.Name</h3>
+                <h4 class="text-light d-block">@Model.ClassName</h4>
             }
             else
             {
-                <h3 class="text-warning">@Model.Name</h3>
+                <h3 class="text-danger">@Model.Name</h3>
+                <h4 class="text-light d-block">@Model.ClassName</h4>
             }
         </a>
-        <img src="@Model.Image" style="width: 28rem; height: 28rem;" class="p-2" />
+
+        <img src="@Model.Image" class="p-2 col-12" />
     </div>
 
-    <div class="col-7 d-inline-block p-2" style="width: 47rem">
+    <div class="col-6 d-inline-block pt-4">
 
         @if (Model.CharactersInLFG.Count() >= 1)
         {
             <table class="table table-hover text-nowrap">
                 <thead>
                     <tr>
-                        <th class="text-center">Name</th>
-                        <th class="text-center">Realm</th>
-                        <th class="text-center">Class</th>
-                        <th class="text-center">Faction</th>
-                        <th class="text-center">Rating</th>
-                        <th class="text-center">Wins</th>
-                        <th class="text-center">Losses</th>
-                        <th class="text-center">Potential Partners</th>
+                        <th class="text-center text-light">Name</th>
+                        <th class="text-center text-light">Realm</th>
+                        <th class="text-center text-light">Class</th>
+                        <th class="text-center text-light">Faction</th>
+                        <th class="text-center text-light">Rating</th>
+                        <th class="text-center text-light">Wins</th>
+                        <th class="text-center text-light">Losses</th>
+                        <th class="text-center text-light">Potential Partners</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var player in Model.CharactersInLFG
                    .Where(x => x.Id != Model.Id)
-                    .OrderByDescending(x => x.Rating)
+                   .OrderByDescending(x => x.Rating)
                    .ThenBy(x => x.Name))
                     {
                         <tr>
-                            <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-dark">@player.Name</a></td>
-                            <td class="text-center">@player.RealmName</td>
-                            <td class="text-center"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;" /></td>
-                            <td class="text-center"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" /></td>
-                            <td class="text-center">@player.Rating</td>
+                            <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-light">@player.Name</a></td>
+                            <td class="text-center text-light">@player.RealmName</td>
+                            <td class="text-center text-light"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;" /></td>
+                            <td class="text-center text-light"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" /></td>
+                            <td class="text-center text-light">@player.Rating</td>
                             <td class="text-center text-success">@player.Win</td>
                             <td class="text-center text-danger">@player.Loss</td>
-                            <form>
-                            <td class="text-center text-success"><button type="submit" formmethod="post" class="btn btn-info" asp-controller="Character" asp-action="TeamUp" asp-route-id="@Model.Id" asp-route-partnerId="@player.Id">Party Up</button></td>
+                            <form asp-controller="Character" asp-action="TeamUp" asp-route-id="@Model.Id" asp-route-partnerId="@player.Id">
+                            <td class="text-center text-primary"><button type="submit" class="btn btn-primary text-light">Party Up</button></td>
                             </form>
                         </tr>
                     }
@@ -63,7 +66,7 @@
         }
         else
         {
-            <h2 class="text-center">There is no one to team up with currently.</h2>
+            <h2 class="text-center text-light pt-3">There is no one to team up with currently.</h2>
         }
     </div>
 </div>

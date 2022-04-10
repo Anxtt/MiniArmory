@@ -5,20 +5,47 @@
     ViewData["Title"] = $"MiniArmory - {@Model.Name}";
 }
 
-<div class="row d-inline-flex">
-    <div class="form-group">
-            <div class="card d-inline-flex bg-primary text-white" style="width: 25rem; height: 7rem; border: 2px solid #808080">
-                <div class="row">
-                    <div class="col-md-7">
-                        <img src="@Model.ClassImage" alt="Class image" style="width: 5rem; border: 1px solid #808080">
-                    </div>
-
-                    <div class="col-md-5">
-                        <p>@Model.Name</p>
-                    </div>
-
-                    <p class="text-black">@Model.RealmName</p>
+<div class="d-inline-block text-center container-fluid m-0 p-0">
+    <div class="d-inline-flex" style="width: 100%">
+        @if (Model.FactionName == "Alliance")
+        {
+            <div style="
+             background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-blue.9de312ba15472b63bc7e9d3f62b64c65.jpg');
+             width: 100%;">
+                <div class="text-center ps-5" style="width: 91%;">
+                    <img src="@Model.FactionImage" style="width: 6rem; height: 6rem;" class="d-inline-block" />
+                    <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
+                        <h3 class="text-primary">@Model.Name</h3>
+                    </a>
+                    <a asp-action="Achievements" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
+                        <h3 class="text-warning">Achievements</h3>
+                    </a>
+                    <a asp-action="Mounts" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
+                        <h3 class="text-warning">Mounts</h3>
+                    </a>
                 </div>
+                    <img src="@Model.Image" style="width: 43rem; height: 44rem;" class="p-2" />
             </div>
+        }
+        else
+        {
+            <div style="
+             background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-red.ed195e1c1da9da078315cae0469323e1.jpg');
+             width: 100%;">
+                <div class="text-center ps-5" style="width: 91%;">
+                    <img src="@Model.FactionImage" style="width: 6rem; height: 6rem;" class="d-inline-block" />
+                    <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
+                        <h3 class="text-danger">@Model.Name</h3>
+                    </a>
+                    <a asp-action="Achievements" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
+                        <h3 class="text-warning">Achievements</h3>
+                    </a>
+                    <a asp-action="Mounts" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
+                        <h3 class="text-warning">Mounts</h3>
+                    </a>
+                </div>
+                    <img src="@Model.Image" style="width: 43rem; height: 44rem;" class="p-2" />
+            </div>
+        }
     </div>
 </div>

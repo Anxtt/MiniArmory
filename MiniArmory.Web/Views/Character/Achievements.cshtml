@@ -6,15 +6,22 @@
 }
 
 
-<div class="row d-inline-flex ">
-    <h2 class="text-center">Achievements of @Model.Character.Name</h2>
-    <div class="col-7 d-inline-block p-2" style="width: 47rem">
-        @foreach (var achie in Model.Achievements)
-        {
-            <div class="text-center">
-                <p>@achie.Name</p>
-                <img src="@achie.Image" class="p-1" style="width: 6rem; height: 6rem;" />
+<div class="form-group text-center pt-2">
+    <h2 class="text-center text-light border-bottom border-2 w-50 offset-3">Achievements of @Model.Character.Name</h2>
+    <div class="text-start ps-3">
+
+    @foreach (var achie in Model.Achievements)
+    {
+        <div class="card d-inline-flex bg-success text-white m-2 col-3" style="border: 3px solid #808080;">
+            <div class="col-6 d-inline-flex">
+                <img src="@achie.Image" alt="Achievement image" style="height: 10em;">
+                <div class="col-12 offset-2">
+                    <p class="text-center col-12">@achie.Name</p>
+                    <p class="text-center col-12">Category: @achie.Category</p>
+                    <p class="text-center col-12" style="text-align: justify;">@achie.Description</p>
+                </div>
             </div>
-        }
+        </div>
+    }
     </div>
 </div>

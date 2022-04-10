@@ -5,53 +5,49 @@
     ViewData["Title"] = "Add Character";
 }
 
-<h1>Character creation</h1>
+<h1 class="text-light text-center">Character creation</h1>
 
-<h4>Character characteristics</h4>
+<h4 class="text-light text-center">Character characteristics</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
+<div>
+    <div class="align-content-center">
         <form asp-action="AddCharacter">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Name" class="control-label"></label>
                 <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Realm" class="dropdown"></label>
                 <select class="form-control" id="Realm" name="Realm"></select>
                 <span asp-validation-for="Realm" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Faction" class="dropdown"></label>
                 <select class="form-control" id="Faction" name="Faction"></select>
                 <span asp-validation-for="Faction" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Race" class="dropdown"></label>
                 <select class="form-control" id="Race" name="Race"></select>
                 <span asp-validation-for="Race" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
                 <label asp-for="Class" class="dropdown"></label>
                 <select class="form-control" id="Class" name="Class"></select>
                 <span asp-validation-for="Class" class="text-danger"></span>
             </div>
-             <div class="form-group">
+             <div class="form-group col-4 mb-2 offset-md-4 text-light">
                 <label asp-for="Image" class="control-label"></label>
                 <input asp-for="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="form-group col-4 offset-md-4 text-center text-light">
+                <input type="submit" value="Create" class="btn btn-success" />
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {
@@ -65,6 +61,10 @@
             type: "POST",
             dataType: "json",
             url: "/Character/GetRealms",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (realms)
             {
                 var s = '<option value="-1">Realm</option>';
@@ -80,6 +80,10 @@
             type: "POST",
             dataType: "json",
             url: "/Mount/GetFactions",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (factions)
             {
                 var s = '<option value="-1">Faction</option>';
@@ -95,6 +99,10 @@
             type: "POST",
             dataType: "json",
             url: "/Spell/GetRaces",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (races)
             {
                 var s = '<option value="-1">Race</option>';
@@ -110,6 +118,10 @@
             type: "POST",
             dataType: "json",
             url: "/Spell/GetClasses",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (classes)
             {
                 var s = '<option value="-1">Class</option>';

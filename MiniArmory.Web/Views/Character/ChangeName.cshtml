@@ -5,23 +5,20 @@
     ViewData["Title"] = $"Change Name of {Model.Name}";
 }
 
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="ChangeName">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            <div class="form-group">
-                <input type="submit" value="Change" class="btn btn-primary" />
+<h1 class="text-light text-center">Change name</h1>
+<hr />
+<div class="align-items-center">
+    <form asp-action="ChangeName">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group text-center col-4 mt-3 offset-md-4 text-light">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+            <div class="form-group col-4 offset-md-4 text-center text-light mt-2">
+                <input type="submit" value="Change" class="btn btn-success" />
             </div>
-        </form>
-    </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
+        </div>
+    </form>
 </div>
 
 @section Scripts {

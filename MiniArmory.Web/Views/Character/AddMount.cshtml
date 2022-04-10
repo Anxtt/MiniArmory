@@ -6,35 +6,54 @@
 }
 
 
-<div class="row d-inline-flex ">
-    <div class="col-5 d-inline-block p-2">
-        <img src="@Model.Character.FactionImage" style="width: 6rem; height: 6rem;" class="d-inline-flex" />
-        <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Character.Id" class="d-inline-flex p-2 text-decoration-none">
+<div class="d-inline-flex pt-3">
+    <div class="col-4 d-inline-block border offset-1">
+        <img src="@Model.Character.FactionImage" class="d-inline-flex col-2" />
+        <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Character.Id" class="d-inline-block p-2 text-decoration-none">
             @if (@Model.Character.FactionName == "Alliance")
             {
-                <h3 class="text-primary">@Model.Character.Name</h3>
+                <h3 class="text-primary d-block">@Model.Character.Name</h3>
+                <h4 class="text-light d-block">@Model.Character.ClassName</h4>
             }
             else
             {
-                <h3 class="text-warning">@Model.Character.Name</h3>
+                <h3 class="text-danger">@Model.Character.Name</h3>
+                <h4 class="text-light d-block">@Model.Character.ClassName</h4>
             }
         </a>
-        <img src="@Model.Character.Image" style="width: 28rem; height: 28rem;" class="p-2" />
+
+        <img src="@Model.Character.Image" class="p-2 col-12" />
     </div>
 
-    <div class="col-7 d-inline-block p-2" style="width: 47rem">
-        @foreach (var mount in Model.Mounts)
+    <div class="d-inline-block p-2">
+        @if (Model.Mounts.Count() >= 1)
         {
-            <form class="d-inline-block row-6" asp-action="AddMount" asp-controller="Character" asp-route-id="@Model.Character.Id" asp-route-mountName="@mount.Name">
-                <div class="text-center">
-                    <p style="width: 13rem;" class="text-center m-3">@mount.Name</p>
-
-                    <img src="@mount.Image" class="p-1" style="width: 15rem; height: 15rem;" />
-                </div>
-                <div class="text-center">
-                    <input class="btn-outline-dark" type="submit" formmethod="post" value="Take your chance">
-                </div>
-            </form>
+            @foreach (var mount in Model.Mounts)
+            {
+                <form class="d-inline-block row-6" asp-action="AddMount" asp-controller="Character" asp-route-id="@Model.Character.Id" asp-route-mountName="@mount.Name">
+                    <div class="card d-inline-flex bg-dark text-white m-2" style="width: 31rem; height: 11rem; border: 4px solid #808080;">
+                        <div class="col-6 d-inline-flex">
+                            <img src="@mount.Image" alt="Mount image" style="height: 10em;">
+                            <div class="col-6">
+                                <p style="width: 9rem;">@mount.Name</p>
+                                @if (@mount.Faction != null)
+                                {
+                                    <p style="width: 9rem;">Faction: @mount.Faction</p>
+                                }
+                                <p style="width: 9rem;">Ground speed: @mount.GroundSpeed</p>
+                                <p style="width: 9rem;">Flying speed: @mount.FlyingSpeed</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <input class="btn btn-outline-light text-center" type="submit" formmethod="post" value="Take your chance">
+                    </div>
+                </form>
+            }
+        }
+        else
+        {
+            <h2 class="text-light pt-3 ps-5">There are no mounts for you to earn currently.</h2>
         }
     </div>
 </div>

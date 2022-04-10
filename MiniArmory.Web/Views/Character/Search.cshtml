@@ -5,25 +5,20 @@
     ViewData["Title"] = "MiniArmory Characters";
 }
 
-<div class="row d-inline-flex">
-    <div class="form-group">
-        @foreach (var character in Model)
-        {
-            <a asp-controller="Character" asp-action="Details" asp-route-id="@character.Id">
-                <div class="card d-inline-flex bg-primary text-white" style="width: 25rem; height: 7rem; border: 2px solid #808080">
-                    <div class="row">
-                        <div class="col-md-7">
-                            <img src="@character.ClassImage" alt="Class image" style="width: 5rem; border: 1px solid #808080">
-                        </div>
-
-                        <div class="col-md-5">
-                            <p>@character.Name</p>
-                        </div>
-
-                        <p class="text-black">@character.RealmName</p>
-                    </div>
+@foreach (var character in Model)
+{
+    <a asp-controller="Character" asp-action="Details" asp-route-id="@character.Id" class="col-2">
+        <div class="card d-inline-flex bg-secondary bg-opacity-25 m-5 text-white col-2" style="border: 2px solid #808080">
+            <div class="row">
+                <div class="col-md-4">
+                    <img src="@character.ClassImage" alt="Class image" class="col-12" style="border: 1px solid #808080">
                 </div>
-            </a>
-        }
-    </div>
-</div>
+
+                <div class="col-md-5 text-start">
+                    <p class="text-start d-block col-12">@character.Name</p>
+                    <p class="text-start col-12">@character.RealmName</p>
+                </div>
+            </div>
+        </div>
+    </a>
+}
