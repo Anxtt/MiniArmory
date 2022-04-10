@@ -11,7 +11,7 @@
         <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="text-center">
             <h2 class="text-light">Create a new account</h2>
             <hr />
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
             <div class="form-floating col-lg-4 mb-1 offset-lg-4">
                 <input asp-for="Input.Email" class="form-control justify-content-center" autocomplete="username" aria-required="true" />
                 <label asp-for="Input.Email"></label>
