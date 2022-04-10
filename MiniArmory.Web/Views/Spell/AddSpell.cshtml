@@ -71,6 +71,10 @@
             type: "POST",
             dataType: "json",
             url: "/Spell/GetClasses",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (classes)
             {
                 var s = '<option value="-1">Class</option>';
@@ -86,6 +90,10 @@
             type: "POST",
             dataType: "json",
             url: "/Spell/GetRaces",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (races)
             {
                 var s = '<option value="-1">Race</option>';
@@ -101,6 +109,10 @@
             type: "POST",
             dataType: "json",
             url: "/Spell/SpellTypes",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (types)
             {
                 var s = '<option value="-1">Type</option>';

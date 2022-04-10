@@ -61,6 +61,10 @@
             type: "POST",
             dataType: "json",
             url: "/Race/GetRacialSpells",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (racialSpells)
             {
                 var s = '<option value="-1">RacialSpell</option>';
@@ -77,6 +81,10 @@
             type: "POST",
             dataType: "json",
             url: "/Mount/GetFactions",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
             success: function (factions)
             {
                 var s = '<option value="-1">Faction</option>';
