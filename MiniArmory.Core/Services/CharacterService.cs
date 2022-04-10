@@ -265,7 +265,10 @@ namespace MiniArmory.Core.Services
             .Select(x => new MountViewModel()
             {
                 Name = x.Name,
-                Image = x.Image
+                Image = x.Image,
+                Faction = x.Faction,
+                FlyingSpeed = x.FlyingSpeed,
+                GroundSpeed = x.GroundSpeed
             })
             .ToListAsync();
 

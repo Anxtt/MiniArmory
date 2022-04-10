@@ -5,22 +5,18 @@
     ViewData["Title"] = "All Achievements";
 }
 
-<div class="row">
-    <div class="form-group">
-        @foreach (var achie in Model)
-        {
-            <div class="card d-inline-flex bg-warning text-dark border-3 border-secondary" style="width: 26rem; height: 11rem;">
-                <div class="row">
-                    <div class="d-inline-block">
-                        <div class="text-center">
-                            <p style="height: 1rem;">@achie.Name</p>
-                            <p style="height: 1rem;">@achie.Points</p>
-                            <p style="height: 1rem;">Category: @achie.Category</p>
-                            <p style="height: 1rem;">@achie.Description</p>
-                        </div>
-                    </div>
+<div class="form-group offset-1">
+    @foreach (var achie in Model)
+    {
+        <div class="card d-inline-flex bg-success text-white m-2 col-2" style="border: 3px solid #808080;">
+            <div class="col-7 d-inline-flex">
+                <img src="@achie.Image" alt="Achievement image" style="height: 5em;">
+                <div class="col-12 offset-2">
+                    <p class="text-center col-12">@achie.Name</p>
+                    <p class="text-center col-12">Category: @achie.Category</p>
+                    <p class="text-center col-12" style="text-align: justify;">@achie.Description</p>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>

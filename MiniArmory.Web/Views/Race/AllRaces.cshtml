@@ -4,41 +4,42 @@
 @{
     ViewData["Title"] = "All Races";
 }
-<div class="d-inline-block">
-    <h2 class="text-center text-primary">Alliance</h2>
+
+<div class="d-inline-flex text-center container-fluid m-0 p-0" style="height: 800px">
     <div style="
-    background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-blue.9de312ba15472b63bc7e9d3f62b64c65.jpg');
-    height: 100vh;
-    width: 69vh;">
+    background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-blue.9de312ba15472b63bc7e9d3f62b64c65.jpg');"
+    class="col-6">
+        <h2 class="text-center text-primary col-12">Alliance</h2>
         <div class="text-center">
-            <img src="https://assets.worldofwarcraft.com/static/components/Logo/Logo-alliance.bb36e70f5f690a5fc510ed03e80aa259.png" alt="" style="width: 15rem; height: 19rem;" />
-            <p class="text-light col-12" style="height: 10rem; width: 40rem;">The noble races of the Alliance are bound together by proud traditions of nobility, honor, faith, justice, and sacrifice. The many different Alliance peoples all contribute their technical, arcane, and spiritual wisdom toward the goal of a peaceful and just world. Take up their banner to represent the high ideals of the Alliance throughout Azeroth and beyond.</p>
+            <img src="https://assets.worldofwarcraft.com/static/components/Logo/Logo-alliance.bb36e70f5f690a5fc510ed03e80aa259.png" alt="" style="width: 20%;" />
+            <p class="text-light col-12 ps-5 pe-5">
+                The noble races of the Alliance are bound together by proud traditions of nobility, honor, faith, justice, and sacrifice. The many different Alliance peoples all contribute their technical, arcane, and spiritual wisdom toward the goal of a peaceful and just world. Take up their banner to represent the high ideals of the Alliance throughout Azeroth and beyond.
+            </p>
         </div>
         @foreach (var race in Model.Where(x => x.Faction == "Alliance"))
         {
-            <div class="d-inline-block col-5 text-center">
-                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="Race arms" style="height:10rem; width: 10rem" /></a>
-                <p class="text-light">@race.Description</p>
+            <div class="d-inline-block col-3 text-center ps-3">
+                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="Race arms" style="width:75%; height: 10rem;" /></a>
+                <p class="text-light col-12">@race.Name</p>
             </div>
         }
     </div>
-</div>
 
-<div class="d-inline-block">
-    <h2 class="text-center text-danger">Horde</h2>
     <div style="
-    background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-red.ed195e1c1da9da078315cae0469323e1.jpg');
-    height: 100vh;
-    width: 69vh;">
+    background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-red.ed195e1c1da9da078315cae0469323e1.jpg');"
+    class="col-6">
+        <h2 class="text-center text-danger col-12">Horde</h2>
         <div class="text-center">
-            <img src="https://assets.worldofwarcraft.com/static/components/Logo/Logo-horde.2a80e0466e51d85c8cf60336e16fe8b8.png" alt="" style="width: 15rem; height: 19rem;" />
-            <p class="text-light col-12" style="height: 10rem; width: 40rem;">The proud nations of the Horde are loosely joined in an alliance of convenience against a hostile world that would see them destroyed. Focused, ferocious, and sometimes monstrous, the Horde values strength and honor, but struggles to keep aggression in check. loin the Horde and fight to build a world where their people can live free.</p>
+            <img src="https://assets.worldofwarcraft.com/static/components/Logo/Logo-horde.2a80e0466e51d85c8cf60336e16fe8b8.png" alt="" style="width: 20%;" />
+            <p class="text-light col-12 ps-5 pe-5">
+                The proud nations of the Horde are loosely joined in an alliance of convenience against a hostile world that would see them destroyed. Focused, ferocious, and sometimes monstrous, the Horde values strength and honor, but struggles to keep aggression in check. loin the Horde and fight to build a world where their people can live free.
+            </p>
         </div>
         @foreach (var race in Model.Where(x => x.Faction == "Horde"))
         {
-            <div class="d-inline-block col-5 text-center">
-                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="Race arms" style="height:10rem; width: 10rem" /></a>
-                <p class="text-light">@race.Description</p>
+            <div class="d-inline-block col-3 text-center ps-3">
+                <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id"><img src="@race.Arms" alt="Race arms" style="width:75%; height: 10rem;" /></a>
+                <p class="text-light col-12">@race.Name</p>
             </div>
         }
     </div>

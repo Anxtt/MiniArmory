@@ -5,26 +5,22 @@
     ViewData["Title"] = "All Mounts";
 }
 
-<div class="row">
-    <div class="form-group">
-        @foreach (var mount in Model)
-        {
-            <div class="card d-inline-flex bg-dark text-white" style="width: 31rem; height: 11rem;">
-                <div class="row">
-                    <div class="col-6 d-inline-flex">
-                        <img src="@mount.Image" alt="Mount image" style="height: 11rem;">
-                        <div class="col-6">
-                            <p style="width: 9rem;">@mount.Name</p>
-                            @if (@mount.Faction != null)
-                            {
-                                <p style="width: 9rem;">Faction: @mount.Faction</p>
-                            }
-                            <p style="width: 9rem;">Ground speed: @mount.GroundSpeed</p>
-                            <p style="width: 9rem;">Flying speed: @mount.FlyingSpeed</p>
-                        </div>
-                    </div>
+<div class="form-group offset-1">
+    @foreach (var mount in Model)
+    {
+        <div class="card d-inline-flex bg-dark text-white m-2" style="width: 31rem; height: 11rem; border: 4px solid #808080;">
+            <div class="col-6 d-inline-flex">
+                <img src="@mount.Image" alt="Mount image" style="height: 10em;">
+                <div class="col-6">
+                    <p style="width: 9rem;">@mount.Name</p>
+                    @if (@mount.Faction != null)
+                    {
+                        <p style="width: 9rem;">Faction: @mount.Faction</p>
+                    }
+                    <p style="width: 9rem;">Ground speed: @mount.GroundSpeed</p>
+                    <p style="width: 9rem;">Flying speed: @mount.FlyingSpeed</p>
                 </div>
             </div>
-        }
-    </div>
+        </div>
+    }
 </div>
