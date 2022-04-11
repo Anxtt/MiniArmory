@@ -16,8 +16,8 @@ namespace MiniArmory.Web.Controllers
         public IActionResult AddSpell()
             => this.View();
 
-        [Authorize(Roles = "Owner, Admin")]
         [HttpPost]
+        [Authorize(Roles = "Owner, Admin")]
         public async Task<IActionResult> AddSpell(SpellFormModel model)
         {
             if (!ModelState.IsValid)
@@ -30,19 +30,34 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
-            await this.spellService.Add(model);
+            try
+            {
+                await this.spellService.Add(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AllSpells));
         }
 
         public async Task<IActionResult> AllSpells()
         {
-            var spells = await this.spellService.AllSpells();
+            IEnumerable<SpellViewModel> spells = default;
+
+            try
+            {
+                spells = await this.spellService.AllSpells();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(spells);
         }
 
-        [IgnoreAntiforgeryToken]
         public IActionResult SpellTypes()
         {
             string[] types = new string[]
@@ -54,7 +69,6 @@ namespace MiniArmory.Web.Controllers
             return Json(types);
         }
 
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetClasses()
         {
             var classes = await this.spellService.GetClasses();
@@ -62,7 +76,6 @@ namespace MiniArmory.Web.Controllers
             return Json(classes);
         }
 
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetRaces()
         {
             var races = await this.spellService.GetRaces();

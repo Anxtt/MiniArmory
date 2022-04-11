@@ -9,15 +9,15 @@ namespace MiniArmory.Web.Controllers
     {
         private readonly IClassService classService;
 
-        public ClassController(IClassService classService) 
+        public ClassController(IClassService classService)
             => this.classService = classService;
 
         [Authorize(Roles = "Owner, Admin")]
-        public IActionResult AddClass() 
+        public IActionResult AddClass()
             => this.View();
 
-        [Authorize(Roles = "Owner, Admin")]
         [HttpPost]
+        [Authorize(Roles = "Owner, Admin")]
         public async Task<IActionResult> AddClass(ClassFormModel model)
         {
             if (!ModelState.IsValid)
@@ -30,26 +30,50 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
-            await this.classService.Add(model);
+            try
+            {
+                await this.classService.Add(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AllClasses));
         }
 
         public async Task<IActionResult> AllClasses()
         {
-            var classes = await this.classService.AllClasses();
+            IEnumerable<ClassViewModel> classes = default;
+
+            try
+            {
+                classes = await this.classService.AllClasses();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(classes);
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = await this.classService.Details(id);
+            var model = new ClassViewModel();
+
+            try
+            {
+                model = await this.classService.Details(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(model);
         }
 
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetSpells()
         {
             var models = await this.classService.GetSpells();

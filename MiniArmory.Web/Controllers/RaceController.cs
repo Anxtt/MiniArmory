@@ -9,16 +9,16 @@ namespace MiniArmory.Web.Controllers
     {
         private readonly IRaceService raceService;
 
-        public RaceController(IRaceService raceService) 
+        public RaceController(IRaceService raceService)
             => this.raceService = raceService;
 
         [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddRace()
             => this.View();
 
-        [Authorize(Roles = "Owner, Admin")]
         [HttpPost]
-        public async Task<IActionResult> AddRace(RaceFormModel model) 
+        [Authorize(Roles = "Owner, Admin")]
+        public async Task<IActionResult> AddRace(RaceFormModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -30,26 +30,50 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
-            await this.raceService.Add(model);
+            try
+            {
+                await this.raceService.Add(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AllRaces));
         }
 
         public async Task<IActionResult> AllRaces()
         {
-            var races = await this.raceService.AllRaces();
+            IEnumerable<RaceViewModel> races = default;
+
+            try
+            {
+                races = await this.raceService.AllRaces();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(races);
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var race = await this.raceService.GetRace(id);
+            RaceViewModel race = default;
+
+            try
+            {
+                race = await this.raceService.GetRace(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(race);
         }
 
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetRacialSpells()
         {
             var racials = await this.raceService.GetRacialSpells();

@@ -16,8 +16,8 @@ namespace MiniArmory.Web.Controllers
         public IActionResult AddMount() 
             => this.View(); 
         
-        [Authorize(Roles = "Owner, Admin")]
         [HttpPost]
+        [Authorize(Roles = "Owner, Admin")]
         public async Task<IActionResult> AddMount(MountFormModel model)
         {
             if (!ModelState.IsValid)
@@ -30,19 +30,34 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
-            await this.mountService.Add(model);
+            try
+            {
+                await this.mountService.Add(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AllMounts));
         }
         
         public async Task<IActionResult> AllMounts()
         {
-            var mounts = await this.mountService.AllMounts();
+            IEnumerable<MountViewModel> mounts = default;
+
+            try
+            {
+                mounts = await this.mountService.AllMounts();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(mounts);
         }
         
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetFactions()
         {
             var factions = await this.mountService.GetFactions();

@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Models.Character;
+using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data.Models;
 
@@ -27,8 +29,8 @@ namespace MiniArmory.Web.Controllers
         public IActionResult AddCharacter()
             => this.View();
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> AddCharacter(CharacterFormModel model)
         {
             if (!ModelState.IsValid)
@@ -41,19 +43,35 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
-            var user = await userManager.FindByNameAsync(this.User.Identity.Name);
+            try
+            {
+                var user = await userManager.FindByNameAsync(this.User.Identity.Name);
 
-            await this.charService.Add(model, user.Id);
+                await this.charService.Add(model, user.Id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
-            return this.RedirectToAction(nameof(Details));
+            return this.RedirectToAction(nameof(CharacterList));
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> CharacterList()
         {
-            var user = await userManager.FindByNameAsync(this.User.Identity.Name);
+            User user = default;
+            IEnumerable<CharacterViewModel> models = default;
 
-            var models = await this.charService.OwnCharacters(user.Id);
+            try
+            {
+                user = await userManager.FindByNameAsync(this.User.Identity.Name);
+                models = await this.charService.OwnCharacters(user.Id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(models);
         }
@@ -66,8 +84,18 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            var mounts = await this.charService.UnownedMounts(id);
-            var character = await this.charService.FindCharacterById(id);
+            IEnumerable<MountViewModel> mounts = default;
+            CharacterViewModel character = default;
+
+            try
+            {
+                mounts = await this.charService.UnownedMounts(id);
+                character = await this.charService.FindCharacterById(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             MountCharacterViewModel model = new MountCharacterViewModel()
             {
@@ -78,8 +106,8 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> AddMount(Guid id, string mountName)
         {
             if (id == default(Guid) ||
@@ -94,7 +122,14 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction(nameof(AddMount), id);
             }
 
-            await this.charService.AddMountToCharacter(id, mountName);
+            try
+            {
+                await this.charService.AddMountToCharacter(id, mountName);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AddMount), id);
         }
@@ -107,8 +142,18 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            var achies = await this.charService.UnownedAchievements(id);
-            var character = await this.charService.FindCharacterById(id);
+            IEnumerable<AchievementViewModel> achies = default;
+            CharacterViewModel character = default;
+
+            try
+            {
+                achies = await this.charService.UnownedAchievements(id);
+                character = await this.charService.FindCharacterById(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             AchievementCharacterViewModel model = new AchievementCharacterViewModel()
             {
@@ -119,8 +164,8 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> AddAchievement(Guid id, string achievement)
         {
             if (id == default(Guid) ||
@@ -135,7 +180,14 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction(nameof(AddAchievement), id);
             }
 
-            await this.charService.AddAchievementToCharacter(id, achievement);
+            try
+            {
+                await this.charService.AddAchievementToCharacter(id, achievement);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AddAchievement), id);
         }
@@ -147,8 +199,18 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            var achievements = await this.charService.OwnAchievements(id);
-            var character = await this.charService.FindCharacterById(id);
+            IEnumerable<AchievementViewModel> achievements = default;
+            CharacterViewModel character = default;
+
+            try
+            {
+                achievements = await this.charService.OwnAchievements(id);
+                character = await this.charService.FindCharacterById(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             AchievementCharacterViewModel model = new AchievementCharacterViewModel()
             {
@@ -162,50 +224,98 @@ namespace MiniArmory.Web.Controllers
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> ChangeFaction(Guid id)
         {
-            var model = await this.charService.GetCharacterForChange(id);
+            CharacterFormModel model = default;
+
+            try
+            {
+                model = await this.charService.GetCharacterForChange(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(model);
         }
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> ChangeFaction(Guid id, string faction)
         {
-            await this.charService.ChangeFaction(id, faction);
+            try
+            {
+                await this.charService.ChangeFaction(id, faction);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(Details), id);
         }
-        
+
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> ChangeName(Guid id)
         {
-            var model = await this.charService.GetCharacterForChange(id);
+            CharacterFormModel model = default;
+
+            try
+            {
+                model = await this.charService.GetCharacterForChange(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(model);
         }
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> ChangeName(Guid id, string name)
         {
-            await this.charService.ChangeName(id, name);
+            try
+            {
+                await this.charService.ChangeName(id, name);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(Details), id);
         }
-        
+
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> ChangeRace(Guid id)
         {
-            var model = await this.charService.GetCharacterForChange(id);
+            CharacterFormModel model = default;
+
+            try
+            {
+                model = await this.charService.GetCharacterForChange(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(model);
         }
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> ChangeRace(Guid id, string race)
         {
-            await this.charService.ChangeRace(id, race);
+            try
+            {
+                await this.charService.ChangeRace(id, race);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(Details), id);
         }
@@ -218,7 +328,14 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction(nameof(CharacterList));
             }
 
-            await this.charService.Delete(id);
+            try
+            {
+                await this.charService.Delete(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(CharacterList));
         }
@@ -230,14 +347,32 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            var model = await this.charService.FindCharacterById(id);
+            CharacterViewModel model = default;
+
+            try
+            {
+                model = await this.charService.FindCharacterById(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(model);
         }
 
         public async Task<IActionResult> Leaderboard()
         {
-            var models = await this.charService.LeaderboardStats();
+            IEnumerable<CharacterViewModel> models = default;
+
+            try
+            {
+                models = await this.charService.LeaderboardStats();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(models);
         }
@@ -245,7 +380,16 @@ namespace MiniArmory.Web.Controllers
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> LFG(Guid id)
         {
-            var model = await this.charService.LFGCharacter(id);
+            LFGFormModel model = default;
+
+            try
+            {
+                model = await this.charService.LFGCharacter(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(model);
         }
@@ -258,8 +402,18 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            var mounts = await this.charService.OwnMounts(id);
-            var character = await this.charService.FindCharacterById(id);
+            IEnumerable<MountViewModel> mounts = default;
+            CharacterViewModel character = default;
+
+            try
+            {
+                mounts = await this.charService.OwnMounts(id);
+                character = await this.charService.FindCharacterById(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             MountCharacterViewModel model = new MountCharacterViewModel()
             {
@@ -279,7 +433,14 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            await this.charService.EarnRating(id);
+            try
+            {
+                await this.charService.EarnRating(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(PlayArena));
         }
@@ -287,27 +448,50 @@ namespace MiniArmory.Web.Controllers
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> PlayArena()
         {
-            var user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
+            User user = default;
+            IEnumerable<CharacterViewModel> models = default;
 
-            var models = await this.charService.OwnCharacters(user.Id);
+            try
+            {
+                user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
+                models = await this.charService.OwnCharacters(user.Id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(models);
         }
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> EarnRatingAsTeam(Guid id, Guid partnerId)
         {
-            await this.charService.EarnRatingAsTeam(id, partnerId);
+            try
+            {
+                await this.charService.EarnRatingAsTeam(id, partnerId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
         }
 
-        [Authorize(Roles = "Member, Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> LeaveTeam(Guid id, Guid partnerId)
         {
-            await this.charService.LeaveTeam(id, partnerId);
+            try
+            {
+                await this.charService.LeaveTeam(id, partnerId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(CharacterList));
         }
@@ -315,7 +499,14 @@ namespace MiniArmory.Web.Controllers
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> TeamUp(Guid id, Guid partnerId)
         {
-            await this.charService.TeamUp(id, partnerId);
+            try
+            {
+                await this.charService.TeamUp(id, partnerId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
         }
@@ -323,8 +514,18 @@ namespace MiniArmory.Web.Controllers
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> PlayArenaAsTeam(Guid id, Guid partnerId)
         {
-            var character = await this.charService.FindCharacterById(id);
-            var partner = await this.charService.FindCharacterById(partnerId);
+            CharacterViewModel character = default;
+            CharacterViewModel partner = default;
+
+            try
+            {
+                character = await this.charService.FindCharacterById(id);
+                partner = await this.charService.FindCharacterById(partnerId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             List<CharacterViewModel> models = new List<CharacterViewModel>();
 
@@ -336,7 +537,16 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> Ranking()
         {
-            var models = await this.charService.AchievementStats();
+            IEnumerable<CharacterViewModel> models = default;
+
+            try
+            {
+                models = await this.charService.AchievementStats();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(models);
         }
@@ -348,7 +558,16 @@ namespace MiniArmory.Web.Controllers
                 return this.View();
             }
 
-            var models = await this.charService.SearchCharacters(chars);
+            IEnumerable<CharacterViewModel> models = default;
+
+            try
+            {
+                models = await this.charService.SearchCharacters(chars);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(models);
         }
@@ -368,12 +587,18 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction(nameof(LFG), new { id = model.Id });
             }
 
-            await this.charService.SignUp(model);
+            try
+            {
+                await this.charService.SignUp(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(LFG), new { id = model.Id });
         }
 
-        [IgnoreAntiforgeryToken]
         public async Task<IActionResult> GetRealms()
         {
             var realms = await this.charService.GetRealms();

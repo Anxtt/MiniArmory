@@ -9,15 +9,15 @@ namespace MiniArmory.Web.Controllers
     {
         private readonly IAchievementService achievementService;
 
-        public AchievementController(IAchievementService achievementService) 
+        public AchievementController(IAchievementService achievementService)
             => this.achievementService = achievementService;
 
         [Authorize(Roles = "Admin, Owner")]
-        public IActionResult AddAchievement() 
+        public IActionResult AddAchievement()
             => this.View();
 
-        [Authorize(Roles = "Admin, Owner")]
         [HttpPost]
+        [Authorize(Roles = "Admin, Owner")]
         public async Task<IActionResult> AddAchievement(AchievementFormModel model)
         {
             if (!ModelState.IsValid)
@@ -30,7 +30,14 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
-            await this.achievementService.Add(model);
+            try
+            {
+                await this.achievementService.Add(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AllAchievements));
         }
@@ -38,7 +45,16 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> AllAchievements()
         {
-            var achies = await this.achievementService.AllAchievements();
+            IEnumerable<AchievementViewModel> achies = default;
+
+            try
+            {
+                achies = await this.achievementService.AllAchievements();
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(achies);
         }

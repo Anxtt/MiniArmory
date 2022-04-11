@@ -13,11 +13,11 @@ namespace MiniArmory.Web.Controllers
             => this.realmService = realmService;
 
         [Authorize(Roles = "Owner")]
-        public IActionResult AddRealm() 
+        public IActionResult AddRealm()
             => this.View();
 
-        [Authorize(Roles = "Owner")]
         [HttpPost]
+        [Authorize(Roles = "Owner")]
         public async Task<IActionResult> AddRealm(RealmFormModel model)
         {
             if (!ModelState.IsValid)
@@ -30,14 +30,30 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
-            await this.realmService.Add(model);
+            try
+            {
+                await this.realmService.Add(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "HomeController");
+            }
 
             return this.RedirectToAction(nameof(AllRealms));
         }
 
         public async Task<IActionResult> AllRealms()
         {
-            var realms = await this.realmService.AllRealms();
+            IEnumerable<RealmViewModel> realms = default;
+
+            try
+            {
+                realms = await this.realmService.AllRealms();
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "HomeController");
+            }
 
             return this.View(realms);
         }
