@@ -85,10 +85,6 @@ namespace MiniArmory.Core.Services
                 .FirstAsync();
 
             character.Mounts.Add(mount);
-            character.Mounts
-                .Where(x => x.Name == mountName)
-                .First()
-                .IsCollected = true;
 
             await this.db.SaveChangesAsync();
         }
@@ -266,7 +262,6 @@ namespace MiniArmory.Core.Services
             {
                 Name = x.Name,
                 Image = x.Image,
-                Faction = x.Faction,
                 FlyingSpeed = x.FlyingSpeed,
                 GroundSpeed = x.GroundSpeed
             })
@@ -514,7 +509,6 @@ namespace MiniArmory.Core.Services
             .Where(x => x.Characters.Any(z => z.Id == id))
             .Select(x => new MountViewModel()
             {
-                Faction = x.Faction,
                 FlyingSpeed = x.FlyingSpeed,
                 GroundSpeed = x.GroundSpeed,
                 Image = x.Image,

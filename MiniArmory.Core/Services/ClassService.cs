@@ -32,28 +32,6 @@ namespace MiniArmory.Core.Services
             await this.db.SaveChangesAsync();
         }
 
-        public async Task AddSpells(ClassViewModel model)
-        {
-            Class classEntity = await this.db
-                .Classes
-                .Include(x => x.Spells)
-                .Where(x => x.Id == model.Id)
-                .FirstAsync();
-
-            foreach (var spells in model.SpellIds)
-            {
-                Spell spell = await this.db
-                    .Spells
-                    .Include(x => x.Class)
-                    .Where(x => x.Id == spells)
-                    .FirstAsync();
-
-                classEntity.Spells.Add(spell);
-            }
-
-            await this.db.SaveChangesAsync();
-        }
-
         public async Task<IEnumerable<ClassViewModel>> AllClasses()
             => await this.db
             .Classes

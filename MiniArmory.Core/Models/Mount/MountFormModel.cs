@@ -18,12 +18,10 @@ namespace MiniArmory.Core.Models.Mount
         [Display(Name = "Flying Speed")]
         public sbyte FlyingSpeed { get; set; }
 
-        public string Faction { get; set; }
-
         [Required]
         [StringLength(200, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
         [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
-            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
+            ErrorMessage = "Only images from DeviantArt, WoW Armory, WoWHead, and Imgur are allowed.")]
         public string Image { get; set; }
     }
 }

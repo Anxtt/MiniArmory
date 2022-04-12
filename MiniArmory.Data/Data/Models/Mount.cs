@@ -19,15 +19,9 @@ namespace MiniArmory.Data.Data.Models
         [Range(80, 100)]
         public sbyte FlyingSpeed { get; set; }
 
-        [StringLength(20)]
-        public string? Faction { get; set; }
-
         [Required]
         [StringLength(200)]
         public string Image { get; set; }
-
-        [Required]
-        public bool IsCollected { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
     }

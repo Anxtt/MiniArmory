@@ -16,15 +16,9 @@ namespace MiniArmory.Core.Services
 
         public async Task Add(MountFormModel model)
         {
-            if (model.Faction == "-1")
-            {
-                model.Faction = null;
-            }
-
             Mount mount = new Mount()
             {
                 FlyingSpeed = model.FlyingSpeed,
-                Faction = model.Faction,
                 GroundSpeed = model.GroundSpeed,
                 Image = model.Image,
                 Name = model.Name
@@ -39,7 +33,6 @@ namespace MiniArmory.Core.Services
             .Mounts
             .Select(x => new MountViewModel()
             {
-                Faction = x.Faction,
                 FlyingSpeed = x.FlyingSpeed,
                 GroundSpeed = x.GroundSpeed,
                 Image = x.Image,
