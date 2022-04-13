@@ -12,7 +12,14 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light border-bottom box-shadow" style="background-color: #212121;">
             <div class="container-fluid">
-                <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MiniArmory</a>
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a class="navbar-brand text-white" asp-area="" asp-controller="Home" asp-action="Index">MiniArmory</a>
+                }
+                else
+                {
+                    <a class="navbar-brand text-white" asp-area="" asp-controller="Character" asp-action="CharacterList">MiniArmory</a>
+                }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -37,7 +44,7 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                                 @if (this.User.IsInRole("Owner") ||
-                                     this.User.IsInRole("Admin"))
+                                this.User.IsInRole("Admin"))
                                 {
                                     <li><a class="dropdown-item" asp-controller="Achievement" asp-action="AddAchievement">Add Achievement</a></li>
                                 }

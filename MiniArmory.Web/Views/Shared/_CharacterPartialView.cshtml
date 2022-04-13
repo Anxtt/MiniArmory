@@ -1,0 +1,17 @@
+﻿<div class="col-4 d-inline-block border offset-1">
+    <img src="@Model.FactionImage" class="d-inline-flex col-2" />
+    <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="d-inline-block p-2 text-decoration-none">
+        @if (@Model.FactionName == "Alliance")
+        {
+            <h3 class="text-primary d-block">@Model.Name</h3>
+            <h4 class="text-light d-block">@Model.ClassName</h4>
+        }
+        else
+        {
+            <h3 class="text-danger">@Model.Name</h3>
+            <h4 class="text-light d-block">@Model.ClassName</h4>
+        }
+    </a>
+
+    <img src="@Model.Image" class="p-2 col-12" />
+</div>

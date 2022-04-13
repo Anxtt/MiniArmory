@@ -5,40 +5,48 @@
 }
 
 <div class="card-body table-responsive col-8 offset-2">
-    <table class="table table-hover text-nowrap">
-        <thead>
-            <tr>
-                <th class="text-light text-center">Class</th>
-                <th class="text-light text-center">Name</th>
-                <th class="text-light text-center">Realm</th>
-                <th class="text-light text-center">Rating</th>
-                <th class="text-light text-center">Activities</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var character in Model.OrderBy(x => x.Name))
-            {
+    @if (Model.Count() >= 1)
+    {
+        <table class="table table-hover text-nowrap">
+            <thead>
                 <tr>
-                    <td class="text-light text-center"><img src="@character.ClassImage" /></td>
-                    <td class="text-light text-center">@character.Name</td>
-                    <td class="text-light text-center">@character.RealmName</td>
-                    <td class="text-light text-center">@character.Rating</td>
-                    <td class="text-light text-center">
-                        <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-primary btn-xs text-light">Team up</a>
-                        <a asp-action="AddMount" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs text-light">Earn mounts</a>
-                        <a asp-action="AddAchievement" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-success btn-xs text-light">Earn achievements</a>
-                        <a class="btn btn-block btn-outline-light btn-xs dropdown-toggle text-light" href="#" id="EditDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Edit
-                        </a>
-                        <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                            <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeName" asp-route-id="@character.Id" asp-route-name="@character.Name">Change Name</a></li>
-                            <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeRace" asp-route-id="@character.Id">Change Race</a></li>
-                            <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeFaction" asp-route-id="@character.Id">Change Faction</a></li>
-                        </ul>
-                        <a asp-action="DeleteCharacter" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-danger btn-xs text-light">Delete</a>
-                    </td>
+                    <th class="text-light text-center">Class</th>
+                    <th class="text-light text-center">Name</th>
+                    <th class="text-light text-center">Realm</th>
+                    <th class="text-light text-center">Rating</th>
+                    <th class="text-light text-center">Activities</th>
                 </tr>
-            }
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                @foreach (var character in Model.OrderBy(x => x.Name))
+                {
+                    <tr>
+                        <td class="text-light text-center"><img src="@character.ClassImage" /></td>
+                        <td class="text-light text-center"><a asp-action="Details" asp-controller="Character" asp-route-id="@character.Id" class="text-decoration-none text-light">@character.Name</a></td>
+                        <td class="text-light text-center">@character.RealmName</td>
+                        <td class="text-light text-center">@character.Rating</td>
+                        <td class="text-light text-center">
+                            <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-primary btn-xs text-light">Team up</a>
+                            <a asp-action="AddMount" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs text-light">Earn mounts</a>
+                            <a asp-action="AddAchievement" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-success btn-xs text-light">Earn achievements</a>
+                            <a class="btn btn-block btn-outline-light btn-xs dropdown-toggle text-light" href="#" id="EditDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Edit
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
+                                <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeName" asp-route-id="@character.Id" asp-route-name="@character.Name">Change Name</a></li>
+                                <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeRace" asp-route-id="@character.Id">Change Race</a></li>
+                                <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeFaction" asp-route-id="@character.Id">Change Faction</a></li>
+                            </ul>
+                            <a asp-action="DeleteCharacter" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-danger btn-xs text-light">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2 class="text-center text-light">You don't have characters to play with yet.</h2>
+        <h2 class="text-center text-light">Go create some <a asp-controller="Character" asp-action="AddCharacter">Here</a></h2>
+    }
 </div>

@@ -7,23 +7,7 @@
 
 
 <div class="d-inline-flex pt-3">
-    <div class="col-4 d-inline-block border offset-1">
-        <img src="@Model.Character.FactionImage" class="d-inline-flex col-2" />
-        <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Character.Id" class="d-inline-block p-2 text-decoration-none">
-            @if (@Model.Character.FactionName == "Alliance")
-            {
-                <h3 class="text-primary d-block">@Model.Character.Name</h3>
-                <h4 class="text-light d-block">@Model.Character.ClassName</h4>
-            }
-            else
-            {
-                <h3 class="text-danger">@Model.Character.Name</h3>
-                <h4 class="text-light d-block">@Model.Character.ClassName</h4>
-            }
-        </a>
-
-        <img src="@Model.Character.Image" class="p-2 col-12" />
-    </div>
+    <partial name="_CharacterWithCollectionPartialView" />
 
     <div class="d-inline-block p-2">
         @if (Model.Mounts.Count() >= 1)
