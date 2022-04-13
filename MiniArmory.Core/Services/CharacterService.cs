@@ -362,7 +362,17 @@ namespace MiniArmory.Core.Services
 
             var (rating, win, loss) = CalculateRating(character.Rating);
 
-            if (character.Rating < 1800)
+            if (character.Rating < 1800 && partner.Rating < 1800)
+            {
+                character.Rating += rating;
+                character.Win += win;
+                character.Loss += loss;
+
+                partner.Rating += rating;
+                partner.Win += win;
+                partner.Loss += loss;
+            }
+            else if (character.Rating < 1800)
             {
                 character.Rating += rating;
                 character.Win += win;
