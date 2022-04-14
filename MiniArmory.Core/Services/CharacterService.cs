@@ -166,7 +166,10 @@ namespace MiniArmory.Core.Services
                 Loss = x.Loss,
                 RealmName = x.Realm.Name,
                 Rating = x.Rating,
-                Win = x.Win
+                Win = x.Win,
+                Image = x.Image,
+                ClassName = x.Class.Name,
+                FactionName = x.Faction.Name
             })
             .ToListAsync();
 

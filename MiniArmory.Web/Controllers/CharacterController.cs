@@ -119,7 +119,7 @@ namespace MiniArmory.Web.Controllers
 
             if (this.charService.RollForReward("Mount") == false)
             {
-                return this.RedirectToAction(nameof(AddMount), id);
+                return this.RedirectToAction(nameof(AddMount), new { id = id });
             }
 
             try
@@ -131,7 +131,7 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction("Error", "HomeController");
             }
 
-            return this.RedirectToAction(nameof(AddMount), id);
+            return this.RedirectToAction(nameof(AddMount), new { id = id });
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -177,7 +177,7 @@ namespace MiniArmory.Web.Controllers
 
             if (this.charService.RollForReward("Achievement") == false)
             {
-                return this.RedirectToAction(nameof(AddAchievement), id);
+                return this.RedirectToAction(nameof(AddAchievement), new { id = id });
             }
 
             try
@@ -189,7 +189,7 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction("Error", "HomeController");
             }
 
-            return this.RedirectToAction(nameof(AddAchievement), id);
+            return this.RedirectToAction(nameof(AddAchievement), new { id = id });
         }
 
         public async Task<IActionResult> Achievements(Guid id)
@@ -240,18 +240,19 @@ namespace MiniArmory.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Member, Admin, Owner")]
-        public async Task<IActionResult> ChangeFaction(Guid id, string faction)
+        public async Task<IActionResult> ChangeFaction(Guid id, string faction, string race)
         {
             try
             {
                 await this.charService.ChangeFaction(id, faction);
+                await this.charService.ChangeRace(id, race);
             }
             catch (Exception)
             {
                 return this.RedirectToAction("Error", "HomeController");
             }
 
-            return this.RedirectToAction(nameof(Details), id);
+            return this.RedirectToAction(nameof(Details), new { id = id });
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -284,7 +285,7 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction("Error", "HomeController");
             }
 
-            return this.RedirectToAction(nameof(Details), id);
+            return this.RedirectToAction(nameof(Details), new { id = id });
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -317,7 +318,7 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction("Error", "HomeController");
             }
 
-            return this.RedirectToAction(nameof(Details), id);
+            return this.RedirectToAction(nameof(Details), new { id = id });
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
