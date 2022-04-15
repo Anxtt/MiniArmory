@@ -22,11 +22,12 @@ namespace MiniArmory.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                if (await this.raceService.DoesExist(model.Name))
-                {
-                    ModelState.AddModelError("Name", "Invalid Name");
-                }
+                return this.View(model);
+            }
 
+            if (await this.raceService.DoesExist(model.Name))
+            {
+                ModelState.AddModelError("Name", "Invalid Name");
                 return this.View(model);
             }
 

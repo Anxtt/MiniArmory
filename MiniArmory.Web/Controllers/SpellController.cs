@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Spell;
 using MiniArmory.Core.Services.Contracts;
 
@@ -22,11 +23,12 @@ namespace MiniArmory.Web.Controllers
         {
             if (!ModelState.IsValid)
             {
-                if (await this.spellService.DoesExist(model.Name))
-                {
-                    ModelState.AddModelError(nameof(model.Name), "Invalid name.");
-                }
+                return this.View(model);
+            }
 
+            if (await this.spellService.DoesExist(model.Name))
+            {
+                ModelState.AddModelError(nameof(model.Name), "Invalid name.");
                 return this.View(model);
             }
 
@@ -76,9 +78,22 @@ namespace MiniArmory.Web.Controllers
             return Json(classes);
         }
 
-        public async Task<IActionResult> GetRaces()
+        public async Task<IActionResult> GetRaces(int? raceId = null, int? factionId = null)
         {
-            var races = await this.spellService.GetRaces();
+            IEnumerable<JsonFormModel> races = default;
+
+            if (raceId != null && factionId != null)
+            {
+                races = await this.spellService.GetSameFactionRaces(raceId, factionId);
+            }
+            else if (factionId != null)
+            {
+                races = await this.spellService.GetOppositeFactionRaces(factionId);
+            }
+            else
+            {
+                races = await this.spellService.GetRaces();
+            }
 
             return Json(races);
         }

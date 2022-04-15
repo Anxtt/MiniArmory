@@ -54,5 +54,16 @@ namespace MiniArmory.Core.Services
                 Name = x.Name
             })
             .ToListAsync();
+
+        public async Task<IEnumerable<JsonFormModel>> GetSpecificFaction(int? factionId)
+            => await this.db
+                .Factions
+                .Where(x => x.Id != factionId)
+                .Select(x => new JsonFormModel()
+                {
+                    Id = x.Id,
+                    Name = x.Name
+                })
+                .ToListAsync();
     }
 }

@@ -38,7 +38,7 @@
                 <select class="form-control" id="Class" name="Class"></select>
                 <span asp-validation-for="Class" class="text-danger"></span>
             </div>
-             <div class="form-group col-4 mb-2 offset-md-4 text-light">
+            <div class="form-group col-4 mb-2 offset-md-4 text-light">
                 <label asp-for="Image" class="control-label"></label>
                 <input asp-for="Image" class="form-control" />
                 <span asp-validation-for="Image" class="text-danger"></span>
@@ -98,25 +98,6 @@
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "/Spell/GetRaces",
-            headers: {
-                    RequestVerificationToken:
-                        $('input:hidden[name="__RequestVerificationToken"]').val()
-                },
-            success: function (races)
-            {
-                var s = '<option value="-1">Race</option>';
-                for (var i = 0; i < races.length; i++)
-                {
-                    s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
-                }
-                $("#Race").html(s);
-            }
-        })
-
-        $.ajax({
-            type: "POST",
-            dataType: "json",
             url: "/Spell/GetClasses",
             headers: {
                     RequestVerificationToken:
@@ -132,6 +113,39 @@
                 $("#Class").html(s);
             }
         })
+    });
+
+    $(document).on('change', 'select#Faction', function(){
+        var id =  null
+        if($(this).val()=="1"){
+            id = 2;
+        }
+        else if($(this).val()=="2"){
+            id = 1;
+        }
+        else{
+            id = null;
+        }
+        
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/GetRaces",
+            data: { factionId: id },
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+            success: function (races)
+            {
+                var s = '<option value="-1">Race</option>';
+                for (var i = 0; i < races.length; i++)
+                {
+                    s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
+                }
+                $("#Race").html(s);
+            }
+        });
     });
 </script>
 }

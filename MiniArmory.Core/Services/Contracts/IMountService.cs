@@ -12,5 +12,7 @@ namespace MiniArmory.Core.Services.Contracts
         Task<bool> DoesExist(string name);
 
         Task<IEnumerable<JsonFormModel>> GetFactions();
+
+        Task<IEnumerable<JsonFormModel>> GetSpecificFaction(int? factionId);
     }
 }

@@ -13,6 +13,10 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<JsonFormModel>> GetRaces();
 
+        Task<IEnumerable<JsonFormModel>> GetSameFactionRaces(int? raceId, int? factionId);
+
+        Task<IEnumerable<JsonFormModel>> GetOppositeFactionRaces(int? factionId);
+
         Task<IEnumerable<SpellViewModel>> AllSpells();
     }
 }

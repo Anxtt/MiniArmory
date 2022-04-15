@@ -32,6 +32,7 @@
             type: "POST",
             dataType: "json",
             url: "/Spell/GetRaces",
+            data: { factionId: @Model.Faction, raceId: @Model.Race }, 
             headers: {
                     RequestVerificationToken:
                         $('input:hidden[name="__RequestVerificationToken"]').val()

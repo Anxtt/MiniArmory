@@ -15,6 +15,11 @@
             <select class="form-control" id="Faction" name="Faction"></select>
             <span asp-validation-for="Faction" class="text-danger"></span>
         </div>
+        <div class="form-group text-center col-4 mt-3 offset-md-4 text-light" id="RaceWrapper">
+            <label asp-for="Race" class="dropdown"></label>
+            <select class="form-control" id="Race" name="Race"></select>
+            <span asp-validation-for="Race" class="text-danger"></span>
+        </div>
         <div class="form-group col-4 offset-md-4 text-center text-light mt-2">
             <input type="submit" value="Change" class="btn btn-success" />
         </div>
@@ -28,10 +33,13 @@
 
 <script>
     $(document).ready(function () {
+        $("#RaceWrapper").hide();
+
         $.ajax({
             type: "POST",
             dataType: "json",
             url: "/Mount/GetFactions",
+            data: { factionId: @Model.Faction },
             headers: {
                     RequestVerificationToken:
                         $('input:hidden[name="__RequestVerificationToken"]').val()
@@ -46,6 +54,37 @@
                 $("#Faction").html(s);
             }
         })
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/GetRaces",
+            data: { factionId: @Model.Faction },
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+            success: function (races)
+            {
+                var s = '<option value="-1">Race</option>';
+                for (var i = 0; i < races.length; i++)
+                {
+                    s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
+                }
+                $("#Race").html(s);
+            }
+        })
+    });
+
+    $("select#Faction").on('change',function(){
+        if($(this).val()!="-1"){
+            $("#Race").prop('disabled', false);
+            $("#RaceWrapper").show();
+        }
+        else if($(this).val()=="-1"){
+            $("#RaceWrapper").hide();
+            $("#Race").prop('disabled', true);
+        }
     });
 </script>
 }

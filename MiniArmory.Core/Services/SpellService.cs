@@ -86,5 +86,27 @@ namespace MiniArmory.Core.Services
                     Name = x.Name
                 })
                 .ToListAsync();
+
+        public async Task<IEnumerable<JsonFormModel>> GetSameFactionRaces(int? raceId, int? factionId)
+            => await this.db
+                   .Races
+                   .Where(x => x.Id != raceId && x.FactionId == factionId)
+                   .Select(x => new JsonFormModel()
+                   {
+                       Id = x.Id,
+                       Name = x.Name
+                   })
+                   .ToListAsync();
+
+        public async Task<IEnumerable<JsonFormModel>> GetOppositeFactionRaces(int? factionId)
+            => await this.db
+                   .Races
+                   .Where(x => x.FactionId != factionId)
+                   .Select(x => new JsonFormModel()
+                   {
+                       Id = x.Id,
+                       Name = x.Name
+                   })
+                   .ToListAsync();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
 
@@ -9,24 +10,25 @@ namespace MiniArmory.Web.Controllers
     {
         private readonly IMountService mountService;
 
-        public MountController(IMountService mountService) 
+        public MountController(IMountService mountService)
             => this.mountService = mountService;
 
         [Authorize(Roles = "Owner, Admin")]
-        public IActionResult AddMount() 
-            => this.View(); 
-        
+        public IActionResult AddMount()
+            => this.View();
+
         [HttpPost]
         [Authorize(Roles = "Owner, Admin")]
         public async Task<IActionResult> AddMount(MountFormModel model)
         {
             if (!ModelState.IsValid)
             {
-                if (await this.mountService.DoesExist(model.Name))
-                {
-                    ModelState.AddModelError("Name", "Invalid Name");
-                }
+                return this.View(model);
+            }
 
+            if (await this.mountService.DoesExist(model.Name))
+            {
+                ModelState.AddModelError("Name", "Invalid Name");
                 return this.View(model);
             }
 
@@ -41,7 +43,7 @@ namespace MiniArmory.Web.Controllers
 
             return this.RedirectToAction(nameof(AllMounts));
         }
-        
+
         public async Task<IActionResult> AllMounts()
         {
             IEnumerable<MountViewModel> mounts = default;
@@ -57,10 +59,19 @@ namespace MiniArmory.Web.Controllers
 
             return this.View(mounts);
         }
-        
-        public async Task<IActionResult> GetFactions()
+
+        public async Task<IActionResult> GetFactions(int? factionId = null)
         {
-            var factions = await this.mountService.GetFactions();
+            IEnumerable<JsonFormModel> factions = default;
+
+            if (factionId != null)
+            {
+                factions = await this.mountService.GetSpecificFaction(factionId);
+            }
+            else
+            {
+                factions = await this.mountService.GetFactions();
+            }
 
             return Json(factions);
         }
