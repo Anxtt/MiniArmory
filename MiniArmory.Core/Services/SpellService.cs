@@ -108,5 +108,17 @@ namespace MiniArmory.Core.Services
                        Name = x.Name
                    })
                    .ToListAsync();
+
+        public async Task<IEnumerable<SpellViewModel>> FilteredSpells(string type)
+            => await this.db
+                .Spells
+                .Where(x => x.Type == type)
+                .Select(x => new SpellViewModel()
+                {
+                    Name = x.Name,
+                    Description = x.Description,
+                    Tooltip = x.Tooltip
+                })
+                .ToListAsync();
     }
 }

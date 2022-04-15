@@ -5,23 +5,66 @@
     ViewData["Title"] = "All Spells";
 }
 
-<div class="form-group">
-    @foreach (var spell in Model)
-    {
-        <div class="card d-inline-flex bg-dark text-white m-2" style="width: 18rem; height: 18rem; border: 4px solid #808080">
-            <div class="row">
-                <div class="col-md-7">
-                    <img src="@spell.Tooltip" alt="Spell tooltip" style="width: 5rem; border: 1px solid #808080">
-                </div>
-
-                <div class="col-md-5 ps-3">
-                    <p>@spell.Name</p>
-                </div>
-            </div>
-
-            <div class="card-body">
-                <p class="card-text" style="text-align: justify;">@spell.Description</p>
-            </div>
-        </div>
-    }
+<div class="col-1 offset-1">
+    <label class="dropdown text-light pb-2" for="Type">Type:</label>
+    <select class="form-control" id="Type" name="Type"></select>
 </div>
+
+<div id="FilteredSpells">
+    <partial name="_AllSpellsPartialView" id="FilteredSpells"/>
+</div>
+
+@section Scripts {
+
+<script>
+    $(document).ready(function () {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: "/Spell/SpellTypes",
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+            success: function (types)
+            {
+                var s = '<option value="-1">Type</option>';
+                for (var i = 0; i < types.length; i++)
+                {
+                    s += '<option value="' + types[i] + '">' + types[i] + '</option>';
+                }
+                $("#Type").html(s);
+            }
+        })
+    })
+
+    $(document).on('change', 'select#Type', function(){
+        var type = null;
+        if($(this).val()=="Class"){
+            type = "Class";
+        }
+        else if($(this).val()=="Race"){
+            type = "Race";
+        }
+        else{
+            id = null;
+        }
+
+        $.ajax({
+            type: "GET",
+            dataType: "html",
+            url: "/Spell/FilterSpells",
+            data: { type: type },
+            headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+            success: function (spells)
+            {
+                console.log(spells);
+                $("#FilteredSpells").html(spells);
+            }
+        });
+    });
+</script>
+}

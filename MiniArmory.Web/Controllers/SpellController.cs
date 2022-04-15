@@ -97,5 +97,28 @@ namespace MiniArmory.Web.Controllers
 
             return Json(races);
         }
+
+        public async Task<IActionResult> FilterSpells(string? type = null)
+        {
+            IEnumerable<SpellViewModel> filteredSpells = default;
+
+            try
+            {
+                if (type != null)
+                {
+                    filteredSpells = await this.spellService.FilteredSpells(type);
+                }
+                else
+                {
+                    filteredSpells = await this.spellService.AllSpells();
+                }
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction("Error", "HomeController");
+            }
+
+            return this.PartialView("_AllSpellsPartialView", filteredSpells);
+        }
     }
 }
