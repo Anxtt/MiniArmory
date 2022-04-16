@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css">
+    @await RenderSectionAsync("Head", false)
+</head>
+<body class="hold-transition sidebar-mini">
+    <div style="position: initial; height: 840px;">
+        <aside class="main-sidebar sidebar-dark-primary elevation-4">
+            <a asp-area="Admin" asp-action="Index" asp-controller="Home" class="brand-link">
+                <span class="brand-text font-weight-light" style="opacity: .8">MiniArmory - @ViewData["Title"]</span>
+            </a>
+            <div class="sidebar">
+                <ul class="navbar-nav flex-grow-1 justify-content-center">
+                    <li class="nav-item pt-2">
+                        <p class="text-white h4">Hello, @User.Identity?.Name!</p>
+                    </li>
+                    <li class="nav-item pt-2">
+                        <a asp-area="" asp-controller="Home" asp-action="Index" class="text-white">MiniArmory</a>
+                    </li>
+                    <li class="nav-item pt-2 ">
+                        <a asp-area="" asp-controller="Achievement" asp-action="AddAchievement" class="text-white">Add Achievement</a>
+                    </li>
+                    <li class="nav-item pt-2">
+                        <a asp-area="" asp-controller="Class" asp-action="AddClass" class="text-white">Add Class</a>
+                    </li>
+                    <li class="nav-item pt-2">
+                        <a asp-area="" asp-controller="Spell" asp-action="AddSpell" class="text-white">Add Spell</a>
+                    </li>
+                    @if (User.IsInRole("Owner"))
+                    {
+                        <li class="nav-item pt-2">
+                            <a asp-area="" asp-controller="Faction" asp-action="AddFaction" class="text-white">Add Faction</a>
+                        </li>
+                    }
+                    <li class="nav-item pt-2">
+                        <a asp-area="" asp-controller="Race" asp-action="AddRace" class="text-white">Add Race</a>
+                    </li>
+                    <li class="nav-item pt-2">
+                        <a asp-area="" asp-controller="Mount" asp-action="AddMount" class="text-white">Add Mount</a>
+                    </li>
+                    @if (User.IsInRole("Owner"))
+                    {
+                        <li class="nav-item pt-2">
+                            <a asp-area="" asp-controller="Realm" asp-action="AddRealm" class="text-white">Add Realm</a>
+                        </li>
+                    }
+                    <li class="nav-item pt-2">
+                        <a asp-area="Admin" asp-controller="User" asp-action="AllUsers" class="text-white">All Users</a>
+                    </li>
+                    <li class="nav-item pt-2">
+                        <a asp-area="Admin" asp-controller="User" asp-action="CreateRole" class="text-white">Create Roles</a>
+                    </li>
+                    @if (User.IsInRole("Owner"))
+                    {
+                        <li class="nav-item pt-2">
+                            <a asp-area="Admin" asp-controller="User" asp-action="DeleteRoles" class="text-white">Delete Roles</a>
+                        </li>
+                    }
+                    <li class="nav-item">
+                        <form asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                            <button type="submit" class="nav-link btn btn-link text-white">Logout</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </aside>
+
+        <div class="content-wrapper">
+            <div class="content-header">
+                <div class="container-fluid">
+                </div>
+            </div>
+            <div class="content">
+                <div class="container-fluid">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+        <footer class="main-footer">
+            <strong>Copyright &copy; 2022-@DateTime.Now.Year <a href="/">MiniArmory</a>.</strong>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
