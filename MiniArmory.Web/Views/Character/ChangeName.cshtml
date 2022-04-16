@@ -2,10 +2,10 @@
 @model CharacterFormModel
 
 @{
-    ViewData["Title"] = $"Change Name of {Model.Name}";
+    ViewData["Title"] = $"Change Name";
 }
 
-<h1 class="text-light text-center">Change name</h1>
+<h1 class="text-light text-center">Change name of @Model.Name</h1>
 <hr />
 <div class="align-items-center">
     <form asp-action="ChangeName">

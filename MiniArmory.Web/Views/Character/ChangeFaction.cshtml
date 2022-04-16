@@ -2,10 +2,10 @@
 @model CharacterFormModel
 
 @{
-    ViewData["Title"] = $"Change race of {Model.Name}";
+    ViewData["Title"] = $"Change faction";
 }
 
-<h1 class="text-light text-center">Change faction</h1>
+<h1 class="text-light text-center">Change faction of @Model.Name</h1>
 <hr />
 <div class="align-items-center">
     <form asp-action="ChangeFaction">

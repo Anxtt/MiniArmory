@@ -20,6 +20,11 @@
                 {
                     <a class="navbar-brand text-white" asp-area="" asp-controller="Character" asp-action="CharacterList">MiniArmory</a>
                 }
+                @if (this.User.IsInRole("Owner") ||
+                this.User.IsInRole("Admin"))
+                {
+                    <a class="navbar-brand text-white" asp-area="Admin" asp-controller="Home" asp-action="Index">Admin Area</a>
+                }
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
