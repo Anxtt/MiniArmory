@@ -1,0 +1,35 @@
+﻿@using MiniArmory.Core.Models
+@model IEnumerable<UserViewModel>
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<div class="card-body table-responsive col-8 offset-2">
+    @if (Model.Count() >= 1)
+    {
+        <table class="table table-hover text-nowrap">
+            <thead>
+                <tr>
+                    <th class="text-dark text-center">Name</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model
+                .Where(x => x.Name != this.User.Identity.Name)
+                .OrderBy(x => x.Name))
+                {
+                    <tr>
+                        <td class="text-dark text-center">@user.Name</td>
+                        <td class="text-dark text-center">
+                            <a asp-area="Admin" asp-action="AddRolesToUser" asp-controller="User" asp-route-id="@user.Id" class="btn btn-block btn-outline-primary btn-xs text-dark">Manage Roles</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <h2 class="text-center text-light">There are no users in the system.</h2>
+    }
+</div>

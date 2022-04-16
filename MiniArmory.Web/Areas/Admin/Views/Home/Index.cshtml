@@ -1,0 +1,77 @@
+﻿@using MiniArmory.Core.Models
+@model StatisticsViewModel;
+
+@{
+    ViewData["Title"] = "Admin Area";
+}
+
+<div class="text-center text-dark">
+    <h1 class="offset-3 display-4 col-6 pt-3 text-center border border-dark">Welcome to the Admin Area</h1>
+
+    <div class="border border-dark">
+        <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Registered Users:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.UsersCount</p>
+            </div>
+        </div>
+        <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Achievements Count:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.AchievementsCount</p>
+            </div>
+        </div>
+        <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Total Arenas Played:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.ArenasCount</p>
+            </div>
+        </div>
+        <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Highest Rated Player:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.HighestRating</p>
+            </div>
+        </div>
+        <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Most Played Faction:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.MostPlayedFaction.Name</p>
+            </div>
+        </div>
+        <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Most Played Race:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.MostPlayedRace.Name</p>
+            </div>
+        </div>
+        <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Most Played Class:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.MostPlayedClass.Name</p>
+            </div>
+        </div>
+         <div class="col-4 d-inline-block h3">
+            <div class="d-block">
+                <p>Most Populated Server:</p>
+            </div>
+            <div class="d-block">
+                <p>@Model.MostPopulatedServer.Name</p>
+            </div>
+        </div>
+    </div>
+</div>

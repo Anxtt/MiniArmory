@@ -40,6 +40,7 @@ builder.Services.AddScoped<IMountService, MountService>();
 builder.Services.AddScoped<IRaceService, RaceService>();
 builder.Services.AddScoped<IRealmService, RealmService>();
 builder.Services.AddScoped<ISpellService, SpellService>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 
@@ -64,6 +65,9 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.MapControllerRoute(
+    name: "Area",
+    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");

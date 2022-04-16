@@ -1,0 +1,24 @@
+﻿@using MiniArmory.Core.Models
+@model UserRolesViewModel
+
+@{
+    ViewData["Title"] = $"Add role to user";
+    var items = (List<SelectListItem>)ViewBag.Roles;
+}
+
+<h1 class="text-dark text-center">Add role to user @Model.Name</h1>
+<hr />
+<div class="align-items-center">
+    <form asp-area="Admin" asp-action="AddRolesToUser">
+        <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+        <div class="form-group text-center col-4 mt-3 offset-md-4 text-dark">
+            <label asp-for="Roles"></label>
+            <select asp-for="Roles" asp-items="@items" class="form-control">
+            </select>
+            <span asp-validation-for="Roles" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4 offset-md-4 text-center text-dark mt-2">
+            <input type="submit" value="Change" class="btn btn-success" />
+        </div>
+    </form>
+</div>
