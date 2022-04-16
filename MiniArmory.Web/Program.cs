@@ -31,6 +31,8 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.PropertyNamingPolicy = null;
 });
 
+builder.Services.AddMemoryCache();
+
 builder.Services.AddScoped<MiniArmoryDbContext>();
 builder.Services.AddScoped<IAchievementService, AchievementService>();
 builder.Services.AddScoped<IClassService, ClassService>();

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Models.Mount;
@@ -12,17 +13,20 @@ namespace MiniArmory.Web.Controllers
     public class CharacterController : Controller
     {
         private readonly UserManager<User> userManager;
+        private readonly IMemoryCache memoryCache;
 
         private readonly ICharacterService charService;
         private readonly IMountService mountService;
 
         public CharacterController(UserManager<User> userManager,
             ICharacterService charService,
-            IMountService mountService)
+            IMountService mountService, 
+            IMemoryCache memoryCache)
         {
             this.userManager = userManager;
             this.charService = charService;
             this.mountService = mountService;
+            this.memoryCache = memoryCache;
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -357,10 +361,23 @@ namespace MiniArmory.Web.Controllers
             }
 
             CharacterViewModel model = default;
+            string cacheKey = "model";
 
             try
             {
-                model = await this.charService.FindCharacterById(id);
+                if (!memoryCache.TryGetValue(cacheKey, out model))
+                {
+                    model = await this.charService.FindCharacterById(id);
+
+                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddSeconds(60),
+                        Priority = CacheItemPriority.High,
+                        SlidingExpiration = TimeSpan.FromSeconds(20)
+                    };
+
+                    memoryCache.Set(cacheKey, model, cacheExpiryOptions);
+                }
             }
             catch (Exception)
             {
@@ -373,10 +390,23 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Leaderboard()
         {
             IEnumerable<CharacterViewModel> models = default;
+            string cacheKey = "LeaderboardModels";
 
             try
             {
-                models = await this.charService.LeaderboardStats();
+                if (!memoryCache.TryGetValue(cacheKey, out models))
+                {
+                    models = await this.charService.LeaderboardStats();
+
+                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddSeconds(30),
+                        Priority = CacheItemPriority.High,
+                        SlidingExpiration = TimeSpan.FromSeconds(10)
+                    };
+
+                    memoryCache.Set(cacheKey, models, cacheExpiryOptions);
+                }
             }
             catch (Exception)
             {
@@ -549,10 +579,23 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Ranking()
         {
             IEnumerable<CharacterViewModel> models = default;
+            string cacheKey = "achievementModel";
 
             try
             {
-                models = await this.charService.AchievementStats();
+                if (!memoryCache.TryGetValue(cacheKey, out models))
+                {
+                    models = await this.charService.AchievementStats();
+
+                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddSeconds(30),
+                        Priority = CacheItemPriority.High,
+                        SlidingExpiration = TimeSpan.FromSeconds(10)
+                    };
+
+                    memoryCache.Set(cacheKey, models, cacheExpiryOptions);
+                }
             }
             catch (Exception)
             {

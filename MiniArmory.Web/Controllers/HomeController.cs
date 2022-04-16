@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Web.Models;
@@ -10,26 +11,42 @@ namespace MiniArmory.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly ICharacterService charService;
+        private readonly IMemoryCache memoryCache;
 
-        public HomeController(ILogger<HomeController> logger, 
-            ICharacterService charService)
+        public HomeController(ILogger<HomeController> logger,
+            ICharacterService charService, 
+            IMemoryCache memoryCache)
         {
             _logger = logger;
             this.charService = charService;
+            this.memoryCache = memoryCache;
         }
 
         public async Task<IActionResult> Index()
         {
             IEnumerable<CharacterViewModel> models = default;
+            string cacheKey = "models";
 
             try
             {
-                models = await this.charService.LeaderboardStats();
+                if (!memoryCache.TryGetValue(cacheKey, out models))
+                {
+                    models = await this.charService.LeaderboardStats();
 
-                models = models
-                    .OrderByDescending(x => x.Rating)
-                    .ThenBy(x => x.Name)
-                    .Take(3);
+                    models = models
+                        .OrderByDescending(x => x.Rating)
+                        .ThenBy(x => x.Name)
+                        .Take(3);
+
+                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddSeconds(30),
+                        Priority = CacheItemPriority.High,
+                        SlidingExpiration = TimeSpan.FromSeconds(10)
+                    };
+
+                    memoryCache.Set(cacheKey, models, cacheExpiryOptions);
+                }
             }
             catch (Exception)
             {
