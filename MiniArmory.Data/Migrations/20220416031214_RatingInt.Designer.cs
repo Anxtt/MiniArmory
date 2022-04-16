@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniArmory.Data.Data;
 
@@ -11,9 +12,10 @@ using MiniArmory.Data.Data;
 namespace MiniArmory.Data.Migrations
 {
     [DbContext(typeof(MiniArmoryDbContext))]
-    partial class MiniArmoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220416031214_RatingInt")]
+    partial class RatingInt
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -243,8 +245,8 @@ namespace MiniArmory.Data.Migrations
                     b.Property<bool>("IsLooking")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Loss")
-                        .HasColumnType("int");
+                    b.Property<short>("Loss")
+                        .HasColumnType("smallint");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -266,8 +268,8 @@ namespace MiniArmory.Data.Migrations
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("Win")
-                        .HasColumnType("int");
+                    b.Property<short>("Win")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 

@@ -427,7 +427,7 @@ namespace MiniArmory.Core.Services
             await this.db.SaveChangesAsync();
         }
 
-        private (short rating, short win, short loss) CalculateRating(short rating)
+        private (int rating, short win, short loss) CalculateRating(int rating)
         {
             Random rnd = new Random();
 

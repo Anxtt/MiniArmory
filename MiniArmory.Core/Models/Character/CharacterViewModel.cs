@@ -20,8 +20,8 @@
 
         public string FactionImage { get; set; }
 
-        public short Win { get; set; }
+        public int Win { get; set; }
 
-        public short Loss { get; set; }
+        public int Loss { get; set; }
     }
 }

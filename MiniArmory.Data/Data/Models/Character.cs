@@ -48,13 +48,13 @@ namespace MiniArmory.Data.Data.Models
 
         [Required]
         [Range(0, 4000)]
-        public short Rating { get; set; } = 1000;
+        public int Rating { get; set; } = 1000;
 
         [Required]
-        public short Win { get; set; }
+        public int Win { get; set; }
 
         [Required]
-        public short Loss { get; set; }
+        public int Loss { get; set; }
 
         public bool IsLooking { get; set; }
 
