@@ -34,6 +34,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.raceService.Add(model);
+                TempData["Message"] = "Created race successfully.";
             }
             catch (Exception)
             {

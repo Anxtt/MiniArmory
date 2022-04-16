@@ -142,12 +142,18 @@
         </nav>
     </header>
     <div class="container-fluid m-0 p-0">
+        @if (TempData.ContainsKey("Message"))
+        {
+            <div class="alert alert-success pt-2 text-center col-4 offset-4" role="alert">
+                @TempData["Message"]
+            </div>
+        }
         <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-white" style="line-height: 66px;">
+    <footer class="border-top footer text-white">
         <div class="container">
             &copy; 2022 - MiniArmory.Web
         </div>

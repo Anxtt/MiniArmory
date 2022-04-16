@@ -34,6 +34,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.factionService.Add(model);
+                TempData["Message"] = "Created faction successfully.";
             }
             catch (Exception)
             {

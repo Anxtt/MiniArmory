@@ -34,6 +34,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.classService.Add(model);
+                TempData["Message"] = "Created class successfully.";
             }
             catch (Exception)
             {

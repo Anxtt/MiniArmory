@@ -35,6 +35,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.spellService.Add(model);
+                TempData["Message"] = "Created spell successfully.";
             }
             catch (Exception)
             {

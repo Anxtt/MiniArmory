@@ -49,6 +49,7 @@ namespace MiniArmory.Web.Controllers
                 var user = await userManager.FindByNameAsync(this.User.Identity.Name);
 
                 await this.charService.Add(model, user.Id);
+                TempData["Message"] = "Created character successfully.";
             }
             catch (Exception)
             {
@@ -126,6 +127,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.AddMountToCharacter(id, mountName);
+                TempData["Message"] = "Added mount successfully.";
             }
             catch (Exception)
             {
@@ -184,6 +186,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.AddAchievementToCharacter(id, achievement);
+                TempData["Message"] = "Added achievement successfully.";
             }
             catch (Exception)
             {
@@ -247,6 +250,7 @@ namespace MiniArmory.Web.Controllers
             {
                 await this.charService.ChangeFaction(id, faction);
                 await this.charService.ChangeRace(id, race);
+                TempData["Message"] = "Changed race and faction successfully.";
             }
             catch (Exception)
             {
@@ -280,6 +284,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.ChangeName(id, name);
+                TempData["Message"] = "Changed name successfully.";
             }
             catch (Exception)
             {
@@ -313,6 +318,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.ChangeRace(id, race);
+                TempData["Message"] = "Changed race successfully.";
             }
             catch (Exception)
             {
@@ -333,6 +339,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.Delete(id);
+                TempData["Message"] = "Deleted character successfully.";
             }
             catch (Exception)
             {
@@ -489,6 +496,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.LeaveTeam(id, partnerId);
+                TempData["Message"] = "You left your team.";
             }
             catch (Exception)
             {
@@ -504,6 +512,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.TeamUp(id, partnerId);
+                TempData["Message"] = "You are in a team now.";
             }
             catch (Exception)
             {

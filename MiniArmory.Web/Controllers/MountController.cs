@@ -35,6 +35,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.mountService.Add(model);
+                TempData["Message"] = "Created mount successfully.";
             }
             catch (Exception)
             {

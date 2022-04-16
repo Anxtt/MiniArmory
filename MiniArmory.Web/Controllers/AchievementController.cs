@@ -33,6 +33,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.achievementService.Add(model);
+                TempData["Message"] = "Created achievement successfully.";
             }
             catch (Exception)
             {

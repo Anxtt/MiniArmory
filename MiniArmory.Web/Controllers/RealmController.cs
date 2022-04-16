@@ -34,6 +34,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.realmService.Add(model);
+                TempData["Message"] = "Created realm successfully.";
             }
             catch (Exception)
             {
