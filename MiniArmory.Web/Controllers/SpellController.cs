@@ -39,7 +39,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.RedirectToAction(nameof(AllSpells));
@@ -55,7 +55,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.View(spells);
@@ -116,7 +116,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.PartialView("_AllSpellsPartialView", filteredSpells);

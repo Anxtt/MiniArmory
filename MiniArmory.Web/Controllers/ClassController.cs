@@ -38,7 +38,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.RedirectToAction(nameof(AllClasses));
@@ -54,7 +54,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.View(classes);
@@ -70,7 +70,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.View(model);

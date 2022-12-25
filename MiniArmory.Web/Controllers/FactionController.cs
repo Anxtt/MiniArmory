@@ -38,7 +38,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.RedirectToAction("AllRaces", "Race");

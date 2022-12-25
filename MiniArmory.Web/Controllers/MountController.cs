@@ -39,7 +39,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.RedirectToAction(nameof(AllMounts));
@@ -55,7 +55,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "HomeController");
+                return this.RedirectToAction("Error", "Home");
             }
 
             return this.View(mounts);
