@@ -1,0 +1,27 @@
+﻿@using MiniArmory.Core.Models
+@model UserViewModel
+
+@{
+    ViewData["Title"] = "Welcome User!";
+}
+
+<div>
+    <div class="align-content-center">
+        <p class="text-dark text-center h1" id="Name">Hello, <b>@Model.Name!</b></p>
+        <button onclick="ChangeName()" type="button" class="text-primary btn h3 btn-outline-primary">Don't Click</button>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        function ChangeName() {
+            const name = document.getElementById('Name');
+
+            name.textContent = name.textContent.replace('Hello', 'Bye');
+        }
+    </script>
+}
