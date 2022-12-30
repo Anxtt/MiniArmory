@@ -58,7 +58,7 @@
 <script>
     $(document).ready(function () {
         $.ajax({
-            type: "POST",
+            type: "GET",
             dataType: "json",
             url: "/Character/GetRealms",
             headers: {
@@ -77,7 +77,7 @@
         })
 
         $.ajax({
-            type: "POST",
+            type: "GET",
             dataType: "json",
             url: "/Mount/GetFactions",
             headers: {
@@ -96,7 +96,7 @@
         })
 
         $.ajax({
-            type: "POST",
+            type: "GET",
             dataType: "json",
             url: "/Spell/GetClasses",
             headers: {
@@ -128,7 +128,7 @@
         }
         
         $.ajax({
-            type: "POST",
+            type: "GET",
             dataType: "json",
             url: "/Spell/GetRaces",
             data: { factionId: id },

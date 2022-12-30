@@ -36,11 +36,11 @@
                                 Characters
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                <li><a class="dropdown-item" asp-controller="Character" asp-action="AddCharacter">Add Character</a></li>
-                                <li><a class="dropdown-item" asp-controller="Character" asp-action="Leaderboard">PvP Leaderboard</a></li>
-                                <li><a class="dropdown-item" asp-controller="Character" asp-action="PlayArena">Earn Rating</a></li>
-                                <li><a class="dropdown-item" asp-controller="Character" asp-action="Ranking">Achievements Ranking</a></li>
-                                <li><a class="dropdown-item" asp-controller="Character" asp-action="CharacterList">Character List</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Character" asp-action="AddCharacter">Add Character</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Character" asp-action="Leaderboard">PvP Leaderboard</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Character" asp-action="PlayArena">Earn Rating</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Character" asp-action="Ranking">Achievements Ranking</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Character" asp-action="CharacterList">Character List</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -51,9 +51,9 @@
                                 @if (this.User.IsInRole("Owner") ||
                                 this.User.IsInRole("Admin"))
                                 {
-                                    <li><a class="dropdown-item" asp-controller="Achievement" asp-action="AddAchievement">Add Achievement</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Achievement" asp-action="AddAchievement">Add Achievement</a></li>
                                 }
-                                <li><a class="dropdown-item" asp-controller="Achievement" asp-action="AllAchievements">All Achievements</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Achievement" asp-action="AllAchievements">All Achievements</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -64,9 +64,9 @@
                                 @if (this.User.IsInRole("Owner") ||
                                 this.User.IsInRole("Admin"))
                                 {
-                                    <li><a class="dropdown-item" asp-controller="Class" asp-action="AddClass">Add Class</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Class" asp-action="AddClass">Add Class</a></li>
                                 }
-                                <li><a class="dropdown-item" asp-controller="Class" asp-action="AllClasses">All Classes</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Class" asp-action="AllClasses">All Classes</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -77,9 +77,9 @@
                                 @if (this.User.IsInRole("Owner") ||
                                 this.User.IsInRole("Admin"))
                                 {
-                                    <li><a class="dropdown-item" asp-controller="Spell" asp-action="AddSpell">Add Spell</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Spell" asp-action="AddSpell">Add Spell</a></li>
                                 }
-                                <li><a class="dropdown-item" asp-controller="Spell" asp-action="AllSpells">All Spells</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Spell" asp-action="AllSpells">All Spells</a></li>
                             </ul>
                         </li>
                         @if (this.User.IsInRole("Owner"))
@@ -89,7 +89,7 @@
                                     Faction
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                    <li><a class="dropdown-item" asp-controller="Faction" asp-action="AddFaction">Add Faction</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Faction" asp-action="AddFaction">Add Faction</a></li>
                                 </ul>
                             </li>
                         }
@@ -101,9 +101,9 @@
                                 @if (this.User.IsInRole("Owner") ||
                                 this.User.IsInRole("Admin"))
                                 {
-                                    <li><a class="dropdown-item" asp-controller="Race" asp-action="AddRace">Add Race</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Race" asp-action="AddRace">Add Race</a></li>
                                 }
-                                <li><a class="dropdown-item" asp-controller="Race" asp-action="AllRaces">All Races</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Race" asp-action="AllRaces">All Races</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -114,9 +114,9 @@
                                 @if (this.User.IsInRole("Owner") ||
                                 this.User.IsInRole("Admin"))
                                 {
-                                    <li><a class="dropdown-item" asp-controller="Mount" asp-action="AddMount">Add Mount</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Mount" asp-action="AddMount">Add Mount</a></li>
                                 }
-                                <li><a class="dropdown-item" asp-controller="Mount" asp-action="AllMounts">All Mounts</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Mount" asp-action="AllMounts">All Mounts</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
@@ -126,28 +126,31 @@
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                                 @if (this.User.IsInRole("Owner"))
                                 {
-                                    <li><a class="dropdown-item" asp-controller="Realm" asp-action="AddRealm">Add Realm</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Realm" asp-action="AddRealm">Add Realm</a></li>
                                 }
-                                <li><a class="dropdown-item" asp-controller="Realm" asp-action="AllRealms">All Realms</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Realm" asp-action="AllRealms">All Realms</a></li>
                             </ul>
                         </li>
                     </ul>
-                    <form asp-controller="Character" asp-action="Search" class="form d-inline-flex">
+                    <form asp-area="" asp-controller="Character" asp-action="Search" class="form d-inline-flex">
                         <input class="form-control mr-sm-2" type="search" name="chars" placeholder="Find a character.." aria-label="Search">
                         <button class="btn btn-outline-light my-2 my-sm-0 ms-2" type="submit">Search</button>
                     </form>
+
                     <partial name="_LoginPartial" />
                 </div>
             </div>
         </nav>
     </header>
+
     <div class="container-fluid m-0 p-0">
         @if (TempData.ContainsKey("Message"))
         {
-            <div class="alert alert-success pt-2 text-center col-4 offset-4" role="alert">
+            <div class="alert alert-success mt-2 text-center col-4 offset-4" role="alert">
                 @TempData["Message"]
             </div>
         }
+
         <main role="main">
             @RenderBody()
         </main>
@@ -158,6 +161,7 @@
             &copy; 2022 - MiniArmory.Web
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
