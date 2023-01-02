@@ -15,7 +15,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var realm in Model)
+            @foreach (var realm in Model
+            .OrderBy(x => x.Language)
+            .ThenBy(x => x.Population))
             {
                 <tr>
                     <td class="text-light text-center">@realm.Name</td>

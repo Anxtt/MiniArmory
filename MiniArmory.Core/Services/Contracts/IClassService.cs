@@ -13,6 +13,8 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<bool> DoesExist(string name);
 
+        Task<bool> DoesExist(int id);
+
         Task<ClassViewModel> GetClass(int id);
 
         Task<IEnumerable<JsonFormModel>> GetSpells();

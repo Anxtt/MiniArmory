@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Services.Contracts;
 
@@ -7,10 +8,15 @@ namespace MiniArmory.Web.Controllers
 {
     public class AchievementController : Controller
     {
+        private readonly IMemoryCache memoryCache;
+        
         private readonly IAchievementService achievementService;
 
-        public AchievementController(IAchievementService achievementService)
-            => this.achievementService = achievementService;
+        public AchievementController(IAchievementService achievementService, IMemoryCache memoryCache)
+        {
+            this.achievementService = achievementService;
+            this.memoryCache = memoryCache;
+        }
 
         [Authorize(Roles = "Admin, Owner")]
         public IActionResult AddAchievement()
@@ -46,18 +52,26 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> AllAchievements()
         {
-            IEnumerable<AchievementViewModel> achies = default;
+            IEnumerable<AchievementViewModel> models = default;
+            string cacheKey = "allAchiesKey";
 
             try
             {
-                achies = await this.achievementService.AllAchievements();
+                models = this.memoryCache.Get<IEnumerable<AchievementViewModel>>(cacheKey);
+
+                if (models == null)
+                {
+                    models = await this.achievementService.AllAchievements();
+
+                    this.memoryCache.Set(cacheKey, models, DateTimeOffset.Now.AddDays(1));
+                }
             }
             catch (Exception)
             {
                 return this.RedirectToAction("Error", "Home");
             }
 
-            return this.View(achies);
+            return this.View(models);
         }
     }
 }

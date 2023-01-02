@@ -20,7 +20,7 @@ namespace MiniArmory.Web.Controllers
 
         public CharacterController(UserManager<User> userManager,
             ICharacterService charService,
-            IMountService mountService, 
+            IMountService mountService,
             IMemoryCache memoryCache)
         {
             this.userManager = userManager;
@@ -87,7 +87,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.View();
+                return this.RedirectToAction("Error", "Home");
             }
 
             IEnumerable<MountViewModel> mounts = default;
@@ -146,7 +146,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.View();
+                return this.RedirectToAction("Error", "Home");
             }
 
             IEnumerable<AchievementViewModel> achies = default;
@@ -179,7 +179,7 @@ namespace MiniArmory.Web.Controllers
                 !await this.charService.DoesExist(id) ||
                 string.IsNullOrEmpty(achievement))
             {
-                return this.View();
+                return this.RedirectToAction("Error", "Home");
             }
 
             if (this.charService.RollForReward("Achievement") == false)
@@ -204,7 +204,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.View();
+                return this.RedirectToAction("Error", "Home");
             }
 
             IEnumerable<AchievementViewModel> achievements = default;
@@ -358,27 +358,14 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.View();
+                return this.RedirectToAction("Error", "Home");
             }
 
             CharacterViewModel model = default;
-            string cacheKey = "model";
 
             try
             {
-                if (!memoryCache.TryGetValue(cacheKey, out model))
-                {
-                    model = await this.charService.FindCharacterById(id);
-
-                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
-                    {
-                        AbsoluteExpiration = DateTime.Now.AddSeconds(60),
-                        Priority = CacheItemPriority.High,
-                        SlidingExpiration = TimeSpan.FromSeconds(20)
-                    };
-
-                    memoryCache.Set(cacheKey, model, cacheExpiryOptions);
-                }
+                model = await this.charService.FindCharacterById(id);
             }
             catch (Exception)
             {
@@ -391,22 +378,24 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Leaderboard()
         {
             IEnumerable<CharacterViewModel> models = default;
-            string cacheKey = "LeaderboardModels";
+            string cacheKey = "leaderboardKey";
 
             try
             {
-                if (!memoryCache.TryGetValue(cacheKey, out models))
+                models = this.memoryCache.Get<IEnumerable<CharacterViewModel>>(cacheKey);
+
+                if (models == null)
                 {
                     models = await this.charService.LeaderboardStats();
 
-                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
+                    var options = new MemoryCacheEntryOptions()
                     {
                         AbsoluteExpiration = DateTime.Now.AddSeconds(30),
                         Priority = CacheItemPriority.High,
                         SlidingExpiration = TimeSpan.FromSeconds(10)
                     };
 
-                    memoryCache.Set(cacheKey, models, cacheExpiryOptions);
+                    this.memoryCache.Set(cacheKey, models, options);
                 }
             }
             catch (Exception)
@@ -439,7 +428,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.View();
+                return this.RedirectToAction("Error", "Home");
             }
 
             IEnumerable<MountViewModel> mounts = default;
@@ -470,7 +459,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.View();
+                return this.RedirectToAction("Error", "Home");
             }
 
             try
@@ -581,22 +570,24 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Ranking()
         {
             IEnumerable<CharacterViewModel> models = default;
-            string cacheKey = "achievementModel";
+            string cacheKey = "achievementKey";
 
             try
             {
-                if (!memoryCache.TryGetValue(cacheKey, out models))
+                models = this.memoryCache.Get<IEnumerable<CharacterViewModel>>(cacheKey);
+
+                if (models == null)
                 {
                     models = await this.charService.AchievementStats();
 
-                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
+                    var options = new MemoryCacheEntryOptions()
                     {
                         AbsoluteExpiration = DateTime.Now.AddSeconds(30),
                         Priority = CacheItemPriority.High,
                         SlidingExpiration = TimeSpan.FromSeconds(10)
                     };
 
-                    memoryCache.Set(cacheKey, models, cacheExpiryOptions);
+                    this.memoryCache.Set(cacheKey, models, options);
                 }
             }
             catch (Exception)
@@ -612,7 +603,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(chars))
             {
-                return this.View();
+                return this.RedirectToAction("Index", "Home");
             }
 
             IEnumerable<CharacterViewModel> models = default;

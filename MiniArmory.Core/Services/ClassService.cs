@@ -78,6 +78,11 @@ namespace MiniArmory.Core.Services
             .Classes
             .AnyAsync(x => x.Name == name);
 
+        public async Task<bool> DoesExist(int id)
+            => await this.db
+            .Classes
+            .AnyAsync(x => x.Id == id);
+
         public async Task<ClassViewModel> GetClass(int id)
             => await this.db
             .Classes

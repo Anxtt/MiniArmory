@@ -27,7 +27,6 @@ builder.Services
     });
 
 builder.Services.AddMemoryCache();
-
 builder.Services.AddServices();
 
 var app = builder.Build();

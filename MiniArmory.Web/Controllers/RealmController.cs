@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Realm;
 using MiniArmory.Core.Services.Contracts;
 
@@ -7,10 +8,15 @@ namespace MiniArmory.Web.Controllers
 {
     public class RealmController : Controller
     {
+        private readonly IMemoryCache memoryCache;
+
         private readonly IRealmService realmService;
 
-        public RealmController(IRealmService realmService)
-            => this.realmService = realmService;
+        public RealmController(IRealmService realmService, IMemoryCache memoryCache)
+        {
+            this.realmService = realmService;
+            this.memoryCache = memoryCache;
+        }
 
         [Authorize(Roles = "Owner")]
         public IActionResult AddRealm()
@@ -46,18 +52,31 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> AllRealms()
         {
-            IEnumerable<RealmViewModel> realms = default;
+            IEnumerable<RealmViewModel> models = default;
+            string cacheKey = "allRealmsKey";
 
             try
             {
-                realms = await this.realmService.AllRealms();
+                models = this.memoryCache.Get<IEnumerable<RealmViewModel>>(cacheKey);
+
+                if (models == null)
+                {
+                    models = await this.realmService.AllRealms();
+
+                    var options = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddDays(1)
+                    };
+
+                    this.memoryCache.Set(cacheKey, models, options);
+                }
             }
             catch (Exception)
             {
                 return RedirectToAction("Error", "Home");
             }
 
-            return this.View(realms);
+            return this.View(models);
         }
     }
 }

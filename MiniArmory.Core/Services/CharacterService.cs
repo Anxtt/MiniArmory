@@ -458,8 +458,14 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
+                .Include(x => x.Partner)
                 .Where(x => x.Id == id)
                 .FirstAsync();
+
+            if (character.Partner != null)
+            {
+                await this.LeaveTeam(character.Id, character.Partner.Id);
+            }
 
             this.db.Characters.Remove(character);
             await this.db.SaveChangesAsync();

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Spell;
 using MiniArmory.Core.Services.Contracts;
@@ -8,10 +9,15 @@ namespace MiniArmory.Web.Controllers
 {
     public class SpellController : Controller
     {
+        private readonly IMemoryCache memoryCache;
+
         private readonly ISpellService spellService;
 
-        public SpellController(ISpellService spellService)
-            => this.spellService = spellService;
+        public SpellController(ISpellService spellService, IMemoryCache memoryCache)
+        {
+            this.spellService = spellService;
+            this.memoryCache = memoryCache;
+        }
 
         [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddSpell()
@@ -47,18 +53,31 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> AllSpells()
         {
-            IEnumerable<SpellViewModel> spells = default;
+            IEnumerable<SpellViewModel> models = default;
+            string cacheKey = "allSpellsKey";
 
             try
             {
-                spells = await this.spellService.AllSpells();
+                models = this.memoryCache.Get<IEnumerable<SpellViewModel>>(cacheKey);
+
+                if (models == null)
+                {
+                    models = await this.spellService.AllSpells();
+
+                    var options = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddDays(1)
+                    };
+
+                    this.memoryCache.Set(cacheKey, models, options);
+                }
             }
             catch (Exception)
             {
                 return this.RedirectToAction("Error", "Home");
             }
 
-            return this.View(spells);
+            return this.View(models);
         }
 
         public IActionResult SpellTypes()

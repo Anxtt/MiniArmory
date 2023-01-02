@@ -9,15 +9,12 @@ namespace MiniArmory.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
         private readonly ICharacterService charService;
         private readonly IMemoryCache memoryCache;
 
-        public HomeController(ILogger<HomeController> logger,
-            ICharacterService charService, 
+        public HomeController(ICharacterService charService, 
             IMemoryCache memoryCache)
         {
-            _logger = logger;
             this.charService = charService;
             this.memoryCache = memoryCache;
         }
@@ -25,11 +22,13 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<CharacterViewModel> models = default;
-            string cacheKey = "models";
+            string cacheKey = "homeKey";
 
             try
             {
-                if (!memoryCache.TryGetValue(cacheKey, out models))
+                models = this.memoryCache.Get<IEnumerable<CharacterViewModel>>(cacheKey);
+
+                if (models == null)
                 {
                     models = await this.charService.LeaderboardStats();
 
@@ -38,14 +37,13 @@ namespace MiniArmory.Web.Controllers
                         .ThenBy(x => x.Name)
                         .Take(3);
 
-                    var cacheExpiryOptions = new MemoryCacheEntryOptions()
+                    var options = new MemoryCacheEntryOptions()
                     {
-                        AbsoluteExpiration = DateTime.Now.AddSeconds(30),
-                        Priority = CacheItemPriority.High,
-                        SlidingExpiration = TimeSpan.FromSeconds(10)
+                        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
+                        Priority = CacheItemPriority.High
                     };
 
-                    memoryCache.Set(cacheKey, models, cacheExpiryOptions);
+                    this.memoryCache.Set(cacheKey, models, options);
                 }
             }
             catch (Exception)
@@ -55,9 +53,6 @@ namespace MiniArmory.Web.Controllers
 
             return this.View(models);
         }
-
-        public IActionResult Privacy() 
-            => this.View();
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

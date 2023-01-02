@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Class;
 using MiniArmory.Core.Services.Contracts;
 
@@ -7,10 +8,15 @@ namespace MiniArmory.Web.Controllers
 {
     public class ClassController : Controller
     {
+        private readonly IMemoryCache memoryCache;
+
         private readonly IClassService classService;
 
-        public ClassController(IClassService classService)
-            => this.classService = classService;
+        public ClassController(IClassService classService, IMemoryCache memoryCache)
+        {
+            this.classService = classService;
+            this.memoryCache = memoryCache;
+        }
 
         [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddClass()
@@ -46,23 +52,42 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> AllClasses()
         {
-            IEnumerable<ClassViewModel> classes = default;
+            IEnumerable<ClassViewModel> models = default;
+            string cacheKey = "allClassesKey";
 
             try
             {
-                classes = await this.classService.AllClasses();
+                models = this.memoryCache.Get<IEnumerable<ClassViewModel>>(cacheKey);
+
+                if (models == null)
+                {
+                    models = await this.classService.AllClasses();
+
+                    var options = new MemoryCacheEntryOptions()
+                    {
+                        Priority = CacheItemPriority.Normal,
+                        AbsoluteExpiration = DateTime.Now.AddDays(1)
+                    };
+
+                    this.memoryCache.Set(cacheKey, models, options);
+                }
             }
             catch (Exception)
             {
                 return this.RedirectToAction("Error", "Home");
             }
 
-            return this.View(classes);
+            return this.View(models);
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var model = new ClassViewModel();
+            ClassViewModel model = default;
+
+            if (!await this.classService.DoesExist(id))
+            {
+                return this.RedirectToAction("Error", "Home");
+            }
 
             try
             {

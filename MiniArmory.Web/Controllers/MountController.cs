@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
@@ -8,10 +9,15 @@ namespace MiniArmory.Web.Controllers
 {
     public class MountController : Controller
     {
+        private readonly IMemoryCache memoryCache;
+
         private readonly IMountService mountService;
 
-        public MountController(IMountService mountService)
-            => this.mountService = mountService;
+        public MountController(IMountService mountService, IMemoryCache memoryCache)
+        {
+            this.mountService = mountService;
+            this.memoryCache = memoryCache;
+        }
 
         [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddMount()
@@ -47,18 +53,31 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> AllMounts()
         {
-            IEnumerable<MountViewModel> mounts = default;
+            IEnumerable<MountViewModel> models = default;
+            string cacheKey = "allMountsKey";
 
             try
             {
-                mounts = await this.mountService.AllMounts();
+                models = this.memoryCache.Get<IEnumerable<MountViewModel>>(cacheKey);
+
+                if (models == null)
+                {
+                    models = await this.mountService.AllMounts();
+
+                    var options = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddHours(5)
+                    };
+
+                    this.memoryCache.Set(cacheKey, models, options);
+                }
             }
             catch (Exception)
             {
                 return this.RedirectToAction("Error", "Home");
             }
 
-            return this.View(mounts);
+            return this.View(models);
         }
 
         public async Task<IActionResult> GetFactions(int? factionId = null)

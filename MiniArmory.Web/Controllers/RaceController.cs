@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Race;
 using MiniArmory.Core.Services.Contracts;
 
@@ -7,10 +8,15 @@ namespace MiniArmory.Web.Controllers
 {
     public class RaceController : Controller
     {
+        private readonly IMemoryCache memoryCache;
+
         private readonly IRaceService raceService;
 
-        public RaceController(IRaceService raceService)
-            => this.raceService = raceService;
+        public RaceController(IRaceService raceService, IMemoryCache memoryCache)
+        {
+            this.raceService = raceService;
+            this.memoryCache = memoryCache;
+        }
 
         [Authorize(Roles = "Owner, Admin")]
         public IActionResult AddRace()
@@ -46,18 +52,31 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> AllRaces()
         {
-            IEnumerable<RaceViewModel> races = default;
+            IEnumerable<RaceViewModel> models = default;
+            string cacheKey = "allRacesKey";
 
             try
             {
-                races = await this.raceService.AllRaces();
+                models = this.memoryCache.Get<IEnumerable<RaceViewModel>>(cacheKey);
+
+                if (models == null)
+                {
+                    models = await this.raceService.AllRaces();
+
+                    var options = new MemoryCacheEntryOptions()
+                    {
+                        AbsoluteExpiration = DateTime.Now.AddDays(1)
+                    };
+
+                    this.memoryCache.Set(cacheKey, models, options);
+                }
             }
             catch (Exception)
             {
                 return this.RedirectToAction("Error", "Home");
             }
 
-            return this.View(races);
+            return this.View(models);
         }
 
         public async Task<IActionResult> Details(int id)
