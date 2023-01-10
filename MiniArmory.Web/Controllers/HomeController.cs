@@ -5,6 +5,8 @@ using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Web.Models;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class HomeController : Controller
@@ -22,7 +24,7 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<CharacterViewModel> models = default;
-            string cacheKey = "homeKey";
+            string cacheKey = Cache.HOME_KEY;
 
             try
             {

@@ -4,7 +4,9 @@ using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
 
-namespace MiniArmory.Web.Areas.OwnerAdmin.Controllers
+using static MiniArmory.Core.Constants.Web;
+
+namespace MiniArmory.Web.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Owner, Admin")]
     [Area("Admin")]
@@ -22,7 +24,7 @@ namespace MiniArmory.Web.Areas.OwnerAdmin.Controllers
         public async Task<IActionResult> Index()
         {
             StatisticsViewModel model = default;
-            string cacheKey = "statisticsKey";
+            string cacheKey = Cache.STATISTICS_KEY;
 
             model = this.memoryCache.Get<StatisticsViewModel>(cacheKey);
 

@@ -5,6 +5,8 @@ using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Spell;
 using MiniArmory.Core.Services.Contracts;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class SpellController : Controller
@@ -34,18 +36,18 @@ namespace MiniArmory.Web.Controllers
 
             if (await this.spellService.DoesExist(model.Name))
             {
-                ModelState.AddModelError(nameof(model.Name), "Invalid name.");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return this.View(model);
             }
 
             try
             {
                 await this.spellService.Add(model);
-                TempData["Message"] = "Created spell successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_SPELL;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AllSpells));
@@ -54,7 +56,7 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> AllSpells()
         {
             IEnumerable<SpellViewModel> models = default;
-            string cacheKey = "allSpellsKey";
+            string cacheKey = Cache.ALL_SPELLS_KEY;
 
             try
             {
@@ -74,7 +76,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -135,7 +137,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.PartialView("_AllSpellsPartialView", filteredSpells);

@@ -14,8 +14,6 @@ namespace MiniArmory.Data.Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            base.OnModelCreating(builder);
-
             builder.Entity<Spell>()
                 .HasOne(x => x.Class)
                 .WithMany(x => x.Spells)
@@ -77,22 +75,24 @@ namespace MiniArmory.Data.Data
                 .WithMany(x => x.Characters)
                 .HasForeignKey(x => x.RealmId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            base.OnModelCreating(builder);
         }
 
         public virtual DbSet<Achievement> Achievements { get; set; }
-               
+
         public virtual DbSet<Character> Characters { get; set; }
-               
+
         public virtual DbSet<Class> Classes { get; set; }
-               
+
         public virtual DbSet<Faction> Factions { get; set; }
-               
+
         public virtual DbSet<Mount> Mounts { get; set; }
-               
+
         public virtual DbSet<Race> Races { get; set; }
-               
+
         public virtual DbSet<Realm> Realms { get; set; }
-               
+
         public virtual DbSet<Spell> Spells { get; set; }
     }
 }

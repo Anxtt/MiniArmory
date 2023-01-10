@@ -4,6 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Race;
 using MiniArmory.Core.Services.Contracts;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class RaceController : Controller
@@ -33,18 +35,18 @@ namespace MiniArmory.Web.Controllers
 
             if (await this.raceService.DoesExist(model.Name))
             {
-                ModelState.AddModelError("Name", "Invalid Name");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return this.View(model);
             }
 
             try
             {
                 await this.raceService.Add(model);
-                TempData["Message"] = "Created race successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_RACE;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AllRaces));
@@ -53,7 +55,7 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> AllRaces()
         {
             IEnumerable<RaceViewModel> models = default;
-            string cacheKey = "allRacesKey";
+            string cacheKey = Cache.ALL_RACES_KEY;
 
             try
             {
@@ -73,7 +75,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -89,7 +91,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(race);

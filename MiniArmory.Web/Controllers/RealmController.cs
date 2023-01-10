@@ -4,6 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Realm;
 using MiniArmory.Core.Services.Contracts;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class RealmController : Controller
@@ -33,18 +35,18 @@ namespace MiniArmory.Web.Controllers
 
             if (await this.realmService.DoesExist(model.Name))
             {
-                ModelState.AddModelError("Name", "Invalid Name");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return this.View(model);
             }
 
             try
             {
                 await this.realmService.Add(model);
-                TempData["Message"] = "Created realm successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_REALM;
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AllRealms));
@@ -53,7 +55,7 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> AllRealms()
         {
             IEnumerable<RealmViewModel> models = default;
-            string cacheKey = "allRealmsKey";
+            string cacheKey = Cache.ALL_REALMS_KEY;
 
             try
             {
@@ -73,7 +75,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "Home");
+                return RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);

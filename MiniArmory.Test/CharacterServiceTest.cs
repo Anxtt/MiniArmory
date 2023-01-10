@@ -18,7 +18,7 @@ namespace MiniArmory.Test
 {
     public class CharacterServiceTest
     {
-        private ServiceProvider serviceProvider;
+        private IServiceProvider serviceProvider;
         private InMemoryDbContext dbContext;
 
         private ICharacterService characterService;

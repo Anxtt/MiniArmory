@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using MiniArmory.Core.Models.Faction;
 using MiniArmory.Core.Services.Contracts;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class FactionController : Controller
@@ -27,21 +29,21 @@ namespace MiniArmory.Web.Controllers
 
             if (await this.factionService.DoesExist(model.Name))
             {
-                ModelState.AddModelError("Name", "Invalid Name");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return this.View(model);
             }
 
             try
             {
                 await this.factionService.Add(model);
-                TempData["Message"] = "Created faction successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_FACTION;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
-            return this.RedirectToAction("AllRaces", "Race");
+            return this.RedirectToAction(nameof(RaceController.AllRaces), RACE);
         }
     }
 }

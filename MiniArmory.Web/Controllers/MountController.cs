@@ -5,6 +5,8 @@ using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class MountController : Controller
@@ -34,18 +36,18 @@ namespace MiniArmory.Web.Controllers
 
             if (await this.mountService.DoesExist(model.Name))
             {
-                ModelState.AddModelError("Name", "Invalid Name");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return this.View(model);
             }
 
             try
             {
                 await this.mountService.Add(model);
-                TempData["Message"] = "Created mount successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_MOUNT;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AllMounts));
@@ -54,7 +56,7 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> AllMounts()
         {
             IEnumerable<MountViewModel> models = default;
-            string cacheKey = "allMountsKey";
+            string cacheKey = Cache.ALL_MOUNTS_KEY;
 
             try
             {
@@ -74,7 +76,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);

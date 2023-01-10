@@ -6,6 +6,8 @@ using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data.Models;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Areas.Admin.Controllers
 {
     [Authorize(Roles = "Owner, Admin")]
@@ -36,7 +38,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "HomeController");
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
             }
 
             return View(models);
@@ -63,7 +65,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "HomeController");
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
             }
 
             return View(model);
@@ -80,14 +82,14 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             if (model.Roles?.Length > 0)
             {
                 await userManager.AddToRolesAsync(user, model.Roles);
-                TempData["Message"] = $"Added roles to {user.UserName} successfully.";
+                TempData[Temp.MESSAGE] = string.Format(Temp.ADDED_ROLE, user.UserName);
             }
             else
             {
-                TempData["Message"] = $"Removed roles from {user.UserName} successfully.";
+                TempData[Temp.MESSAGE] = string.Format(Temp.REMOVE_ROLE, user.UserName);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), HOME);
         }
 
         [Authorize(Roles = "Owner")]
@@ -110,14 +112,14 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             try
             {
                 await roleManager.DeleteAsync(id);
-                TempData["Message"] = $"Role was deleted successfully.";
+                TempData[Temp.MESSAGE] = Validation.DELETE_ROLE;
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "HomeController");
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), HOME);
         }
 
         public IActionResult CreateRole()
@@ -128,7 +130,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
         {
             if (await roleManager.RoleExistsAsync(model.Name))
             {
-                ModelState.AddModelError("Name", "Such name already exists");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return View(model);
             }
 
@@ -138,14 +140,14 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
                 {
                     Name = model.Name
                 });
-                TempData["Message"] = $"Role was created successfully.";
+                TempData[Temp.MESSAGE] = Validation.CREATE_ROLE;
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "HomeController");
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
             }
 
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(HomeController.Index), HOME);
         }
 
         public async Task<IActionResult> GetRoles()
@@ -158,7 +160,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "HomeController");
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
             }
 
             return Json(models);

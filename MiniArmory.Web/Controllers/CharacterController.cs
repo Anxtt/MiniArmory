@@ -8,6 +8,8 @@ using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data.Models;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class CharacterController : Controller
@@ -44,7 +46,7 @@ namespace MiniArmory.Web.Controllers
 
             if (await this.charService.DoesExist(model.Name))
             {
-                ModelState.AddModelError("Name", "Invalid Name");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return this.View(model);
             }
 
@@ -53,11 +55,11 @@ namespace MiniArmory.Web.Controllers
                 var user = await userManager.FindByNameAsync(this.User.Identity.Name);
 
                 await this.charService.Add(model, user.Id);
-                TempData["Message"] = "Created character successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_CHARACTER;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(CharacterList));
@@ -76,7 +78,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -87,7 +89,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             IEnumerable<MountViewModel> mounts = default;
@@ -100,7 +102,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             MountCharacterViewModel model = new MountCharacterViewModel()
@@ -123,7 +125,7 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction(nameof(AddMount), new { id = id });
             }
 
-            if (this.charService.RollForReward("Mount") == false)
+            if (this.charService.RollForReward(If.MOUNT) == false)
             {
                 return this.RedirectToAction(nameof(AddMount), new { id = id });
             }
@@ -131,11 +133,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.AddMountToCharacter(id, mountName);
-                TempData["Message"] = "Added mount successfully.";
+                TempData[Temp.MESSAGE] = Temp.ADDED_MOUNT;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AddMount), new { id = id });
@@ -146,7 +148,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             IEnumerable<AchievementViewModel> achies = default;
@@ -159,7 +161,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             AchievementCharacterViewModel model = new AchievementCharacterViewModel()
@@ -179,10 +181,10 @@ namespace MiniArmory.Web.Controllers
                 !await this.charService.DoesExist(id) ||
                 string.IsNullOrEmpty(achievement))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
-            if (this.charService.RollForReward("Achievement") == false)
+            if (this.charService.RollForReward(If.ACHIEVEMENT) == false)
             {
                 return this.RedirectToAction(nameof(AddAchievement), new { id = id });
             }
@@ -190,11 +192,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.AddAchievementToCharacter(id, achievement);
-                TempData["Message"] = "Added achievement successfully.";
+                TempData[Temp.MESSAGE] = Temp.ADDED_ACHIEVEMENT;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AddAchievement), new { id = id });
@@ -204,7 +206,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             IEnumerable<AchievementViewModel> achievements = default;
@@ -217,7 +219,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             AchievementCharacterViewModel model = new AchievementCharacterViewModel()
@@ -240,7 +242,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(model);
@@ -254,11 +256,11 @@ namespace MiniArmory.Web.Controllers
             {
                 await this.charService.ChangeFaction(id, faction);
                 await this.charService.ChangeRace(id, race);
-                TempData["Message"] = "Changed race and faction successfully.";
+                TempData[Temp.MESSAGE] = Temp.CHANGE_FACTION;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(Details), new { id = id });
@@ -275,7 +277,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(model);
@@ -288,11 +290,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.ChangeName(id, name);
-                TempData["Message"] = "Changed name successfully.";
+                TempData[Temp.MESSAGE] = Temp.CHANGE_NAME;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(Details), new { id = id });
@@ -309,7 +311,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(model);
@@ -322,11 +324,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.ChangeRace(id, race);
-                TempData["Message"] = "Changed race successfully.";
+                TempData[Temp.MESSAGE] = Temp.CHANGE_RACE;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(Details), new { id = id });
@@ -344,11 +346,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.Delete(id);
-                TempData["Message"] = "Deleted character successfully.";
+                TempData[Temp.MESSAGE] = Temp.DELETED;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(CharacterList));
@@ -358,7 +360,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             CharacterViewModel model = default;
@@ -369,7 +371,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(model);
@@ -378,29 +380,22 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Leaderboard()
         {
             IEnumerable<CharacterViewModel> models = default;
-            string cacheKey = "leaderboardKey";
+            string cacheKey = Cache.LEADERBOARD_KEY;
 
             try
             {
-                models = this.memoryCache.Get<IEnumerable<CharacterViewModel>>(cacheKey);
-
-                if (models == null)
+                models = await this.memoryCache.GetOrCreateAsync(cacheKey, async x =>
                 {
-                    models = await this.charService.LeaderboardStats();
+                    x.AbsoluteExpiration = DateTime.Now.AddSeconds(30);
+                    x.Priority = CacheItemPriority.High;
+                    x.SlidingExpiration = TimeSpan.FromSeconds(10);
 
-                    var options = new MemoryCacheEntryOptions()
-                    {
-                        AbsoluteExpiration = DateTime.Now.AddSeconds(30),
-                        Priority = CacheItemPriority.High,
-                        SlidingExpiration = TimeSpan.FromSeconds(10)
-                    };
-
-                    this.memoryCache.Set(cacheKey, models, options);
-                }
+                    return await this.charService.LeaderboardStats();
+                });
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -417,7 +412,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(model);
@@ -428,7 +423,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             IEnumerable<MountViewModel> mounts = default;
@@ -441,7 +436,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             MountCharacterViewModel model = new MountCharacterViewModel()
@@ -459,7 +454,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             try
@@ -468,7 +463,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(PlayArena));
@@ -487,7 +482,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -503,7 +498,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
@@ -516,11 +511,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.LeaveTeam(id, partnerId);
-                TempData["Message"] = "You left your team.";
+                TempData[Temp.MESSAGE] = Temp.LEAVE_TEAM;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(CharacterList));
@@ -533,11 +528,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.charService.TeamUp(id, partnerId);
-                TempData["Message"] = "You are in a team now.";
+                TempData[Temp.MESSAGE] = Temp.TEAM_UP;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
@@ -556,13 +551,14 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
-            List<CharacterViewModel> models = new List<CharacterViewModel>();
-
-            models.Add(character);
-            models.Add(partner);
+            List<CharacterViewModel> models = new List<CharacterViewModel>
+            {
+                character,
+                partner
+            };
 
             return this.View(models);
         }
@@ -570,29 +566,22 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Ranking()
         {
             IEnumerable<CharacterViewModel> models = default;
-            string cacheKey = "achievementKey";
+            string cacheKey = Cache.ACHIEVEMENT_KEY;
 
             try
             {
-                models = this.memoryCache.Get<IEnumerable<CharacterViewModel>>(cacheKey);
-
-                if (models == null)
+                models = await this.memoryCache.GetOrCreateAsync(cacheKey, async x =>
                 {
-                    models = await this.charService.AchievementStats();
+                    x.AbsoluteExpiration = DateTime.Now.AddSeconds(30);
+                    x.Priority = CacheItemPriority.High;
+                    x.SlidingExpiration = TimeSpan.FromSeconds(10);
 
-                    var options = new MemoryCacheEntryOptions()
-                    {
-                        AbsoluteExpiration = DateTime.Now.AddSeconds(30),
-                        Priority = CacheItemPriority.High,
-                        SlidingExpiration = TimeSpan.FromSeconds(10)
-                    };
-
-                    this.memoryCache.Set(cacheKey, models, options);
-                }
+                    return await this.charService.AchievementStats();
+                });
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -603,7 +592,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(chars))
             {
-                return this.RedirectToAction("Index", "Home");
+                return this.RedirectToAction(nameof(HomeController.Index), HOME);
             }
 
             IEnumerable<CharacterViewModel> models = default;
@@ -614,7 +603,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -641,7 +630,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(LFG), new { id = model.Id });

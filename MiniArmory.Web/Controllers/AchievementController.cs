@@ -4,6 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Services.Contracts;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class AchievementController : Controller
@@ -30,7 +32,7 @@ namespace MiniArmory.Web.Controllers
             {
                 if (await this.achievementService.DoesExist(model.Name))
                 {
-                    ModelState.AddModelError("Name", "Invalid Name");
+                    ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 }
 
                 return this.View(model);
@@ -39,11 +41,11 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.achievementService.Add(model);
-                TempData["Message"] = "Created achievement successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_ACHIEVEMENT;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AllAchievements));
@@ -53,7 +55,7 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> AllAchievements()
         {
             IEnumerable<AchievementViewModel> models = default;
-            string cacheKey = "allAchiesKey";
+            string cacheKey = Cache.ALL_ACHIEVEMENTS_KEY;
 
             try
             {
@@ -68,7 +70,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);

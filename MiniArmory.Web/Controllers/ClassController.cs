@@ -4,6 +4,8 @@ using Microsoft.Extensions.Caching.Memory;
 using MiniArmory.Core.Models.Class;
 using MiniArmory.Core.Services.Contracts;
 
+using static MiniArmory.Core.Constants.Web;
+
 namespace MiniArmory.Web.Controllers
 {
     public class ClassController : Controller
@@ -33,18 +35,18 @@ namespace MiniArmory.Web.Controllers
 
             if (await this.classService.DoesExist(model.Name))
             {
-                ModelState.AddModelError("Name", "Invalid Name");
+                ModelState.AddModelError(nameof(model.Name), Validation.INVALID_NAME);
                 return this.View(model);
             }
 
             try
             {
                 await this.classService.Add(model);
-                TempData["Message"] = "Created class successfully.";
+                TempData[Temp.MESSAGE] = Temp.CREATE_CLASS;
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.RedirectToAction(nameof(AllClasses));
@@ -53,7 +55,7 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> AllClasses()
         {
             IEnumerable<ClassViewModel> models = default;
-            string cacheKey = "allClassesKey";
+            string cacheKey = Cache.ALL_CLASSES_KEY;
 
             try
             {
@@ -74,7 +76,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(models);
@@ -86,7 +88,7 @@ namespace MiniArmory.Web.Controllers
 
             if (!await this.classService.DoesExist(id))
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             try
@@ -95,7 +97,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction("Error", "Home");
+                return this.RedirectToAction(nameof(HomeController.Error), HOME);
             }
 
             return this.View(model);
