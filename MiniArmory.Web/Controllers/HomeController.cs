@@ -1,18 +1,21 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Services.Contracts;
+
 using MiniArmory.Web.Models;
 
-using static MiniArmory.Core.Constants.Web;
+using static MiniArmory.GlobalConstants.Web;
 
 namespace MiniArmory.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ICharacterService charService;
         private readonly IMemoryCache memoryCache;
+        
+        private readonly ICharacterService charService;
 
         public HomeController(ICharacterService charService, 
             IMemoryCache memoryCache)

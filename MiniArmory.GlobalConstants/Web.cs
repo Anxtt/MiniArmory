@@ -1,4 +1,4 @@
-﻿namespace MiniArmory.Core.Constants
+﻿namespace MiniArmory.GlobalConstants
 {
     public class Web
     {

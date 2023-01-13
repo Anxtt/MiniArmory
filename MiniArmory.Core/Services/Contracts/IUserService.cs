@@ -1,4 +1,5 @@
 ﻿using MiniArmory.Core.Models;
+
 using MiniArmory.Data.Data.Models;
 
 namespace MiniArmory.Core.Services.Contracts

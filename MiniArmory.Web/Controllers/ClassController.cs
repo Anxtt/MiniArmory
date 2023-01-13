@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+
 using MiniArmory.Core.Models.Class;
 using MiniArmory.Core.Services.Contracts;
 
-using static MiniArmory.Core.Constants.Web;
+using static MiniArmory.GlobalConstants.Web;
 
 namespace MiniArmory.Web.Controllers
 {

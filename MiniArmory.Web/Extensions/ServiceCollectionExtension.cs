@@ -1,15 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
+
 using MiniArmory.Data.Data;
 
-namespace MiniArmory.Core.Extensions
+namespace MiniArmory.Web.Extensions
 {
     public static class ServiceCollectionExtension
     {
-        public static IServiceCollection AddServices(this IServiceCollection services) 
+        public static IServiceCollection AddServices(this IServiceCollection services)
         {
             services.AddScoped<IAchievementService, AchievementService>();
             services.AddScoped<IClassService, ClassService>();
@@ -24,7 +24,7 @@ namespace MiniArmory.Core.Extensions
             return services;
         }
 
-        public static IServiceCollection AddAppDbContext(this IServiceCollection services, IConfiguration config) 
+        public static IServiceCollection AddAppDbContext(this IServiceCollection services, IConfiguration config)
         {
             var connectionString = config.GetConnectionString("DefaultConnection");
 
