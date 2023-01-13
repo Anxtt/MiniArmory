@@ -1,18 +1,23 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using MiniArmory.Core.Models.Faction;
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
+
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
+
 using NUnit.Framework;
 
 namespace MiniArmory.Test
 {
     public class FactionServiceTest
     {
-        private ServiceProvider serviceProvider;
+        private IServiceProvider serviceProvider;
         private InMemoryDbContext dbContext;
 
         private IFactionService factionService;

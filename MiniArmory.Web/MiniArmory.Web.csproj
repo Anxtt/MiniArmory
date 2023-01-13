@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MiniArmory.Core\MiniArmory.Core.csproj" />
+    <ProjectReference Include="..\MiniArmory.GlobalConstants\MiniArmory.GlobalConstants.csproj" />
   </ItemGroup>
 
 </Project>

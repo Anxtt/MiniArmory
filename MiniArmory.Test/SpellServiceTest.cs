@@ -1,20 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using MiniArmory.Core.Models.Spell;
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
+
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
+
 using NUnit.Framework;
 
 namespace MiniArmory.Test
 {
     public class SpellServiceTest
     {
-        private ServiceProvider serviceProvider;
+        private IServiceProvider serviceProvider;
         private InMemoryDbContext dbContext;
 
         private ISpellService spellService;

@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Class;
 using MiniArmory.Core.Models.Spell;
 using MiniArmory.Core.Services.Contracts;
+
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
 

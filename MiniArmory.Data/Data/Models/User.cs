@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+
 using Microsoft.AspNetCore.Identity;
 
 namespace MiniArmory.Data.Data.Models

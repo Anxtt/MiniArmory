@@ -6,7 +6,7 @@ using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
 using MiniArmory.Data.Data.Models;
 
-using static MiniArmory.Core.Constants.Web;
+using static MiniArmory.GlobalConstants.Web;
 
 namespace MiniArmory.Web.Areas.Admin.Controllers
 {

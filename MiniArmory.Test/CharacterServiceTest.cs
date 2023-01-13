@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
+
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
+
 using NUnit.Framework;
 
 namespace MiniArmory.Test

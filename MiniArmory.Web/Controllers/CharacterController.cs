@@ -1,31 +1,30 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
+
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
-using MiniArmory.Data.Data.Models;
 
-using static MiniArmory.Core.Constants.Web;
+using MiniArmory.Web.Extensions;
+
+using static MiniArmory.GlobalConstants.Web;
 
 namespace MiniArmory.Web.Controllers
 {
     public class CharacterController : Controller
     {
-        private readonly UserManager<User> userManager;
         private readonly IMemoryCache memoryCache;
 
         private readonly ICharacterService charService;
         private readonly IMountService mountService;
 
-        public CharacterController(UserManager<User> userManager,
+        public CharacterController(
             ICharacterService charService,
             IMountService mountService,
             IMemoryCache memoryCache)
         {
-            this.userManager = userManager;
             this.charService = charService;
             this.mountService = mountService;
             this.memoryCache = memoryCache;
@@ -52,9 +51,9 @@ namespace MiniArmory.Web.Controllers
 
             try
             {
-                var user = await userManager.FindByNameAsync(this.User.Identity.Name);
+                Guid userId = this.User.GetId();
 
-                await this.charService.Add(model, user.Id);
+                await this.charService.Add(model, userId);
                 TempData[Temp.MESSAGE] = Temp.CREATE_CHARACTER;
             }
             catch (Exception)
@@ -68,13 +67,12 @@ namespace MiniArmory.Web.Controllers
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> CharacterList()
         {
-            User user = default;
+            Guid userId = this.User.GetId();
             IEnumerable<CharacterViewModel> models = default;
 
             try
             {
-                user = await userManager.FindByNameAsync(this.User.Identity.Name);
-                models = await this.charService.OwnCharacters(user.Id);
+                models = await this.charService.OwnCharacters(userId);
             }
             catch (Exception)
             {
@@ -364,7 +362,7 @@ namespace MiniArmory.Web.Controllers
             }
 
             CharacterViewModel model = default;
-
+            
             try
             {
                 model = await this.charService.FindCharacterById(id);
@@ -472,13 +470,12 @@ namespace MiniArmory.Web.Controllers
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> PlayArena()
         {
-            User user = default;
+            Guid userId = this.User.GetId();
             IEnumerable<CharacterViewModel> models = default;
 
             try
             {
-                user = await this.userManager.FindByNameAsync(this.User.Identity.Name);
-                models = await this.charService.OwnCharacters(user.Id);
+                models = await this.charService.OwnCharacters(userId);
             }
             catch (Exception)
             {

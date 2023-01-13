@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using MiniArmory.Core.Extensions;
+
 using MiniArmory.Data.Data;
 using MiniArmory.Data.Data.Models;
+
+using MiniArmory.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
