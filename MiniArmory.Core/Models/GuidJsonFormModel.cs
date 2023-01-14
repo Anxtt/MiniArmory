@@ -2,6 +2,6 @@
 {
     public class GuidJsonFormModel : JsonFormModel
     {
-        public Guid Id { get; set; }
+        public new Guid Id { get; set; }
     }
 }

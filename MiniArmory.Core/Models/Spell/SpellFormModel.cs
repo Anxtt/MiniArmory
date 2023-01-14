@@ -47,6 +47,7 @@ namespace MiniArmory.Core.Models.Spell
         [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = SELECT)]
         public string? Class { get; set; }
 
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = SELECT)]
         public string? Race { get; set; }
     }
 }

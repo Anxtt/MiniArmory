@@ -62,88 +62,88 @@
 
 @section Scripts {
     @{
-    await Html.RenderPartialAsync("_ValidationScriptsPartial");
-}
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 
-<script>
-    $(document).ready(function () {
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "/Spell/GetClasses",
-            headers: {
-                    RequestVerificationToken:
-                        $('input:hidden[name="__RequestVerificationToken"]').val()
-                },
-            success: function (classes)
-            {
-                var s = '<option value="-1">Class</option>';
-                for (var i = 0; i < classes.length; i++)
-                {
-                    s += '<option value="' + classes[i].Id + '">' + classes[i].Name + '</option>';
-                }
-                $("#Class").html(s);
-            }
-        })
-
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "/Spell/GetRaces",
-            headers: {
-                    RequestVerificationToken:
-                        $('input:hidden[name="__RequestVerificationToken"]').val()
-                },
-            success: function (races)
-            {
-                var s = '<option value="-1">Race</option>';
-                for (var i = 0; i < races.length; i++)
-                {
-                    s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
-                }
-                $("#Race").html(s);
-            }
-        })
-
-        $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: "/Spell/SpellTypes",
-            headers: {
-                    RequestVerificationToken:
-                        $('input:hidden[name="__RequestVerificationToken"]').val()
-                },
-            success: function (types)
-            {
-                var s = '<option value="-1">Type</option>';
-                for (var i = 0; i < types.length; i++)
-                {
-                    s += '<option value="' + types[i] + '">' + types[i] + '</option>';
-                }
-                $("#Type").html(s);
-            }
-        })
-    })
-
-    $("select#Type").on('change',function(){
-        if($(this).val()=="Class"){
-            $("#Race").prop('disabled', true);
-            $("#RaceWrapper").hide();
-            $("#ClassWrapper").show();
-            $("#Class").prop('disabled', false);
-        }
-        else if($(this).val()=="Race"){
+    <script>
+        function HideFields() {
             $("#Class").prop('disabled', true);
             $("#ClassWrapper").hide();
-            $("#RaceWrapper").show();
-            $("#Race").prop('disabled', false);
+            $("#RaceWrapper").hide();
+            $("#Race").prop('disabled', true);
         }
-        else if($(this).val()=="-1"){
-            $("#ClassWrapper").show();
-            $("#Class").prop('disabled', false);
-            $("#RaceWrapper").show();
-            $("#Race").prop('disabled', false);
-        }
-    });
-</script>
+
+        HideFields()
+
+        $(document).ready(function () {
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/Spell/GetClasses",
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (classes) {
+                    var s = '<option value="-1">Class</option>';
+                    for (var i = 0; i < classes.length; i++) {
+                        s += '<option value="' + classes[i].Id + '">' + classes[i].Name + '</option>';
+                    }
+                    $("#Class").html(s);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/Spell/GetRaces",
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (races) {
+                    var s = '<option value="-1">Race</option>';
+                    for (var i = 0; i < races.length; i++) {
+                        s += '<option value="' + races[i].Id + '">' + races[i].Name + '</option>';
+                    }
+                    $("#Race").html(s);
+                }
+            })
+
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "/Spell/SpellTypes",
+                headers: {
+                    RequestVerificationToken:
+                        $('input:hidden[name="__RequestVerificationToken"]').val()
+                },
+                success: function (types) {
+                    var s = '<option value="-1">Type</option>';
+                    for (var i = 0; i < types.length; i++) {
+                        s += '<option value="' + types[i] + '">' + types[i] + '</option>';
+                    }
+                    $("#Type").html(s);
+                }
+            })
+        })
+
+        $("select#Type").on('change', function () {
+            if ($(this).val() == "Class") {
+                $("#Class").prop('disabled', false);
+                $("#ClassWrapper").show();
+                $("#RaceWrapper").hide();
+                $("#Race").prop('disabled', true);
+            }
+            else if ($(this).val() == "Race") {
+                $("#Class").prop('disabled', true);
+                $("#ClassWrapper").hide();
+                $("#RaceWrapper").show();
+                $("#Race").prop('disabled', false);
+            }
+            else if ($(this).val() == "-1") {
+                HideFields()
+            }
+        });
+    </script>
 }
