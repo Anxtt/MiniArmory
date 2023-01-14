@@ -1,27 +1,45 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+using static MiniArmory.GlobalConstants.ErrorMessage;
+
 namespace MiniArmory.Core.Models.Achievement
 {
     public class AchievementFormModel
     {
         [Required]
-        [StringLength(50, MinimumLength = 6, ErrorMessage = "Must have a name between 6 and 50 characters.")]
+        [StringLength(
+            AchievementConst.NAME_MAX_LENGTH,
+            MinimumLength = AchievementConst.NAME_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Name { get; set; }
 
         [Required]
-        [Range(5, 50, ErrorMessage = "Must have an amount of points between 5 and 50.")]
+        [Range(
+            AchievementConst.POINTS_MIN,
+            AchievementConst.POINTS_MAX,
+            ErrorMessage = NUMBERS_FIELD)]
         public byte Points { get; set; }
 
         [Required]
-        [StringLength(100, MinimumLength = 20, ErrorMessage = "Must have a description between 20 and 100 characters.")]
+        [StringLength(
+            AchievementConst.DESCRIPTION_MAX_LENGTH,
+            MinimumLength = AchievementConst.DESCRIPTION_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(30, MinimumLength = 3, ErrorMessage = "Must have a category between 3 and 30 characters.")]
+        [StringLength(
+            AchievementConst.CATEGORY_MAX_LENGTH,
+            MinimumLength = AchievementConst.CATEGORY_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Category { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
+        [StringLength(
+            IMAGE_MAX_LENGTH,
+            MinimumLength = IMAGE_MIN_LENGTH,
+            ErrorMessage = IMAGE_GENERAL_MESSAGE)]
         public string Image { get; set; }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Character
@@ -9,11 +11,11 @@ namespace MiniArmory.Data.Data.Models
         public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
-        [StringLength(16)]
+        [StringLength(CharacterConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string Image { get; set; }
 
         [Required]
@@ -47,8 +49,8 @@ namespace MiniArmory.Data.Data.Models
         public User User { get; set; }
 
         [Required]
-        [Range(0, 4000)]
-        public int Rating { get; set; } = 1000;
+        [Range(CharacterConst.RATING_MAX, CharacterConst.RATING_MAX)]
+        public int Rating { get; set; } = CharacterConst.RATING_INITIAL;
 
         [Required]
         public int Win { get; set; }

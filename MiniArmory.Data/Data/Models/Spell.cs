@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Spell
@@ -9,27 +11,27 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(SpellConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [Range(5, 40)]
+        [Range(SpellConst.RANGE_MIN, SpellConst.RANGE_MAX)]
         public sbyte Range { get; set; }
 
         [Required]
-        [Range(0, 600)]
+        [Range(SpellConst.COOLDOWN_MIN, SpellConst.COOLDOWN_MAX)]
         public short Cooldown { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(SpellConst.TOOLTIP_MAX_LENGTH)]
         public string Tooltip { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(SpellConst.DESCRIPTION_MAX_LENGTH)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(15)]
+        [StringLength(SpellConst.TYPE_MAX_LENGTH)]
         public string Type { get; set; }
 
         [ForeignKey(nameof(Race))]

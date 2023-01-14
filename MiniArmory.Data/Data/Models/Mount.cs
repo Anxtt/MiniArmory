@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Mount
@@ -8,19 +10,19 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(60)]
+        [StringLength(MountConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [Range(80, 100)]
+        [Range(MountConst.SPEED_MIN, MountConst.SPEED_MAX)]
         public sbyte GroundSpeed { get; set; }
 
         [Required]
-        [Range(80, 100)]
+        [Range(MountConst.SPEED_MIN, MountConst.SPEED_MAX)]
         public sbyte FlyingSpeed { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string Image { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();

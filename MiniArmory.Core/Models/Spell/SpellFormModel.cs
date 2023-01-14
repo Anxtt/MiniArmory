@@ -1,36 +1,50 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+using static MiniArmory.GlobalConstants.ErrorMessage;
+
 namespace MiniArmory.Core.Models.Spell
 {
     public class SpellFormModel
     {
         [Required]
-        [StringLength(30, MinimumLength = 4, ErrorMessage = "Must have a name between 4 and 30 characters.")]
+        [StringLength(
+            SpellConst.NAME_MAX_LENGTH,
+            MinimumLength = SpellConst.NAME_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Name { get; set; }
 
         [Required]
-        [Range(5, 40, ErrorMessage = "Must have a range between 5 and 40 yards.")]
+        [Range(SpellConst.RANGE_MIN,
+            SpellConst.RANGE_MAX,
+            ErrorMessage = RANGE_FIELD)]
         public sbyte Range { get; set; }
 
         [Required]
-        [Range(0, 600, ErrorMessage = "Must have cooldown between 0 and 600 seconds.")]
+        [Range(SpellConst.COOLDOWN_MIN,
+            SpellConst.COOLDOWN_MAX,
+            ErrorMessage = COOLDOWN_FIELD)]
         public short Cooldown { get; set; }
 
         [Required]
-        [StringLength(200, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
-        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
-            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
+        [StringLength(IMAGE_MAX_LENGTH,
+            MinimumLength = IMAGE_MIN_LENGTH,
+            ErrorMessage = IMAGE_GENERAL_MESSAGE)]
+        [RegularExpression(IMAGE_REGEX,
+            ErrorMessage = INVALID_IMAGE)]
         public string Tooltip { get; set; }
 
         [Required]
-        [StringLength(200, MinimumLength = 50, ErrorMessage = "Must have a description between 50 and 200 characters.")]
+        [StringLength(SpellConst.DESCRIPTION_MAX_LENGTH,
+            MinimumLength = SpellConst.DESCRIPTION_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Description { get; set; }
 
         [Required]
-        [RegularExpression("^[A-Z{1}a-z]+$", ErrorMessage = "The type must be different than the default option.")]
+        [RegularExpression(TYPE_REGEX, ErrorMessage = DROPDOWN)]
         public string Type { get; set; }
 
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select a class.")]
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = SELECT)]
         public string? Class { get; set; }
 
         public string? Race { get; set; }

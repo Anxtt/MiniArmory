@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Faction
@@ -8,15 +10,15 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(FactionConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(2000)]
+        [StringLength(FactionConst.DESCRIPTION_MAX_LENGTH)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(2000)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string Image { get; set; }
 
         public ICollection<Race> Races { get; set; } = new List<Race>();

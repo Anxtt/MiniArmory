@@ -1,21 +1,30 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+using static MiniArmory.GlobalConstants.ErrorMessage;
+
 namespace MiniArmory.Core.Models.Faction
 {
     public class FactionFormModel
     {
         [Required]
-        [StringLength(20, MinimumLength = 5, ErrorMessage = "Must have a name between 5 and 20 characters.")]
+        [StringLength(FactionConst.NAME_MAX_LENGTH,
+            MinimumLength = FactionConst.NAME_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 50, ErrorMessage = "Must have a description between 50 and 500 characters.")]
+        [StringLength(FactionConst.DESCRIPTION_MAX_LENGTH,
+            MinimumLength = FactionConst.DESCRIPTION_MIN_LENGTH, 
+            ErrorMessage = TEXT_FIELD)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
-        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
-            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
+        [StringLength(IMAGE_MAX_LENGTH,
+            MinimumLength = IMAGE_MIN_LENGTH,
+            ErrorMessage = IMAGE_GENERAL_MESSAGE)]
+        [RegularExpression(IMAGE_REGEX,
+            ErrorMessage = INVALID_IMAGE)]
         public string Image { get; set; }
     }
 }

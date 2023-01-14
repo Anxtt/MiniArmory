@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Realm
@@ -8,11 +10,11 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(RealmConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(RealmConst.LANGUAGE_MAX_LENGTH)]
         public string Language { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();

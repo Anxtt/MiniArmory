@@ -166,16 +166,16 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             return Json(models);
         }
 
-        public async Task<IActionResult> WelcomeUser()
+        public IActionResult WelcomeUser()
             => View();
 
         [HttpPost]
-        public async Task<IActionResult> WelcomeUser(UserViewModel model)
+        public IActionResult WelcomeUser(UserViewModel model)
         {
             return this.RedirectToAction(nameof(GreetUser), new { name = model.Name });
         }
 
-        public async Task<IActionResult> GreetUser(string name)
+        public IActionResult GreetUser(string name)
         {
             UserViewModel model = new UserViewModel()
             {

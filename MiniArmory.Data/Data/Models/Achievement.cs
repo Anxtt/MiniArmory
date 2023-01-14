@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Achievement
@@ -8,23 +10,23 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(AchievementConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [Range(5, 50)]
+        [Range(AchievementConst.POINTS_MIN, AchievementConst.POINTS_MAX)]
         public byte Points { get; set; }
 
         [Required]
-        [StringLength(100)]
+        [StringLength(AchievementConst.DESCRIPTION_MAX_LENGTH)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(30)]
+        [StringLength(AchievementConst.CATEGORY_MAX_LENGTH)]
         public string Category { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string Image { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();

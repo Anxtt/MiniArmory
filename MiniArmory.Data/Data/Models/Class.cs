@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Class
@@ -8,31 +10,31 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(ClassConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(ClassConst.DESCRIPTION_MAX_LENGTH)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string ClassImage { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(ClassConst.NAME_MAX_LENGTH)]
         public string SpecialisationName { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(ClassConst.DESCRIPTION_MAX_LENGTH)]
         public string SpecialisationDescription { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string SpecialisationImage { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string Image { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();

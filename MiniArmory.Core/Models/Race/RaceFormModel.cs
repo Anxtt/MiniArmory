@@ -1,36 +1,47 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+using static MiniArmory.GlobalConstants.ErrorMessage;
+
 namespace MiniArmory.Core.Models.Race
 {
     public class RaceFormModel
     {
         [Required]
-        [StringLength(20, MinimumLength = 3, ErrorMessage = "Must have a name between 3 and 20 characters.")]
+        [StringLength(RaceConst.NAME_MAX_LENGTH,
+            MinimumLength = RaceConst.NAME_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(200, MinimumLength = 50, ErrorMessage = "Must have a description between 50 and 200 characters.")]
+        [StringLength(RaceConst.DESCRIPTION_MAX_LENGTH,
+            MinimumLength = RaceConst.DESCRIPTION_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
-        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
-            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
+        [StringLength(IMAGE_MAX_LENGTH,
+            MinimumLength = IMAGE_MIN_LENGTH,
+            ErrorMessage = IMAGE_GENERAL_MESSAGE)]
+        [RegularExpression(IMAGE_REGEX,
+            ErrorMessage = INVALID_IMAGE)]
         public string Image { get; set; }
 
         [Required]
-        [StringLength(200, MinimumLength = 30, ErrorMessage = "Must have an image.Please post a link.")]
-        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$",
-            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
+        [StringLength(IMAGE_MAX_LENGTH,
+            MinimumLength = IMAGE_MIN_LENGTH,
+            ErrorMessage = IMAGE_GENERAL_MESSAGE)]
+        [RegularExpression(IMAGE_REGEX,
+            ErrorMessage = INVALID_IMAGE)]
         public string Arms { get; set; }
 
         [Required]
-        [Display(Name = "Racial Spell")]
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select a racial spell.")]
+        [Display(Name = RaceConst.RACIAL_SPELL)]
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = SELECT)]
         public string RacialSpell { get; set; }
 
         [Required]
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select a faction.")]
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = SELECT)]
         public string Faction { get; set; }
     }
 }

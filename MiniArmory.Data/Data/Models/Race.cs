@@ -1,6 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
+using static MiniArmory.GlobalConstants.Data;
+
 namespace MiniArmory.Data.Data.Models
 {
     public class Race
@@ -9,15 +11,15 @@ namespace MiniArmory.Data.Data.Models
         public int Id { get; set; }
 
         [Required]
-        [StringLength(20)]
+        [StringLength(RaceConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(RaceConst.DESCRIPTION_MAX_LENGTH)]
         public string Description { get; set; }
 
         [Required]
-        [StringLength(500)]
+        [StringLength(IMAGE_MAX_LENGTH)]
         public string Image { get; set; }
 
         [ForeignKey(nameof(RacialSpell))]
@@ -34,7 +36,7 @@ namespace MiniArmory.Data.Data.Models
         public ICollection<Character> Characters { get; set; }
 
         [Required]
-        [StringLength(200)]
+        [StringLength(RaceConst.ARMS_MAX_LENGTH)]
         public string Arms { get; set; }
     }
 }

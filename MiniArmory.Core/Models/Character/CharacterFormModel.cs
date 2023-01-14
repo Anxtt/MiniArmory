@@ -1,33 +1,40 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using static MiniArmory.GlobalConstants.Data;
+using static MiniArmory.GlobalConstants.ErrorMessage;
+
 namespace MiniArmory.Core.Models.Character
 {
     public class CharacterFormModel
     {
         [Required]
-        [StringLength(16, MinimumLength = 3, ErrorMessage = "Must have a name between 3 and 16 characters.")]
+        [StringLength(CharacterConst.NAME_MAX_LENGTH,
+            MinimumLength = CharacterConst.NAME_MIN_LENGTH,
+            ErrorMessage = TEXT_FIELD)]
         public string Name { get; set; }
 
         [Required]
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select an option different than the default one.")]
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = DROPDOWN)]
         public int Realm { get; set; }
 
         [Required]
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select an option different than the default one.")]
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = DROPDOWN)]
         public int Faction { get; set; }
 
         [Required]
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select an option different than the default one.")]
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = DROPDOWN)]
         public int Race { get; set; }
 
         [Required]
-        [RegularExpression("^[\"\\d\"]+$", ErrorMessage = "You must select an option different than the default one.")]
+        [RegularExpression(TEXT_FIELD_REGEX, ErrorMessage = DROPDOWN)]
         public int Class { get; set; }
 
         [Required]
-        [StringLength(500, MinimumLength = 30, ErrorMessage = "Must have an image. Please post a link.")]
-        [RegularExpression(@"^(https://)(www)?(render-(eu)?)?(render)?(wow)?(assets)?(images)?(imgur)?.?(deviantart)?(com)?(worldofwarcraft)?(blz-contentstack)?(zamimg)?(.)?(/)?(.)?(com)/(images)?/?(wow)?/?(icons)?.*$", 
-            ErrorMessage = "Only images from deviantart, wow armory, wowhead, and imgur are allowed.")]
+        [StringLength(IMAGE_MAX_LENGTH,
+            MinimumLength = IMAGE_MIN_LENGTH,
+            ErrorMessage = IMAGE_GENERAL_MESSAGE)]
+        [RegularExpression(IMAGE_REGEX, 
+            ErrorMessage = INVALID_IMAGE)]
         public string Image { get; set; }
     }
 }

@@ -21,4 +21,8 @@
 		<Folder Include="Migrations\" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <ProjectReference Include="..\MiniArmory.GlobalConstants\MiniArmory.GlobalConstants.csproj" />
+	</ItemGroup>
+
 </Project>
