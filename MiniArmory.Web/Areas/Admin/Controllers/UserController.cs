@@ -38,7 +38,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), ControllerConst.HOME);
             }
 
             return View(models);
@@ -65,7 +65,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), ControllerConst.HOME);
             }
 
             return View(model);
@@ -89,7 +89,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
                 TempData[Temp.MESSAGE] = string.Format(Temp.REMOVE_ROLE, user.UserName);
             }
 
-            return RedirectToAction(nameof(HomeController.Index), HOME);
+            return RedirectToAction(nameof(HomeController.Index), ControllerConst.HOME);
         }
 
         [Authorize(Roles = "Owner")]
@@ -116,10 +116,10 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), ControllerConst.HOME);
             }
 
-            return RedirectToAction(nameof(HomeController.Index), HOME);
+            return RedirectToAction(nameof(HomeController.Index), ControllerConst.HOME);
         }
 
         public IActionResult CreateRole()
@@ -144,10 +144,10 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), ControllerConst.HOME);
             }
 
-            return RedirectToAction(nameof(HomeController.Index), HOME);
+            return RedirectToAction(nameof(HomeController.Index), ControllerConst.HOME);
         }
 
         public async Task<IActionResult> GetRoles()
@@ -160,7 +160,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), HOME);
+                return RedirectToAction(nameof(Web.Controllers.HomeController.Error), ControllerConst.HOME);
             }
 
             return Json(models);

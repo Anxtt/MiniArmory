@@ -2,10 +2,6 @@
 {
     public class Web
     {
-        public const string HOME = "Home";
-
-        public const string RACE = "Race";
-
         public class Cache
         {
             //A
@@ -31,6 +27,13 @@
 
             //S
             public const string STATISTICS_KEY = "statisticsKey";
+        }
+
+        public class ControllerConst
+        {
+            public const string HOME = "Home";
+
+            public const string RACE = "Race";
         }
 
         public class If
