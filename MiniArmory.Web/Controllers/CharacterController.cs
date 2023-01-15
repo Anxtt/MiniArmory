@@ -58,7 +58,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(CharacterList));
@@ -76,7 +76,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(models);
@@ -87,7 +87,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             IEnumerable<MountViewModel> mounts = default;
@@ -100,7 +100,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             MountCharacterViewModel model = new MountCharacterViewModel()
@@ -135,7 +135,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(AddMount), new { id = id });
@@ -146,7 +146,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             IEnumerable<AchievementViewModel> achies = default;
@@ -159,7 +159,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             AchievementCharacterViewModel model = new AchievementCharacterViewModel()
@@ -179,7 +179,7 @@ namespace MiniArmory.Web.Controllers
                 !await this.charService.DoesExist(id) ||
                 string.IsNullOrEmpty(achievement))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             if (this.charService.RollForReward(If.ACHIEVEMENT) == false)
@@ -194,7 +194,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(AddAchievement), new { id = id });
@@ -204,7 +204,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             IEnumerable<AchievementViewModel> achievements = default;
@@ -217,7 +217,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             AchievementCharacterViewModel model = new AchievementCharacterViewModel()
@@ -240,7 +240,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(model);
@@ -258,7 +258,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(Details), new { id = id });
@@ -275,7 +275,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(model);
@@ -292,7 +292,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(Details), new { id = id });
@@ -309,7 +309,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(model);
@@ -326,7 +326,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(Details), new { id = id });
@@ -348,7 +348,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(CharacterList));
@@ -358,7 +358,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             CharacterViewModel model = default;
@@ -369,7 +369,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(model);
@@ -393,7 +393,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(models);
@@ -410,7 +410,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(model);
@@ -421,7 +421,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             IEnumerable<MountViewModel> mounts = default;
@@ -434,7 +434,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             MountCharacterViewModel model = new MountCharacterViewModel()
@@ -452,7 +452,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             try
@@ -461,7 +461,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(PlayArena));
@@ -479,7 +479,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(models);
@@ -495,7 +495,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
@@ -512,7 +512,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(CharacterList));
@@ -529,7 +529,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
@@ -548,7 +548,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             List<CharacterViewModel> models = new List<CharacterViewModel>
@@ -578,7 +578,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(models);
@@ -589,7 +589,7 @@ namespace MiniArmory.Web.Controllers
         {
             if (string.IsNullOrWhiteSpace(chars))
             {
-                return this.RedirectToAction(nameof(HomeController.Index), HOME);
+                return this.RedirectToAction(nameof(HomeController.Index), ControllerConst.HOME);
             }
 
             IEnumerable<CharacterViewModel> models = default;
@@ -600,7 +600,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(models);
@@ -627,7 +627,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(LFG), new { id = model.Id });

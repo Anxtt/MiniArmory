@@ -47,7 +47,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(HomeController.Error), HOME);
+                return RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(AllRealms));
@@ -76,7 +76,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return RedirectToAction(nameof(HomeController.Error), HOME);
+                return RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(models);

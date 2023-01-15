@@ -47,7 +47,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.RedirectToAction(nameof(AllClasses));
@@ -77,7 +77,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(models);
@@ -89,7 +89,7 @@ namespace MiniArmory.Web.Controllers
 
             if (!await this.classService.DoesExist(id))
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             try
@@ -98,7 +98,7 @@ namespace MiniArmory.Web.Controllers
             }
             catch (Exception)
             {
-                return this.RedirectToAction(nameof(HomeController.Error), HOME);
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             return this.View(model);
