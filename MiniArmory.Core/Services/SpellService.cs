@@ -41,9 +41,10 @@ namespace MiniArmory.Core.Services
             {
                 Race race = await this.db
                     .Races
+                    .Where(x => x.Id == int.Parse(model.Race))
                     .Include(x => x.Faction)
                     .Include(x => x.RacialSpell)
-                    .FirstAsync(x => x.Id == int.Parse(model.Race));
+                    .FirstOrDefaultAsync();
 
                 spell.RaceId = race.Id;
                 spell.Race = race;

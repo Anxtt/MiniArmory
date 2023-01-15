@@ -57,14 +57,14 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
-                .Include(x => x.Achievements)
                 .Where(x => x.Id == id)
+                .Include(x => x.Achievements)
                 .FirstAsync();
 
             Achievement achie = await this.db
                 .Achievements
-                .Include(x => x.Characters)
                 .Where(x => x.Name == achievement)
+                .Include(x => x.Characters)
                 .FirstAsync();
 
             character.Achievements.Add(achie);
@@ -76,14 +76,14 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
-                .Include(x => x.Mounts)
                 .Where(x => x.Id == id)
+                .Include(x => x.Mounts)
                 .FirstAsync();
 
             Mount mount = await this.db
                 .Mounts
-                .Include(x => x.Characters)
                 .Where(x => x.Name == mountName)
+                .Include(x => x.Characters)
                 .FirstAsync();
 
             character.Mounts.Add(mount);
@@ -178,8 +178,8 @@ namespace MiniArmory.Core.Services
         public async Task<IEnumerable<AchievementViewModel>> OwnAchievements(Guid id)
             => await this.db
                 .Achievements
-                .Include(x => x.Characters)
                 .Where(x => x.Characters.Any(z => z.Id == id))
+                .Include(x => x.Characters)
                 .Select(x => new AchievementViewModel()
                 {
                     Name = x.Name,
@@ -228,10 +228,10 @@ namespace MiniArmory.Core.Services
         public async Task<IEnumerable<CharacterViewModel>> SearchCharacters(string chars)
             => await this.db
             .Characters
+            .Where(x => x.Name.ToLower().Contains(chars.ToLower()))
             .Include(x => x.Class)
             .Include(x => x.Faction)
             .Include(x => x.Realm)
-            .Where(x => x.Name.ToLower().Contains(chars.ToLower()))
             .Select(x => new CharacterViewModel()
             {
                 Id = x.Id,
@@ -246,8 +246,8 @@ namespace MiniArmory.Core.Services
         public async Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id)
             => await this.db
                 .Achievements
-                .Include(x => x.Characters)
                 .Where(x => !x.Characters.Any(z => z.Id == id))
+                .Include(x => x.Characters)
                 .Select(x => new AchievementViewModel()
                 {
                     Name = x.Name,
@@ -261,8 +261,8 @@ namespace MiniArmory.Core.Services
         public async Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id)
             => await this.db
             .Mounts
-            .Include(x => x.Characters)
             .Where(x => !x.Characters.Any(z => z.Id == id))
+            .Include(x => x.Characters)
             .Select(x => new MountViewModel()
             {
                 Name = x.Name,
@@ -287,12 +287,12 @@ namespace MiniArmory.Core.Services
         public async Task<LFGFormModel> LFGCharacter(Guid id)
             => await this.db
                     .Characters
+                    .Where(x => x.Id == id)
                     .Include(x => x.Faction)
                     .Include(x => x.Race)
                     .Include(x => x.Class)
                     .Include(x => x.Realm)
                     .Include(x => x.User)
-                    .Where(x => x.Id == id)
                     .Select(x => new LFGFormModel()
                     {
                         Id = x.Id,
@@ -308,8 +308,8 @@ namespace MiniArmory.Core.Services
                         Win = x.Win,
                         CharactersInLFG = this.db
                                 .Characters
-                                .Include(z => z.User)
                                 .Where(z => z.IsLooking == true && z.PartnerId == null && z.User.Id != x.User.Id)
+                                .Include(z => z.User)
                                 .Select(z => new CharacterViewModel()
                                 {
                                     Id = z.Id,
@@ -413,14 +413,14 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
-                .Include(x => x.Partner)
                 .Where(x => x.Id == id)
+                .Include(x => x.Partner)
                 .FirstAsync();
 
             Character partner = await this.db
                 .Characters
-                .Include(x => x.Partner)
                 .Where(x => x.Id == partnerId)
+                .Include(x => x.Partner)
                 .FirstAsync();
 
             character.Partner = null;
@@ -460,8 +460,8 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
-                .Include(x => x.Partner)
                 .Where(x => x.Id == id)
+                .Include(x => x.Partner)
                 .FirstAsync();
 
             if (character.Partner != null)
@@ -477,8 +477,8 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
-                .Include(x => x.Faction)
                 .Where(x => x.Id == id)
+                .Include(x => x.Faction)
                 .FirstAsync();
 
             character.FactionId = int.Parse(factionId);
@@ -502,8 +502,8 @@ namespace MiniArmory.Core.Services
         {
             Character character = await this.db
                 .Characters
-                .Include(x => x.Race)
                 .Where(x => x.Id == id)
+                .Include(x => x.Race)
                 .FirstAsync();
 
             character.RaceId = int.Parse(raceId);
@@ -526,8 +526,8 @@ namespace MiniArmory.Core.Services
         public async Task<IEnumerable<MountViewModel>> OwnMounts(Guid id)
             => await this.db
             .Mounts
-            .Include(x => x.Characters)
             .Where(x => x.Characters.Any(z => z.Id == id))
+            .Include(x => x.Characters)
             .Select(x => new MountViewModel()
             {
                 FlyingSpeed = x.FlyingSpeed,
