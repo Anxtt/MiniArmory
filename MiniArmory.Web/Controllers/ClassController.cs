@@ -12,13 +12,15 @@ namespace MiniArmory.Web.Controllers
     public class ClassController : Controller
     {
         private readonly IMemoryCache memoryCache;
+        private readonly IRedisService redis;
 
         private readonly IClassService classService;
 
-        public ClassController(IClassService classService, IMemoryCache memoryCache)
+        public ClassController(IClassService classService, IMemoryCache memoryCache, IRedisService redis)
         {
             this.classService = classService;
             this.memoryCache = memoryCache;
+            this.redis = redis;
         }
 
         [Authorize(Roles = "Owner, Admin")]
@@ -86,6 +88,8 @@ namespace MiniArmory.Web.Controllers
         public async Task<IActionResult> Details(int id)
         {
             ClassViewModel model = default;
+            string cacheKey = string.Format(RedisCache.DETAILS_CLASS_KEY, id);
+
 
             if (!await this.classService.DoesExist(id))
             {
@@ -94,7 +98,15 @@ namespace MiniArmory.Web.Controllers
 
             try
             {
-                model = await this.classService.Details(id);
+                model = await this.redis.RetrieveCache<ClassViewModel>(cacheKey);
+
+                if (model == null)
+                {
+                    model = await this.classService.Details(id);
+
+                    await this.redis.SetCache(cacheKey, model);
+                }
+
             }
             catch (Exception)
             {

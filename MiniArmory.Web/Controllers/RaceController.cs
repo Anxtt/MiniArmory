@@ -12,13 +12,15 @@ namespace MiniArmory.Web.Controllers
     public class RaceController : Controller
     {
         private readonly IMemoryCache memoryCache;
+        private readonly IRedisService redis;
 
         private readonly IRaceService raceService;
 
-        public RaceController(IRaceService raceService, IMemoryCache memoryCache)
+        public RaceController(IRaceService raceService, IMemoryCache memoryCache, IRedisService redis)
         {
             this.raceService = raceService;
             this.memoryCache = memoryCache;
+            this.redis = redis;
         }
 
         [Authorize(Roles = "Owner, Admin")]
@@ -84,18 +86,26 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> Details(int id)
         {
-            RaceViewModel race = default;
+            RaceViewModel model = default;
+            string cacheKey = string.Format(RedisCache.DETAILS_RACE_KEY, id);
 
             try
             {
-                race = await this.raceService.GetRace(id);
+                model = await this.redis.RetrieveCache<RaceViewModel>(cacheKey);
+
+                if (model == null)
+                {
+                    model = await this.raceService.GetRace(id);
+
+                    await this.redis.SetCache(cacheKey, model);
+                }
             }
             catch (Exception)
             {
                 return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
-            return this.View(race);
+            return this.View(model);
         }
 
         public async Task<IActionResult> GetRacialSpells()

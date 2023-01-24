@@ -5,6 +5,8 @@ using MiniArmory.Core.Services.Contracts;
 
 using MiniArmory.Data.Data;
 
+using StackExchange.Redis;
+
 namespace MiniArmory.Web.Extensions
 {
     public static class ServiceCollectionExtension
@@ -18,6 +20,7 @@ namespace MiniArmory.Web.Extensions
             services.AddScoped<IMountService, MountService>();
             services.AddScoped<IRaceService, RaceService>();
             services.AddScoped<IRealmService, RealmService>();
+            services.AddScoped<IRedisService, RedisService>();
             services.AddScoped<ISpellService, SpellService>();
             services.AddScoped<IUserService, UserService>();
 
@@ -26,10 +29,23 @@ namespace MiniArmory.Web.Extensions
 
         public static IServiceCollection AddAppDbContext(this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("DefaultConnection");
+            string connectionString = config.GetConnectionString("DefaultConnection");
 
-            services.AddDbContext<MiniArmoryDbContext>(options =>
-                options.UseSqlServer(connectionString));
+            services
+                .AddDbContext<MiniArmoryDbContext>(options =>
+                    options.UseSqlServer(connectionString))
+                .AddDatabaseDeveloperPageExceptionFilter();
+
+            return services;
+        }
+
+        public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration config)
+        {
+            string connectionString = config.GetConnectionString("RedisDockerConnection");
+
+            services
+                .AddSingleton<IConnectionMultiplexer>(
+                ConnectionMultiplexer.Connect(connectionString));
 
             return services;
         }

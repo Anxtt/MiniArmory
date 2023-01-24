@@ -13,15 +13,15 @@ namespace MiniArmory.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IMemoryCache memoryCache;
-        
+        private readonly IRedisService redis;
+
         private readonly ICharacterService charService;
 
-        public HomeController(ICharacterService charService, 
-            IMemoryCache memoryCache)
+        public HomeController(ICharacterService charService,
+            IRedisService redis)
         {
             this.charService = charService;
-            this.memoryCache = memoryCache;
+            this.redis = redis;
         }
 
         public async Task<IActionResult> Index()
@@ -31,7 +31,7 @@ namespace MiniArmory.Web.Controllers
 
             try
             {
-                models = this.memoryCache.Get<IEnumerable<CharacterViewModel>>(cacheKey);
+                models = await this.redis.RetrieveCache<IEnumerable<CharacterViewModel>>(cacheKey);
 
                 if (models == null)
                 {
@@ -42,13 +42,7 @@ namespace MiniArmory.Web.Controllers
                         .ThenBy(x => x.Name)
                         .Take(3);
 
-                    var options = new MemoryCacheEntryOptions()
-                    {
-                        AbsoluteExpiration = DateTime.Now.AddMinutes(5),
-                        Priority = CacheItemPriority.High
-                    };
-
-                    this.memoryCache.Set(cacheKey, models, options);
+                    await this.redis.SetCache(cacheKey, models);
                 }
             }
             catch (Exception)

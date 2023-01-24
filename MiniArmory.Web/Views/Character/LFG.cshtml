@@ -41,7 +41,9 @@
                             <td class="text-center text-success">@player.Win</td>
                             <td class="text-center text-danger">@player.Loss</td>
                             <form asp-controller="Character" asp-action="TeamUp" asp-route-id="@Model.Id" asp-route-partnerId="@player.Id">
-                            <td class="text-center text-primary"><button type="submit" class="btn btn-primary text-light">Party Up</button></td>
+                            <td class="text-center text-primary">
+                                <button type="submit" class="btn btn-primary text-light">Team Up</button>
+                            </td>
                             </form>
                         </tr>
                     }
