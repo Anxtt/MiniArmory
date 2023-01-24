@@ -308,8 +308,9 @@ namespace MiniArmory.Core.Services
                         Win = x.Win,
                         CharactersInLFG = this.db
                                 .Characters
-                                .Where(z => z.IsLooking == true && z.PartnerId == null && z.User.Id != x.User.Id)
+                                .Where(z => z.IsLooking == true && z.PartnerId == null)
                                 .Include(z => z.User)
+                                .Where(z => z.User.Id != x.User.Id)
                                 .Select(z => new CharacterViewModel()
                                 {
                                     Id = z.Id,

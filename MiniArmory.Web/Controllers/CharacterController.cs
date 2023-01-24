@@ -16,6 +16,7 @@ namespace MiniArmory.Web.Controllers
     public class CharacterController : Controller
     {
         private readonly IMemoryCache memoryCache;
+        private readonly IRedisService redis;
 
         private readonly ICharacterService charService;
         private readonly IMountService mountService;
@@ -23,11 +24,13 @@ namespace MiniArmory.Web.Controllers
         public CharacterController(
             ICharacterService charService,
             IMountService mountService,
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            IRedisService redis)
         {
             this.charService = charService;
             this.mountService = mountService;
             this.memoryCache = memoryCache;
+            this.redis = redis;
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -356,16 +359,24 @@ namespace MiniArmory.Web.Controllers
 
         public async Task<IActionResult> Details(Guid id)
         {
-            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            if (id == default || !await this.charService.DoesExist(id))
             {
                 return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             CharacterViewModel model = default;
-            
+            string cacheKey = string.Format(RedisCache.DETAILS_CHARACTER_KEY, id);
+
             try
             {
-                model = await this.charService.FindCharacterById(id);
+                model = await this.redis.RetrieveCache<CharacterViewModel>(cacheKey);
+
+                if (model == null)
+                {
+                    model = await this.charService.FindCharacterById(id);
+
+                    await this.redis.SetCache(cacheKey, model);
+                }
             }
             catch (Exception)
             {

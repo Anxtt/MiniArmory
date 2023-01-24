@@ -29,6 +29,12 @@
             public const string STATISTICS_KEY = "statisticsKey";
         }
 
+        public class RedisCache
+        {
+            //D
+            public const string DETAILS_CHARACTER_KEY = "details:character:{0}";
+        }
+
         public class ControllerConst
         {
             public const string HOME = "Home";
