@@ -26,7 +26,7 @@
                         <td class="text-light text-center">@character.RealmName</td>
                         <td class="text-light text-center">@character.Rating</td>
                         <td class="text-light text-center">
-                            <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-primary btn-xs text-light">Team up</a>
+                            <a asp-action="SignUp" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-primary btn-xs text-light">Sign up</a>
                             <a asp-action="AddMount" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-info btn-xs text-light">Earn mounts</a>
                             <a asp-action="AddAchievement" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-success btn-xs text-light">Earn achievements</a>
                             <a class="btn btn-block btn-outline-light btn-xs dropdown-toggle text-light" href="#" id="EditDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -37,7 +37,7 @@
                                 <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeRace" asp-route-id="@character.Id">Change Race</a></li>
                                 <li><a class="dropdown-item" asp-controller="Character" asp-action="ChangeFaction" asp-route-id="@character.Id">Change Faction</a></li>
                             </ul>
-                            <a asp-action="DeleteCharacter" asp-controller="Character" asp-route-id="@character.Id" class="btn btn-block btn-outline-danger btn-xs text-light">Delete</a>
+                            <a class="btn btn-block btn-outline-danger btn-xs text-light" asp-action="DeleteCharacter" asp-controller="Character" asp-route-id="@character.Id">Delete</a>
                         </td>
                     </tr>
                 }
