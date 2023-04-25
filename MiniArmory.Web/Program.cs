@@ -12,10 +12,12 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddAppDbContext(builder.Configuration);
-        builder.Services.AddRedis(builder.Configuration);
+        builder.Services
+            .AddAppDbContext(builder.Configuration)
+            .AddRedis(builder.Configuration);
 
-        builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+        builder.Services
+            .AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
             .AddRoles<IdentityRole<Guid>>()
             .AddEntityFrameworkStores<MiniArmoryDbContext>();
 

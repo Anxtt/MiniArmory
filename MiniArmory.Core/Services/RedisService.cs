@@ -9,18 +9,18 @@ namespace MiniArmory.Core.Services
     public class RedisService : IRedisService
     {
         private readonly IConnectionMultiplexer connection;
-        private readonly IDatabase redis;
+        private readonly IDatabase db;
 
         public RedisService(IConnectionMultiplexer connection)
         {
             this.connection = connection;
 
-            this.redis = this.connection.GetDatabase();
+            this.db = this.connection.GetDatabase();
         }
 
         public async Task<T> RetrieveCache<T>(string key)
         {
-            var cachedObj = await this.redis.StringGetAsync(key);
+            var cachedObj = await this.db.StringGetAsync(key);
 
             if (cachedObj.IsNull)
             {
@@ -34,7 +34,7 @@ namespace MiniArmory.Core.Services
         {
             TimeSpan expiry = new TimeSpan(0, 1, 0);
 
-            await this.redis.StringSetAsync(key, JsonConvert.SerializeObject(value), expiry);
+            await this.db.StringSetAsync(key, JsonConvert.SerializeObject(value), expiry);
         }
     }
 }

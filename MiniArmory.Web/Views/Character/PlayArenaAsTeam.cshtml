@@ -26,10 +26,19 @@
                .ThenBy(x => x.Name))
                 {
                     <tr>
-                        <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-light">@player.Name</a></td>
+                        <td class="text-center">
+                            <a asp-controller="Character"
+                            asp-action="Details"
+                            asp-route-id="@player.Id"
+                            class="text-decoration-none text-light">@player.Name</a>
+                        </td>
                         <td class="text-center text-light">@player.RealmName</td>
-                        <td class="text-center text-light"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;" /></td>
-                        <td class="text-center text-light"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" /></td>
+                        <td class="text-center text-light">
+                            <img src="@player.ClassImage" alt="Class image" style="height: 3rem;" />
+                        </td>
+                        <td class="text-center text-light">
+                            <img src="@player.FactionImage" alt="Faction image" style="height: 4rem;" />
+                        </td>
                         <td class="text-center text-light">@player.Rating</td>
                         <td class="text-center text-success">@player.Win</td>
                         <td class="text-center text-danger">@player.Loss</td>
@@ -38,17 +47,19 @@
             </tbody>
         </table>
 
-        <form class="text-center" asp-controller="Character" asp-action="EarnRatingAsTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id">
+        <form asp-controller="Character" asp-action="EarnRatingAsTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id" class="text-center">
             <button type="submit" formmethod="post" class="btn btn-success text-light">Play</button>
         </form>
 
-        <form class="text-center pt-1" asp-controller="Character" asp-action="LeaveTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id">
-            <button type="submit" formmethod="post" class="btn btn-danger text-light">Leave Party</button>
+        <form asp-controller="Character" asp-action="LeaveTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id" class="text-center pt-1">
+            <button type="submit" formmethod="post" class="btn btn-danger text-light">Leave Team</button>
         </form>
     }
     else
     {
         <h2 class="text-center">You don't have a partner to play with yet.</h2>
-        <h2 class="text-center">Go create some <a asp-controller="Character" asp-action="CharacterList">Sign up here.</a></h2>
+        <h2 class="text-center">
+            Go create some <a asp-controller="Character" asp-action="CharacterList">Sign up here.</a>
+        </h2>
     }
 </div>
