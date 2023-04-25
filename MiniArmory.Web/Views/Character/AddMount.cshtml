@@ -14,10 +14,12 @@
         {
             @foreach (var mount in Model.Mounts)
             {
-                <form class="d-inline-block row-6" asp-action="AddMount" asp-controller="Character" asp-route-id="@Model.Character.Id" asp-route-mountName="@mount.Name">
+                <form asp-action="AddMount" asp-controller="Character" asp-route-id="@Model.Character.Id" asp-route-mountName="@mount.Name" class="d-inline-block row-6">
                     <div class="card d-inline-flex bg-dark text-white m-2" style="width: 31rem; height: 11rem; border: 4px solid #808080;">
                         <div class="col-6 d-inline-flex">
-                            <a href="@mount.Image" target=_blank><img src="@mount.Image" alt="Mount image" style="height: 10em;"></a>
+                            <a href="@mount.Image" target=_blank>
+                                <img src="@mount.Image" alt="Mount image" style="height: 10em;">
+                            </a>
                             <div class="col-6">
                                 <p style="width: 9rem;">@mount.Name</p>
                                 <p style="width: 9rem;">Ground speed: @mount.GroundSpeed</p>

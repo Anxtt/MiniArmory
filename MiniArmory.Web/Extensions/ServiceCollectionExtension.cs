@@ -41,7 +41,7 @@ namespace MiniArmory.Web.Extensions
 
         public static IServiceCollection AddRedis(this IServiceCollection services, IConfiguration config)
         {
-            string connectionString = config.GetConnectionString("RedisDockerConnection");
+            string connectionString = config.GetConnectionString("RedisCloudConnection");
 
             services
                 .AddSingleton<IConnectionMultiplexer>(
