@@ -112,7 +112,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
             try
             {
                 await roleManager.DeleteAsync(id);
-                TempData[Temp.MESSAGE] = Validation.DELETE_ROLE;
+                TempData[Temp.MESSAGE] = Temp.DELETE_ROLE;
             }
             catch (Exception)
             {
@@ -140,7 +140,7 @@ namespace MiniArmory.Web.Areas.Admin.Controllers
                 {
                     Name = model.Name
                 });
-                TempData[Temp.MESSAGE] = Validation.CREATE_ROLE;
+                TempData[Temp.MESSAGE] = Temp.CREATE_ROLE;
             }
             catch (Exception)
             {

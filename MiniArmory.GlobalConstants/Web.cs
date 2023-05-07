@@ -85,9 +85,13 @@
 
             public const string CREATE_REALM = "Created realm successfully.";
 
+            public const string CREATE_ROLE = "Role was created successfully.";
+
             public const string CREATE_SPELL = "Created spell successfully.";
 
             //D
+            public const string DELETE_ROLE = "Role was deleted successfully.";
+
             public const string DELETED = "Deleted character successfully.";
 
             //L
@@ -105,12 +109,6 @@
 
         public class Validation
         {
-            //C
-            public const string CREATE_ROLE = "Role was created successfully.";
-
-            //D
-            public const string DELETE_ROLE = "Role was deleted successfully.";
-
             //I
             public const string INVALID_NAME = "Invalid Name";
         }
