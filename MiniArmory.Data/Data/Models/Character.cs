@@ -49,7 +49,7 @@ namespace MiniArmory.Data.Data.Models
         public User User { get; set; }
 
         [Required]
-        [Range(CharacterConst.RATING_MAX, CharacterConst.RATING_MAX)]
+        [Range(CharacterConst.RATING_MIN, CharacterConst.RATING_MAX)]
         public int Rating { get; set; } = CharacterConst.RATING_INITIAL;
 
         [Required]
@@ -62,6 +62,7 @@ namespace MiniArmory.Data.Data.Models
 
         [ForeignKey(nameof(Partner))]
         public Guid? PartnerId { get; set; }
+
         public Character? Partner { get; set; }
 
         public ICollection<Mount> Mounts { get; set; } = new List<Mount>();
