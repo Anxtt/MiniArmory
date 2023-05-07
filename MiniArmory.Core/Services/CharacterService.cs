@@ -55,9 +55,7 @@ namespace MiniArmory.Core.Services
 
         public async Task AddAchievementToCharacter(Guid id, string achievement)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .Include(x => x.Achievements)
                 .FirstAsync();
 
@@ -74,9 +72,7 @@ namespace MiniArmory.Core.Services
 
         public async Task AddMountToCharacter(Guid id, string mountName)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .Include(x => x.Mounts)
                 .FirstAsync();
 
@@ -93,15 +89,11 @@ namespace MiniArmory.Core.Services
 
         public async Task LeaveTeam(Guid id, Guid partnerId)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .Include(x => x.Partner)
                 .FirstAsync();
 
-            Character partner = await this.db
-                .Characters
-                .Where(x => x.Id == partnerId)
+            Character partner = await QueryableCharacterById(id)
                 .Include(x => x.Partner)
                 .FirstAsync();
 
@@ -113,9 +105,7 @@ namespace MiniArmory.Core.Services
 
         public async Task ChangeFaction(Guid id, string factionId)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .Include(x => x.Faction)
                 .FirstAsync();
 
@@ -126,9 +116,7 @@ namespace MiniArmory.Core.Services
 
         public async Task ChangeName(Guid id, string name)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .FirstAsync();
 
             character.Name = name;
@@ -138,9 +126,7 @@ namespace MiniArmory.Core.Services
 
         public async Task ChangeRace(Guid id, string raceId)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .Include(x => x.Race)
                 .FirstAsync();
 
@@ -151,9 +137,7 @@ namespace MiniArmory.Core.Services
 
         public async Task Delete(Guid id)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .Include(x => x.Partner)
                 .FirstAsync();
 
@@ -178,9 +162,7 @@ namespace MiniArmory.Core.Services
 
         public async Task EarnRating(Guid id)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .FirstAsync();
 
             var (rating, win, loss) = CalculateRating(character.Rating);
@@ -194,14 +176,10 @@ namespace MiniArmory.Core.Services
 
         public async Task EarnRatingAsTeam(Guid id, Guid partnerId)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .FirstAsync();
 
-            Character partner = await this.db
-                .Characters
-                .Where(x => x.Id == partnerId)
+            Character partner = await QueryableCharacterById(partnerId)
                 .FirstAsync();
 
             var (rating, win, loss) = CalculateRating(character.Rating);
@@ -249,9 +227,7 @@ namespace MiniArmory.Core.Services
         }
 
         public async Task<CharacterViewModel> FindCharacterById(Guid id)
-            => await this.db
-            .Characters
-            .Where(x => x.Id == id)
+            => await QueryableCharacterById(id)
             .Include(x => x.Achievements)
             .Include(x => x.Class)
             .Include(x => x.Race)
@@ -275,9 +251,7 @@ namespace MiniArmory.Core.Services
             .FirstAsync();
 
         public async Task<CharacterFormModel> GetCharacterForChange(Guid id)
-            => await this.db
-            .Characters
-            .Where(x => x.Id == id)
+            => await QueryableCharacterById(id)
             .Select(x => new CharacterFormModel()
             {
                 Name = x.Name,
@@ -297,9 +271,7 @@ namespace MiniArmory.Core.Services
             .ToListAsync();
 
         public async Task<Tuple<bool, Guid?>> IsLooking(Guid id)
-            => await this.db
-               .Characters
-               .Where(x => x.Id == id)
+            => await QueryableCharacterById(id)
                .Select(x => new Tuple<bool, Guid?>(x.IsLooking, x.PartnerId))
                .FirstAsync();
 
@@ -326,9 +298,7 @@ namespace MiniArmory.Core.Services
             .ToListAsync();
 
         public async Task<LFGFormModel> LFGCharacter(Guid id)
-        => await this.db
-            .Characters
-            .Where(x => x.Id == id)
+        => await QueryableCharacterById(id)
             .Include(x => x.Faction)
             .Include(x => x.Race)
             .Include(x => x.Class)
@@ -402,7 +372,6 @@ namespace MiniArmory.Core.Services
                  })
                  .ToListAsync();
 
-        //поиграй си с това и Unowned версията
         public async Task<IEnumerable<MountViewModel>> OwnMounts(Guid id)
             => await this.db
             .Mounts
@@ -452,9 +421,7 @@ namespace MiniArmory.Core.Services
 
         public async Task SignUp(LFGFormModel model)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == model.Id)
+            Character character = await QueryableCharacterById(model.Id)
                 .FirstAsync();
 
             character.IsLooking = true;
@@ -464,14 +431,10 @@ namespace MiniArmory.Core.Services
 
         public async Task TeamUp(Guid id, Guid partnerId)
         {
-            Character character = await this.db
-                .Characters
-                .Where(x => x.Id == id)
+            Character character = await QueryableCharacterById(id)
                 .FirstAsync();
 
-            Character partner = await this.db
-                .Characters
-                .Where(x => x.Id == partnerId)
+            Character partner = await QueryableCharacterById(partnerId)
                 .FirstAsync();
 
             character.Partner = partner;
@@ -540,5 +503,10 @@ namespace MiniArmory.Core.Services
 
             return (winLose, win, loss);
         }
+
+        private IQueryable<Character> QueryableCharacterById(Guid id)
+            => this.db
+            .Characters
+            .Where(x => x.Id == id);
     }
 }
