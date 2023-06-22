@@ -11,7 +11,7 @@
 </div>
 
 <div id="FilteredSpells">
-    <partial name="_AllSpellsPartialView" id="FilteredSpells"/>
+    <partial name="_AllSpellsPartialView" />
 </div>
 
 @section Scripts {
@@ -47,7 +47,7 @@
             type = "Race";
         }
         else{
-            id = null;
+            type = null;
         }
 
         $.ajax({

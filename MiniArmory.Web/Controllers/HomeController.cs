@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Services.Contracts;
@@ -35,9 +34,7 @@ namespace MiniArmory.Web.Controllers
 
                 if (models == null)
                 {
-                    models = await this.charService.LeaderboardStats();
-
-                    models = models
+                    models = (await this.charService.LeaderboardStats())
                         .OrderByDescending(x => x.Rating)
                         .ThenBy(x => x.Name)
                         .Take(3);

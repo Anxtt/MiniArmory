@@ -83,16 +83,12 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
-        public IActionResult SpellTypes()
-        {
-            string[] types = new string[]
+        public IActionResult SpellTypes() 
+            => Json(new string[]
             {
                 "Class",
                 "Race"
-            };
-
-            return Json(types);
-        }
+            });
 
         public async Task<IActionResult> GetClasses()
         {
