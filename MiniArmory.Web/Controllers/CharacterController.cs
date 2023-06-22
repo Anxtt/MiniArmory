@@ -68,24 +68,6 @@ namespace MiniArmory.Web.Controllers
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
-        public async Task<IActionResult> CharacterList()
-        {
-            Guid userId = this.User.GetId();
-            IEnumerable<CharacterViewModel> models = default;
-
-            try
-            {
-                models = await this.charService.OwnCharacters(userId);
-            }
-            catch (Exception)
-            {
-                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
-            }
-
-            return this.View(models);
-        }
-
-        [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> AddMount(Guid id)
         {
             if (id == default(Guid) || !await this.charService.DoesExist(id))
@@ -123,7 +105,7 @@ namespace MiniArmory.Web.Controllers
                 !await this.charService.DoesExist(id) ||
                 string.IsNullOrEmpty(mountName))
             {
-                return this.RedirectToAction(nameof(AddMount), new { id = id });
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
             if (this.charService.RollForReward(If.MOUNT) == false)
@@ -230,6 +212,24 @@ namespace MiniArmory.Web.Controllers
             };
 
             return this.View(model);
+        }
+
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> CharacterList()
+        {
+            Guid userId = this.User.GetId();
+            IEnumerable<CharacterViewModel> models = default;
+
+            try
+            {
+                models = await this.charService.OwnCharacters(userId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.View(models);
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -410,6 +410,23 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> LeaveTeam(Guid id, Guid partnerId)
+        {
+            try
+            {
+                await this.charService.LeaveTeam(id, partnerId);
+                TempData[Temp.MESSAGE] = Temp.LEAVE_TEAM;
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.RedirectToAction(nameof(CharacterList));
+        }
+
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> LFG(Guid id)
         {
@@ -457,27 +474,6 @@ namespace MiniArmory.Web.Controllers
             return this.View(model);
         }
 
-        [HttpPost]
-        [Authorize(Roles = "Member, Admin, Owner")]
-        public async Task<IActionResult> EarnRating(Guid id)
-        {
-            if (id == default(Guid) || !await this.charService.DoesExist(id))
-            {
-                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
-            }
-
-            try
-            {
-                await this.charService.EarnRating(id);
-            }
-            catch (Exception)
-            {
-                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
-            }
-
-            return this.RedirectToAction(nameof(PlayArena));
-        }
-
         [Authorize(Roles = "Member, Admin, Owner")]
         public async Task<IActionResult> PlayArena()
         {
@@ -498,52 +494,23 @@ namespace MiniArmory.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Member, Admin, Owner")]
-        public async Task<IActionResult> EarnRatingAsTeam(Guid id, Guid partnerId)
+        public async Task<IActionResult> EarnRating(Guid id)
         {
+            if (id == default(Guid) || !await this.charService.DoesExist(id))
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
             try
             {
-                await this.charService.EarnRatingAsTeam(id, partnerId);
+                await this.charService.EarnRating(id);
             }
             catch (Exception)
             {
                 return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
-            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Member, Admin, Owner")]
-        public async Task<IActionResult> LeaveTeam(Guid id, Guid partnerId)
-        {
-            try
-            {
-                await this.charService.LeaveTeam(id, partnerId);
-                TempData[Temp.MESSAGE] = Temp.LEAVE_TEAM;
-            }
-            catch (Exception)
-            {
-                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
-            }
-
-            return this.RedirectToAction(nameof(CharacterList));
-        }
-
-        [HttpPost]
-        [Authorize(Roles = "Member, Admin, Owner")]
-        public async Task<IActionResult> TeamUp(Guid id, Guid partnerId)
-        {
-            try
-            {
-                await this.charService.TeamUp(id, partnerId);
-                TempData[Temp.MESSAGE] = Temp.TEAM_UP;
-            }
-            catch (Exception)
-            {
-                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
-            }
-
-            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
+            return this.RedirectToAction(nameof(PlayArena));
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -569,6 +536,43 @@ namespace MiniArmory.Web.Controllers
             };
 
             return this.View(models);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> EarnRatingAsTeam(Guid id, Guid partnerId)
+        {
+            try
+            {
+                await this.charService.EarnRatingAsTeam(id, partnerId);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> EarnRatingAsTeamVsTeam(Guid id, Guid partnerId)
+        {
+            string status;
+
+            try
+            {
+                (string enemy, string enemyPartner, status) = await this.charService
+                    .EarnRatingAsTeamVsTeam(id, partnerId);
+
+                TempData[Temp.MESSAGE] = status;
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
         }
 
         public async Task<IActionResult> Ranking()
@@ -642,6 +646,23 @@ namespace MiniArmory.Web.Controllers
             }
 
             return this.RedirectToAction(nameof(LFG), new { id = model.Id });
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> TeamUp(Guid id, Guid partnerId)
+        {
+            try
+            {
+                await this.charService.TeamUp(id, partnerId);
+                TempData[Temp.MESSAGE] = Temp.TEAM_UP;
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.RedirectToAction(nameof(PlayArenaAsTeam), new { id = id, partnerId = partnerId });
         }
 
         public async Task<IActionResult> GetRealms()

@@ -87,22 +87,6 @@ namespace MiniArmory.Core.Services
             await this.db.SaveChangesAsync();
         }
 
-        public async Task LeaveTeam(Guid id, Guid partnerId)
-        {
-            Character character = await QueryableCharacterById(id)
-                .Include(x => x.Partner)
-                .FirstAsync();
-
-            Character partner = await QueryableCharacterById(id)
-                .Include(x => x.Partner)
-                .FirstAsync();
-
-            character.Partner = null;
-            partner.Partner = null;
-
-            await this.db.SaveChangesAsync();
-        }
-
         public async Task ChangeFaction(Guid id, string factionId)
         {
             Character character = await QueryableCharacterById(id)
@@ -177,53 +161,28 @@ namespace MiniArmory.Core.Services
         public async Task EarnRatingAsTeam(Guid id, Guid partnerId)
         {
             Character character = await QueryableCharacterById(id)
-                .FirstAsync();
-
-            Character partner = await QueryableCharacterById(partnerId)
+                .Include(x => x.Partner)
                 .FirstAsync();
 
             var (rating, win, loss) = CalculateRating(character.Rating);
 
-            if (character.Rating < 1800 && partner.Rating < 1800)
-            {
-                character.Rating += rating;
-                character.Win += win;
-                character.Loss += loss;
-
-                partner.Rating += rating;
-                partner.Win += win;
-                partner.Loss += loss;
-            }
-            else if (character.Rating < 1800)
-            {
-                character.Rating += rating;
-                character.Win += win;
-                character.Loss += loss;
-
-                partner.Win += win;
-            }
-            else if (partner.Rating < 1800)
-            {
-                (rating, win, loss) = CalculateRating(partner.Rating);
-
-                partner.Rating += rating;
-                partner.Win += win;
-                partner.Loss += loss;
-
-                character.Win += win;
-            }
-            else
-            {
-                character.Rating += rating;
-                character.Win += win;
-                character.Loss += loss;
-
-                partner.Rating += rating;
-                partner.Win += win;
-                partner.Loss += loss;
-            }
+            CalculateRatingAsTeam(character, character.Partner!, rating, win, loss);
 
             await this.db.SaveChangesAsync();
+        }
+
+        public async Task<Tuple<string, string, string>> EarnRatingAsTeamVsTeam(Guid id, Guid partnerId)
+        {
+            Character character = await QueryableCharacterById(id)
+                .Include(x => x.Partner)
+                .FirstAsync();
+
+            Character enemy = await this.FindEnemyTeam(character, character.Partner!);
+            
+            string status = this.CalculateRatingAsTeamVsTeam(character, enemy);
+            await this.db.SaveChangesAsync();
+
+            return new Tuple<string, string, string>(enemy.Name, enemy.Partner!.Name, status);
         }
 
         public async Task<CharacterViewModel> FindCharacterById(Guid id)
@@ -296,6 +255,22 @@ namespace MiniArmory.Core.Services
                 FactionName = x.Faction.Name
             })
             .ToListAsync();
+
+        public async Task LeaveTeam(Guid id, Guid partnerId)
+        {
+            Character character = await QueryableCharacterById(id)
+                .Include(x => x.Partner)
+                .FirstAsync();
+
+            Character partner = await QueryableCharacterById(id)
+                .Include(x => x.Partner)
+                .FirstAsync();
+
+            character.Partner = null;
+            partner.Partner = null;
+
+            await this.db.SaveChangesAsync();
+        }
 
         public async Task<LFGFormModel> LFGCharacter(Guid id)
         => await QueryableCharacterById(id)
@@ -502,6 +477,104 @@ namespace MiniArmory.Core.Services
             }
 
             return (winLose, win, loss);
+        }
+
+        private void CalculateRatingAsTeam(Character character, Character partner, int rating, short win, short loss)
+        {
+            if (character.Rating < 1800 && partner.Rating < 1800)
+            {
+                character.Rating += rating;
+                character.Win += win;
+                character.Loss += loss;
+
+                partner.Rating += rating;
+                partner.Win += win;
+                partner.Loss += loss;
+            }
+            else if (character.Rating < 1800)
+            {
+                character.Rating += rating;
+                character.Win += win;
+                character.Loss += loss;
+
+                partner.Win += win;
+            }
+            else if (partner.Rating < 1800)
+            {
+                (rating, win, loss) = CalculateRating(partner.Rating);
+
+                partner.Rating += rating;
+                partner.Win += win;
+                partner.Loss += loss;
+
+                character.Win += win;
+            }
+            else
+            {
+                character.Rating += rating;
+                character.Win += win;
+                character.Loss += loss;
+
+                partner.Rating += rating;
+                partner.Win += win;
+                partner.Loss += loss;
+            }
+        }
+
+        private string CalculateRatingAsTeamVsTeam(Character firstCaptain, Character secondCaptain)
+        {
+            Random rnd = new Random();
+            int first = rnd.Next(0, 100) + 1;
+            int second = rnd.Next(0, 100) + 1;
+
+            if (first > second)
+            {
+                firstCaptain.Win += 1;
+                firstCaptain.Rating += 16;
+
+                firstCaptain.Partner.Win += 1;
+                firstCaptain.Partner.Rating += 16;
+
+                secondCaptain.Loss += 1;
+                secondCaptain.Rating -= 12;
+
+                secondCaptain.Partner.Loss += 1;
+                secondCaptain.Partner.Rating -= 12;
+
+                return $"You won against {secondCaptain.Name} and {secondCaptain.Partner.Name}";
+            }
+            else
+            {
+                secondCaptain.Win += 1;
+                secondCaptain.Rating += 16;
+
+                secondCaptain.Partner.Win += 1;
+                secondCaptain.Partner.Rating += 16;
+
+                firstCaptain.Loss += 1;
+                firstCaptain.Rating -= 12;
+
+                firstCaptain.Partner.Loss += 1;
+                firstCaptain.Partner.Rating -= 12;
+
+                return $"You lost against {secondCaptain.Name} and {secondCaptain.Partner.Name}";
+            }
+        }
+
+        private async Task<Character> FindEnemyTeam(Character character, Character partner)
+        {
+            IList<Character> chars = await this.db
+                    .Characters
+                    .Include(x => x.User)
+                    .Include(x => x.Partner)
+                    .Where(x => (x.Id != character.Id && x.Id != partner.Id) && x.Partner != null)
+                    //.Select(x => new Character() {}) breaks the query for some reason
+                    //Second Captain changes aren't saved in the db
+                    //e.g. win/loss doesn't change, neither does rating
+                    .ToListAsync();
+
+            Random rnd = new Random();
+            return chars[rnd.Next(chars.Count())];
         }
 
         private IQueryable<Character> QueryableCharacterById(Guid id)

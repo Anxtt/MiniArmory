@@ -28,9 +28,9 @@
                     <tr>
                         <td class="text-center">
                             <a asp-controller="Character"
-                            asp-action="Details"
-                            asp-route-id="@player.Id"
-                            class="text-decoration-none text-light">@player.Name</a>
+                       asp-action="Details"
+                       asp-route-id="@player.Id"
+                       class="text-decoration-none text-light">@player.Name</a>
                         </td>
                         <td class="text-center text-light">@player.RealmName</td>
                         <td class="text-center text-light">
@@ -47,13 +47,20 @@
             </tbody>
         </table>
 
-        <form asp-controller="Character" asp-action="EarnRatingAsTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id" class="text-center">
-            <button type="submit" formmethod="post" class="btn btn-success text-light">Play</button>
-        </form>
+        <div class="text-center">
+            <form asp-controller="Character" asp-action="EarnRatingAsTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id" class="d-inline-flex">
+                <button type="submit" formmethod="post" class="btn btn-success text-light">Play</button>
+            </form>
 
-        <form asp-controller="Character" asp-action="LeaveTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id" class="text-center pt-1">
-            <button type="submit" formmethod="post" class="btn btn-danger text-light">Leave Team</button>
+            <form asp-controller="Character" asp-action="LeaveTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id" class="pt-1 d-inline-flex">
+                <button type="submit" formmethod="post" class="btn btn-danger text-light">Leave Team</button>
+            </form>
+        </div>
+
+        <form asp-controller="Character" asp-action="EarnRatingAsTeamVsTeam" asp-route-id="@Model[0].Id" asp-route-partnerId="@Model[1].Id" class="pt-1 text-center">
+            <button type="submit" formmethod="post" class="btn btn-primary text-light">Play Vs Team</button>
         </form>
+        @*<button type="submit" formmethod="post" id="VsTeam" onclick="VsTeam()" class="btn btn-primary text-light pt-1 text-center">Play Vs Team</button>*@
     }
     else
     {
@@ -63,3 +70,22 @@
         </h2>
     }
 </div>
+
+@*@section Scripts{
+    <script>
+        //research how to include XSFR
+        async function VsTeam() {
+            const request = await fetch("/Character/EarnRatingAsTeamVsTeam/@Model[0].Id/@Model[1].Id",
+                {
+                    method: "POST",
+                    credentials: "include"
+                });
+
+            if (request.status !== 200) {
+                console.log("dogshit");
+            }
+
+            const data = await request.json();
+        }
+    </script>
+}*@

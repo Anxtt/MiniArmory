@@ -59,6 +59,8 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task EarnRatingAsTeam(Guid id, Guid partnerId);
 
+        Task<Tuple<string, string, string>> EarnRatingAsTeamVsTeam(Guid id, Guid partnerId);
+
         Task LeaveTeam(Guid id, Guid partnerId);
 
         Task Delete(Guid id);
