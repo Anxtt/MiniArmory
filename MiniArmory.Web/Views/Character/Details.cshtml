@@ -10,10 +10,10 @@
         @if (Model.FactionName == "Alliance")
         {
             <div style="
-             background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-blue.9de312ba15472b63bc7e9d3f62b64c65.jpg');
+             background-image: url('/images/Alliance%20Background.jpg');
              width: 100%;">
                 <div class="text-center ps-5" style="width: 91%;">
-                    <img src="@Model.FactionImage" style="width: 6rem; height: 6rem;" class="d-inline-block" />
+                    <img src="@Model.FactionImage" alt="Faction Image" style="width: 6rem; height: 6rem;" class="d-inline-block text-light" />
                     <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
                         <h3 class="text-primary">@Model.Name</h3>
                     </a>
@@ -30,10 +30,10 @@
         else
         {
             <div style="
-             background-image: url('https://assets.worldofwarcraft.com/static/components/Pane/Pane-leather-red.ed195e1c1da9da078315cae0469323e1.jpg');
+             background-image: url('/images/Horde%20Background.jpg');
              width: 100%;">
                 <div class="text-center ps-5" style="width: 91%;">
-                    <img src="@Model.FactionImage" style="width: 6rem; height: 6rem;" class="d-inline-block" />
+                    <img src="@Model.FactionImage" alt="Faction Image" style="width: 6rem; height: 6rem;" class="d-inline-block text-light" />
                     <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="p-2 text-decoration-none d-inline-flex">
                         <h3 class="text-danger">@Model.Name</h3>
                     </a>

@@ -1,5 +1,5 @@
 ﻿<div class="col-4 d-inline-block border offset-1">
-    <img src="@Model.FactionImage" class="d-inline-flex col-2" />
+    <img src="@Model.FactionImage" alt="Faction Image" class="d-inline-flex col-2" />
     <a asp-action="Details" asp-controller="Character" asp-route-id="@Model.Id" class="d-inline-block p-2 text-decoration-none">
         @if (@Model.FactionName == "Alliance")
         {
@@ -13,5 +13,5 @@
         }
     </a>
 
-    <img src="@Model.Image" class="p-2 col-12" />
+    <img src="@Model.Image" alt="Character Image" class="p-2 col-12" />
 </div>
