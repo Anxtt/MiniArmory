@@ -2,10 +2,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+
 using MiniArmory.Core.Models;
 using MiniArmory.Core.Services.Contracts;
-using MiniArmory.Data.Data.Models;
 
+using MiniArmory.Data.Models;
 using static MiniArmory.GlobalConstants.Web;
 
 namespace MiniArmory.Web.Areas.Admin.Controllers

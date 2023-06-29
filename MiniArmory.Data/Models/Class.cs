@@ -2,7 +2,7 @@
 
 using static MiniArmory.GlobalConstants.Data;
 
-namespace MiniArmory.Data.Data.Models
+namespace MiniArmory.Data.Models
 {
     public class Class
     {

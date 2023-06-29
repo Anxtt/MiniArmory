@@ -4,8 +4,8 @@ using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Race;
 using MiniArmory.Core.Services.Contracts;
 
-using MiniArmory.Data.Data;
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data;
+using MiniArmory.Data.Models;
 
 namespace MiniArmory.Core.Services
 {

@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data.Models;
 
 namespace MiniArmory.Web.Areas.Identity.Pages.Account
 {

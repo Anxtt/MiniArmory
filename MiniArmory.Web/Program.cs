@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-using MiniArmory.Data.Data;
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data;
+using MiniArmory.Data.Models;
 
 using MiniArmory.Web.Extensions;
 

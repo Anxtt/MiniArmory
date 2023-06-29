@@ -2,9 +2,9 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data.Models;
 
-namespace MiniArmory.Data.Data
+namespace MiniArmory.Data
 {
     public class MiniArmoryDbContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>
     {

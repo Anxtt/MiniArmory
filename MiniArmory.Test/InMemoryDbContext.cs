@@ -1,7 +1,7 @@
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 
-using MiniArmory.Data.Data;
+using MiniArmory.Data;
 
 namespace MiniArmory.Test
 {

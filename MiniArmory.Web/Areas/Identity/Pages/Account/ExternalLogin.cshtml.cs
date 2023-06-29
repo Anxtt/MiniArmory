@@ -17,7 +17,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data.Models;
 
 namespace MiniArmory.Web.Areas.Identity.Pages.Account
 {

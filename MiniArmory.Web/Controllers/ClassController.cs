@@ -90,7 +90,6 @@ namespace MiniArmory.Web.Controllers
             ClassViewModel model = default;
             string cacheKey = string.Format(RedisCache.DETAILS_CLASS_KEY, id);
 
-
             if (!await this.classService.DoesExist(id))
             {
                 return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
@@ -106,7 +105,6 @@ namespace MiniArmory.Web.Controllers
 
                     await this.redis.SetCache(cacheKey, model);
                 }
-
             }
             catch (Exception)
             {

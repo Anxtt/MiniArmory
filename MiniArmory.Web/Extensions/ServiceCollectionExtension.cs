@@ -3,7 +3,7 @@
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
 
-using MiniArmory.Data.Data;
+using MiniArmory.Data;
 
 using StackExchange.Redis;
 

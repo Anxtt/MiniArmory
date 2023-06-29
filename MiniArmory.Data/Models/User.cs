@@ -2,7 +2,7 @@
 
 using Microsoft.AspNetCore.Identity;
 
-namespace MiniArmory.Data.Data.Models
+namespace MiniArmory.Data.Models
 {
     public class User : IdentityUser<Guid>
     {

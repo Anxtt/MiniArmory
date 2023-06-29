@@ -3,8 +3,8 @@
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Services.Contracts;
 
-using MiniArmory.Data.Data;
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data;
+using MiniArmory.Data.Models;
 
 namespace MiniArmory.Core.Services
 {

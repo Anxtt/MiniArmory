@@ -2,28 +2,26 @@
 
 using static MiniArmory.GlobalConstants.Data;
 
-namespace MiniArmory.Data.Data.Models
+namespace MiniArmory.Data.Models
 {
-    public class Mount
+    public class Faction
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
-        [StringLength(MountConst.NAME_MAX_LENGTH)]
+        [StringLength(FactionConst.NAME_MAX_LENGTH)]
         public string Name { get; set; }
 
         [Required]
-        [Range(MountConst.SPEED_MIN, MountConst.SPEED_MAX)]
-        public sbyte GroundSpeed { get; set; }
-
-        [Required]
-        [Range(MountConst.SPEED_MIN, MountConst.SPEED_MAX)]
-        public sbyte FlyingSpeed { get; set; }
+        [StringLength(FactionConst.DESCRIPTION_MAX_LENGTH)]
+        public string Description { get; set; }
 
         [Required]
         [StringLength(IMAGE_MAX_LENGTH)]
         public string Image { get; set; }
+
+        public ICollection<Race> Races { get; set; } = new List<Race>();
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
