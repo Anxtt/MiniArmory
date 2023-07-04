@@ -51,6 +51,9 @@
             //A
             public const string ACHIEVEMENT = "Achievement";
 
+            //C
+            public const string CHARACTER = "character";
+
             //M
             public const string MOUNT = "Mount";
         }

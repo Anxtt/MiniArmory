@@ -1,5 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
+using Microsoft.AspNetCore.Http;
+
 using static MiniArmory.GlobalConstants.Data;
 using static MiniArmory.GlobalConstants.ErrorMessage;
 
@@ -30,11 +32,7 @@ namespace MiniArmory.Core.Models.Character
         public int Class { get; set; }
 
         [Required]
-        [StringLength(IMAGE_MAX_LENGTH,
-            MinimumLength = IMAGE_MIN_LENGTH,
-            ErrorMessage = IMAGE_GENERAL_MESSAGE)]
-        [RegularExpression(IMAGE_REGEX, 
-            ErrorMessage = INVALID_IMAGE)]
-        public string Image { get; set; }
+        [DataType(DataType.Upload)]
+        public IFormFile Image { get; set; }
     }
 }

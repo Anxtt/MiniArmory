@@ -56,6 +56,16 @@ namespace MiniArmory.Data
                 .HasIndex(x => x.PartnerId)
                 .IsUnique(false);
 
+            builder.Entity<Character>()
+                .HasOne(x => x.Image)
+                .WithOne(x => x.Character)
+                .HasForeignKey<ImageData>(x => x.CharacterId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Character>()
+                .HasIndex(x => x.ImageId)
+                .IsUnique(false);
+
             //Race
             builder.Entity<Race>()
                 .HasOne(x => x.Faction)
@@ -90,6 +100,8 @@ namespace MiniArmory.Data
         public virtual DbSet<Class> Classes { get; set; }
 
         public virtual DbSet<Faction> Factions { get; set; }
+
+        public virtual DbSet<ImageData> Images { get; set; }
 
         public virtual DbSet<Mount> Mounts { get; set; }
 

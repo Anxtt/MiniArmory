@@ -6,17 +6,20 @@ using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services.Contracts;
 
-using MiniArmory.Data.Data;
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data;
+using MiniArmory.Data.Models;
+
+using static MiniArmory.GlobalConstants.Web;
 
 namespace MiniArmory.Core.Services
 {
     public class CharacterService : ICharacterService
     {
         private readonly MiniArmoryDbContext db;
+        private readonly IImageService imageService;
 
-        public CharacterService(MiniArmoryDbContext db)
-            => this.db = db;
+        public CharacterService(MiniArmoryDbContext db, IImageService imageService)
+            => (this.db, this.imageService) = (db, imageService);
 
         public async Task<IEnumerable<CharacterViewModel>> AchievementStats()
             => await this.db
@@ -45,9 +48,17 @@ namespace MiniArmory.Core.Services
                 FactionId = model.Faction,
                 RaceId = model.Race,
                 ClassId = model.Class,
-                Image = model.Image,
                 UserId = id
             };
+
+            Guid imageId = await this.imageService.Add(new ImageFormModel()
+            {
+                ContentType = model.Image.ContentType,
+                FileName = model.Image.FileName,
+                OriginalContent = await this.imageService.ConvertToByteArray(model.Image.OpenReadStream())
+            }, character.Id);
+
+            character.ImageId = imageId;
 
             await this.db.Characters.AddAsync(character);
             await this.db.SaveChangesAsync();
@@ -123,11 +134,17 @@ namespace MiniArmory.Core.Services
         {
             Character character = await QueryableCharacterById(id)
                 .Include(x => x.Partner)
+                .Include(x => x.Image)
                 .FirstAsync();
 
             if (character.Partner != null)
             {
                 await this.LeaveTeam(character.Id, character.Partner.Id);
+            }
+
+            if (character.Image != null)
+            {
+                await this.imageService.DeleteImage(character.ImageId);
             }
 
             this.db.Characters.Remove(character);
@@ -178,7 +195,7 @@ namespace MiniArmory.Core.Services
                 .FirstAsync();
 
             Character enemy = await this.FindEnemyTeam(character, character.Partner!);
-            
+
             string status = this.CalculateRatingAsTeamVsTeam(character, enemy);
             await this.db.SaveChangesAsync();
 
@@ -186,28 +203,39 @@ namespace MiniArmory.Core.Services
         }
 
         public async Task<CharacterViewModel> FindCharacterById(Guid id)
-            => await QueryableCharacterById(id)
-            .Include(x => x.Achievements)
-            .Include(x => x.Class)
-            .Include(x => x.Race)
-            .Include(x => x.Faction)
-            .Include(x => x.Mounts)
-            .Include(x => x.Realm)
-            .Select(x => new CharacterViewModel()
-            {
-                Id = id,
-                Name = x.Name,
-                ClassName = x.Class.Name,
-                ClassImage = x.Class.ClassImage,
-                FactionName = x.Faction.Name,
-                FactionImage = x.Faction.Image,
-                RealmName = x.Realm.Name,
-                Image = x.Image,
-                Rating = x.Rating,
-                Win = x.Win,
-                Loss = x.Loss
-            })
-            .FirstAsync();
+        {
+            CharacterViewModel model = await QueryableCharacterById(id)
+                    .Include(x => x.Achievements)
+                    .Include(x => x.Class)
+                    .Include(x => x.Race)
+                    .Include(x => x.Faction)
+                    .Include(x => x.Mounts)
+                    .Include(x => x.Realm)
+                    .Include(x => x.Image)
+                    .Select(x => new CharacterViewModel()
+                    {
+                        Id = id,
+                        Name = x.Name,
+                        ClassName = x.Class.Name,
+                        ClassImage = x.Class.ClassImage,
+                        FactionName = x.Faction.Name,
+                        FactionImage = x.Faction.Image,
+                        Image = new ImageQueryModel()
+                        {
+                            ContentType = x.Image.ContentType,
+                            OriginalContent = x.Image.OriginalContent
+                        },
+                        RealmName = x.Realm.Name,
+                        Rating = x.Rating,
+                        Win = x.Win,
+                        Loss = x.Loss
+                    })
+                    .FirstAsync();
+
+            model.Image.B64Content = this.imageService.ConvertImageToB64(model.Image);
+
+            return model;
+        }
 
         public async Task<CharacterFormModel> GetCharacterForChange(Guid id)
             => await QueryableCharacterById(id)
@@ -235,26 +263,40 @@ namespace MiniArmory.Core.Services
                .FirstAsync();
 
         public async Task<IEnumerable<CharacterViewModel>> LeaderboardStats()
-            => await this.db
-            .Characters
-            .Include(x => x.Faction)
-            .Include(x => x.Class)
-            .Include(x => x.Realm)
-            .Select(x => new CharacterViewModel()
+        {
+            IEnumerable<CharacterViewModel> models = await this.db
+                    .Characters
+                    .Include(x => x.Faction)
+                    .Include(x => x.Class)
+                    .Include(x => x.Realm)
+                    .Include(x => x.Image)
+                    .Select(x => new CharacterViewModel()
+                    {
+                        Id = x.Id,
+                        ClassImage = x.Class.ClassImage,
+                        FactionImage = x.Faction.Image,
+                        Name = x.Name,
+                        Loss = x.Loss,
+                        RealmName = x.Realm.Name,
+                        Rating = x.Rating,
+                        Win = x.Win,
+                        Image = new ImageQueryModel()
+                        {
+                            OriginalContent = x.Image.OriginalContent,
+                            ContentType = x.Image.ContentType
+                        },
+                        ClassName = x.Class.Name,
+                        FactionName = x.Faction.Name
+                    })
+                    .ToListAsync();
+
+            foreach (var model in models)
             {
-                Id = x.Id,
-                ClassImage = x.Class.ClassImage,
-                FactionImage = x.Faction.Image,
-                Name = x.Name,
-                Loss = x.Loss,
-                RealmName = x.Realm.Name,
-                Rating = x.Rating,
-                Win = x.Win,
-                Image = x.Image,
-                ClassName = x.Class.Name,
-                FactionName = x.Faction.Name
-            })
-            .ToListAsync();
+                model.Image.B64Content = this.imageService.ConvertImageToB64(model.Image);
+            }
+
+            return models;
+        }
 
         public async Task LeaveTeam(Guid id, Guid partnerId)
         {
@@ -273,44 +315,55 @@ namespace MiniArmory.Core.Services
         }
 
         public async Task<LFGFormModel> LFGCharacter(Guid id)
-        => await QueryableCharacterById(id)
-            .Include(x => x.Faction)
-            .Include(x => x.Race)
-            .Include(x => x.Class)
-            .Include(x => x.Realm)
-            .Include(x => x.User)
-            .Select(x => new LFGFormModel()
-            {
-                Id = x.Id,
-                ClassImage = x.Class.ClassImage,
-                ClassName = x.Class.Name,
-                FactionImage = x.Faction.Image,
-                Image = x.Image,
-                FactionName = x.Faction.Name,
-                Name = x.Name,
-                Loss = x.Loss,
-                Rating = x.Rating,
-                RealmName = x.Realm.Name,
-                Win = x.Win,
-                CharactersInLFG = this.db
-                        .Characters
-                        .Where(z => z.IsLooking == true && z.PartnerId == null)
-                        .Include(z => z.User)
-                        .Where(z => z.User.Id != x.User.Id)
-                        .Select(z => new CharacterViewModel()
+        {
+            LFGFormModel models = await QueryableCharacterById(id)
+                    .Include(x => x.Faction)
+                    .Include(x => x.Race)
+                    .Include(x => x.Class)
+                    .Include(x => x.Realm)
+                    .Include(x => x.User)
+                    .Include(x => x.Image)
+                    .Select(x => new LFGFormModel()
+                    {
+                        Id = x.Id,
+                        ClassImage = x.Class.ClassImage,
+                        ClassName = x.Class.Name,
+                        FactionImage = x.Faction.Image,
+                        Image = new ImageQueryModel()
                         {
-                            Id = z.Id,
-                            ClassImage = z.Class.ClassImage,
-                            FactionImage = z.Faction.Image,
-                            Name = z.Name,
-                            Loss = z.Loss,
-                            Rating = z.Rating,
-                            RealmName = z.Realm.Name,
-                            Win = z.Win,
-                        })
-                        .ToList()
-            })
-            .FirstAsync();
+                            OriginalContent = x.Image.OriginalContent,
+                            ContentType = x.Image.ContentType
+                        },
+                        FactionName = x.Faction.Name,
+                        Name = x.Name,
+                        Loss = x.Loss,
+                        Rating = x.Rating,
+                        RealmName = x.Realm.Name,
+                        Win = x.Win,
+                        CharactersInLFG = this.db
+                                .Characters
+                                .Where(z => z.IsLooking == true && z.PartnerId == null)
+                                .Include(z => z.User)
+                                .Where(z => z.User.Id != x.User.Id)
+                                .Select(z => new CharacterViewModel()
+                                {
+                                    Id = z.Id,
+                                    ClassImage = z.Class.ClassImage,
+                                    FactionImage = z.Faction.Image,
+                                    Name = z.Name,
+                                    Loss = z.Loss,
+                                    Rating = z.Rating,
+                                    RealmName = z.Realm.Name,
+                                    Win = z.Win,
+                                })
+                                .ToList()
+                    })
+                    .FirstAsync();
+
+            models.Image.B64Content = this.imageService.ConvertImageToB64(models.Image);
+
+            return models;
+        }
 
         public async Task<IEnumerable<AchievementViewModel>> OwnAchievements(Guid id)
             => await this.db

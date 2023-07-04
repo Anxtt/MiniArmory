@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MiniArmory.Data;
 
@@ -11,9 +12,10 @@ using MiniArmory.Data;
 namespace MiniArmory.Data.Migrations
 {
     [DbContext(typeof(MiniArmoryDbContext))]
-    partial class MiniArmoryDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230629222134_ImageDataTable")]
+    partial class ImageDataTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -370,11 +372,6 @@ namespace MiniArmory.Data.Migrations
 
                     b.Property<Guid?>("CharacterId")
                         .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("ContentType")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
 
                     b.Property<string>("Name")
                         .IsRequired()

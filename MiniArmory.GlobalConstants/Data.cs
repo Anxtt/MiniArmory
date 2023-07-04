@@ -80,6 +80,13 @@
             public const int NAME_MIN_LENGTH = 5;
         }
 
+        public class ImageDataConst
+        {
+            public const int NAME_MAX_LENGTH = 50;
+
+            public const int CONTENTTYPE_MAX_LENGTH = 30;
+        }
+
         public class MountConst
         {
             //F

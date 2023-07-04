@@ -17,6 +17,7 @@ namespace MiniArmory.Web.Extensions
             services.AddScoped<IClassService, ClassService>();
             services.AddScoped<ICharacterService, CharacterService>();
             services.AddScoped<IFactionService, FactionService>();
+            services.AddScoped<IImageService, ImageService>();
             services.AddScoped<IMountService, MountService>();
             services.AddScoped<IRaceService, RaceService>();
             services.AddScoped<IRealmService, RealmService>();
