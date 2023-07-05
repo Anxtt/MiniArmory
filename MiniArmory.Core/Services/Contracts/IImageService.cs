@@ -4,7 +4,7 @@ namespace MiniArmory.Core.Services.Contracts
 {
     public interface IImageService
     {
-        Task<Guid> Add(ImageFormModel model, Guid characterId);
+        Task<Guid> AddCharacterImage(ImageFormModel model, Guid characterId);
 
         Task<byte[]> ConvertToByteArray(Stream content);
 
