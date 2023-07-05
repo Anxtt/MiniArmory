@@ -51,7 +51,7 @@ namespace MiniArmory.Core.Services
                 UserId = id
             };
 
-            Guid imageId = await this.imageService.Add(new ImageFormModel()
+            Guid imageId = await this.imageService.AddCharacterImage(new ImageFormModel()
             {
                 ContentType = model.Image.ContentType,
                 FileName = model.Image.FileName,

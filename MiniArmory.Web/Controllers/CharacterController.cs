@@ -39,6 +39,7 @@ namespace MiniArmory.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Member, Admin, Owner")]
+        [RequestSizeLimit(20 * 1024 * 1024)]
         public async Task<IActionResult> AddCharacter(CharacterFormModel model)
         {
             if (!ModelState.IsValid)
