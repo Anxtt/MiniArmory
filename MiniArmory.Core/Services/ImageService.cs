@@ -29,7 +29,7 @@ namespace MiniArmory.Core.Services
                 CharacterId = characterId
             };
 
-            return await ModifyImage(model.OriginalContent, imageData);
+            return await AddImage(model.OriginalContent, imageData, If.CHARACTER);
         }
 
         public async Task<byte[]> ConvertToByteArray(Stream content)
@@ -74,18 +74,34 @@ namespace MiniArmory.Core.Services
             return string.Format("data:{0};base64,{1}", mimeType, base64);
         }
 
-        private async Task<Guid> AddImage(Image image, ImageData imageData)
+        private async Task<Guid> AddImage(byte[] content, ImageData imageData, string type)
         {
-            using (var ms = new MemoryStream())
+            using (Image image = ModifyImage(content, type))
             {
-                image.SaveAsJpeg(ms);
+                using (var ms = new MemoryStream())
+                {
+                    image.SaveAsJpeg(ms);
 
-                imageData.OriginalContent = ms.ToArray();
+                    imageData.OriginalContent = ms.ToArray();
 
-                await this.db.AddAsync(imageData);
+                    await this.db.AddAsync(imageData);
 
-                return imageData.Id;
+                    return imageData.Id;
+                }
             }
+        }
+
+        private Image ModifyImage(byte[] content, string type)
+        {
+            Image image = Image.Load(content);
+
+            image.Metadata.ExifProfile = null;
+
+            image.Mutate(x => x
+            .AutoOrient()
+            .Resize(SizerOptions(type)));
+
+            return image;
         }
 
         private Expression<Func<ImageData, bool>> ExpressionPredicate(string type, Guid id)
@@ -95,43 +111,16 @@ namespace MiniArmory.Core.Services
                 _ => x => x.Id == id,
             };
 
-        private async Task<Guid> ModifyImage(byte[] content, ImageData imageData)
+        private ResizeOptions SizerOptions(string type)
+        => type.ToLower() switch
         {
-            using (Image image = Image.Load(content))
+            If.CHARACTER => new ResizeOptions()
             {
-                image.Metadata.ExifProfile = null;
-
-                image.Mutate(x => x
-                .AutoOrient()
-                .Resize(new ResizeOptions()
-                {
-                    Size = new Size(ImageConst.CharacterWidth, ImageConst.CharacterHeight),
-                    Position = AnchorPositionMode.Center,
-                    Mode = ResizeMode.Crop
-                }
-                ));
-
-                return await AddImage(image, imageData);
-            }
-        }
-
-        //private Size Sizer(string type)
-        //=> type.ToLower() switch
-        //{
-        //    If.CHARACTER => new Size(ImageConst.CharacterWidth, ImageConst.CharacterHeight),
-        //    _ => new Size()
-        //};
-
-        //private ResizeOptions SizerOptions(string type)
-        //=> type.ToLower() switch
-        //{
-        //    If.CHARACTER => new ResizeOptions()
-        //    {
-        //        Size = new Size(ImageConst.CharacterWidth, ImageConst.CharacterHeight),
-        //        Position = AnchorPositionMode.Center,
-        //        Mode = ResizeMode.Crop
-        //    },
-        //    _ => new ResizeOptions()
-        //};
+                Size = new Size(ImageConst.CharacterWidth, ImageConst.CharacterHeight),
+                Position = AnchorPositionMode.Center,
+                Mode = ResizeMode.Crop
+            },
+            _ => new ResizeOptions()
+        };
     }
 }

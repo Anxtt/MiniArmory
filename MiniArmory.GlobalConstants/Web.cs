@@ -70,6 +70,8 @@
             //C
             public const string CHANGE_FACTION = "Changed race and faction of character successfully.";
 
+            public const string CHANGE_IMAGE = "Image will be updated within a minute.";
+
             public const string CHANGE_NAME = "Changed name of character successfully.";
 
             public const string CHANGE_RACE = "Changed race of character successfully.";

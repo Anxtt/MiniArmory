@@ -34,10 +34,7 @@ namespace MiniArmory.Web.Controllers
 
                 if (models == null)
                 {
-                    models = (await this.charService.LeaderboardStats())
-                        .OrderByDescending(x => x.Rating)
-                        .ThenBy(x => x.Name)
-                        .Take(3);
+                    models = await this.charService.Top3();
 
                     await this.redis.SetCache(cacheKey, models);
                 }

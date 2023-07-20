@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Caching.Memory;
 
+using MiniArmory.Core.Models;
 using MiniArmory.Core.Models.Achievement;
 using MiniArmory.Core.Models.Character;
 using MiniArmory.Core.Models.Mount;
+
 using MiniArmory.Core.Services.Contracts;
 
 using MiniArmory.Web.Extensions;
@@ -19,18 +21,21 @@ namespace MiniArmory.Web.Controllers
         private readonly IRedisService redis;
 
         private readonly ICharacterService charService;
+        private readonly IImageService imageService;
         private readonly IMountService mountService;
 
         public CharacterController(
             ICharacterService charService,
             IMountService mountService,
             IMemoryCache memoryCache,
-            IRedisService redis)
+            IRedisService redis,
+            IImageService imageService)
         {
             this.charService = charService;
             this.mountService = mountService;
             this.memoryCache = memoryCache;
             this.redis = redis;
+            this.imageService = imageService;
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
@@ -259,6 +264,48 @@ namespace MiniArmory.Web.Controllers
                 await this.charService.ChangeFaction(id, faction);
                 await this.charService.ChangeRace(id, race);
                 TempData[Temp.MESSAGE] = Temp.CHANGE_FACTION;
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.RedirectToAction(nameof(Details), new { id = id });
+        }
+
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> ChangeImage(Guid id)
+        {
+            CharacterFormModel model = default;
+
+            try
+            {
+                model = await this.charService.GetCharacterForChange(id);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        [RequestSizeLimit(18 * 1024 * 1024)]
+        [Authorize(Roles = "Member, Admin, Owner")]
+        public async Task<IActionResult> ChangeImage(Guid id, IFormFile image)
+        {
+            try
+            {
+                ImageFormModel model = new ImageFormModel()
+                {
+                    ContentType = image.ContentType,
+                    FileName = image.FileName,
+                    OriginalContent = await this.imageService.ConvertToByteArray(image.OpenReadStream())
+                };
+
+                await this.charService.ChangeImage(id, model);
+                TempData[Temp.MESSAGE] = Temp.CHANGE_IMAGE;
             }
             catch (Exception)
             {
