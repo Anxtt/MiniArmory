@@ -2,6 +2,8 @@
 
 using Microsoft.AspNetCore.Http;
 
+using MiniArmory.Core.Attributes;
+
 using static MiniArmory.GlobalConstants.Data;
 using static MiniArmory.GlobalConstants.ErrorMessage;
 
@@ -33,6 +35,7 @@ namespace MiniArmory.Core.Models.Character
 
         [Required]
         [DataType(DataType.Upload)]
+        [AllowedExtensions()]
         public IFormFile Image { get; set; }
     }
 }

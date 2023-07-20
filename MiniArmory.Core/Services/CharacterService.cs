@@ -480,9 +480,9 @@ namespace MiniArmory.Core.Services
                     ContentType = x.Image.ContentType
                 })
             })
-            .Take(3)
             .OrderByDescending(x => x.Rating)
             .ThenBy(x => x.Name)
+            .Take(3)
             .ToListAsync();
 
         public async Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id)
