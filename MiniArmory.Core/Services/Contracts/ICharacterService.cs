@@ -17,9 +17,13 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task ChangeFaction(Guid id, string factionId);
 
+        Task ChangeImage(Guid id, ImageFormModel model);
+
         Task ChangeName(Guid id, string name);
 
         Task ChangeRace(Guid id, string raceId);
+
+        Task Delete(Guid id);
 
         Task<bool> DoesExist(Guid id);
 
@@ -27,19 +31,23 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task EarnRating(Guid id);
 
+        Task EarnRatingAsTeam(Guid id, Guid partnerId);
+
+        Task<Tuple<string, string, string>> EarnRatingAsTeamVsTeam(Guid id, Guid partnerId);
+
         Task<CharacterViewModel> FindCharacterById(Guid id);
 
         Task<CharacterFormModel> GetCharacterForChange(Guid id);
+        
+        Task<IEnumerable<JsonFormModel>> GetRealms();
 
         Task<Tuple<bool, Guid?>> IsLooking(Guid id);
 
         Task<IEnumerable<CharacterViewModel>> LeaderboardStats();
 
+        Task LeaveTeam(Guid id, Guid partnerId);
+
         Task<LFGFormModel> LFGCharacter(Guid id);
-
-        Task<IEnumerable<CharacterViewModel>> SearchCharacters(string chars);
-
-        bool RollForReward(string type);
 
         Task<IEnumerable<AchievementViewModel>> OwnAchievements(Guid id);
 
@@ -47,22 +55,18 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<MountViewModel>> OwnMounts(Guid id);
 
-        Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id);
+        bool RollForReward(string type);
 
-        Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id);
+        Task<IEnumerable<CharacterViewModel>> SearchCharacters(string chars);
 
         Task SignUp(LFGFormModel model);
 
-        Task<IEnumerable<JsonFormModel>> GetRealms();
-
         Task TeamUp(Guid id, Guid partnerId);
 
-        Task EarnRatingAsTeam(Guid id, Guid partnerId);
+        Task<IEnumerable<CharacterViewModel>> Top3();
 
-        Task<Tuple<string, string, string>> EarnRatingAsTeamVsTeam(Guid id, Guid partnerId);
+        Task<IEnumerable<AchievementViewModel>> UnownedAchievements(Guid id);
 
-        Task LeaveTeam(Guid id, Guid partnerId);
-
-        Task Delete(Guid id);
+        Task<IEnumerable<MountViewModel>> UnownedMounts(Guid id);
     }
 }
