@@ -8,7 +8,7 @@
 
         public string Name { get; set; }
 
-        public ImageQueryModel Image { get; set; }
+        public string Image { get; set; }
 
         public string RealmName { get; set; }
 
