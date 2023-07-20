@@ -1,0 +1,28 @@
+﻿@using MiniArmory.Core.Models.Character
+@model CharacterFormModel
+
+@{
+    ViewData["Title"] = $"Change image";
+}
+
+<h1 class="text-light text-center">Change image of @Model.Name</h1>
+<hr />
+<div class="align-items-center">
+    <form asp-action="ChangeImage" enctype="multipart/form-data">
+        <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+        <div class="form-group text-center col-4 mt-3 offset-md-4 text-light">
+            <label asp-for="Image" class="control-label"></label>
+            <input class="form-control" asp-for="Image" type="file" />
+            <span asp-validation-for="Image" class="text-danger"></span>
+        </div>
+        <div class="form-group col-4 offset-md-4 text-center text-light mt-2">
+            <input type="submit" value="Change" class="btn btn-success" />
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
