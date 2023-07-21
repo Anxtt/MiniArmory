@@ -1,0 +1,39 @@
+﻿@using MiniArmory.Core.Models.Race;
+@model List<RaceViewModel>
+
+<div style="
+background-image: url('/images/@Model[0].Faction%20Background.jpg');"
+     class="col-6">
+    @if (@Model[0].Faction == "Alliance")
+    {
+        <h2 class="text-center text-primary col-12">@Model[0].Faction</h2>
+    }
+    else
+    {
+        <h2 class="text-center text-danger col-12">@Model[0].Faction</h2>
+    }
+    <div class="text-center">
+        <img src="/images/@Model[0].Faction%20Logo.png" alt="Faction Image" class="text-light" style="width: 20%;" />
+        @if (@Model[0].Faction == "Alliance")
+        {
+            <p class="text-light col-12 ps-5 pe-5">
+                The noble races of the Alliance are bound together by proud traditions of nobility, honor, faith, justice, and sacrifice.The many different Alliance peoples all contribute their technical, arcane, and spiritual wisdom toward the goal of a peaceful and just world. Take up their banner to represent the high ideals of the Alliance throughout Azeroth and beyond.
+            </p>
+        }
+        else
+        {
+            <p class="text-light col-12 ps-5 pe-5">
+                The proud nations of the Horde are loosely joined in an alliance of convenience against a hostile world that would see them destroyed. Focused, ferocious, and sometimes monstrous, the Horde values strength and honor, but struggles to keep aggression in check. loin the Horde and fight to build a world where their people can live free.
+            </p>
+        }
+    </div>
+    @foreach (var race in Model)
+    {
+        <div class="d-inline-block col-3 text-center ps-3">
+            <a asp-controller="Race" asp-action="Details" asp-route-id="@race.Id" style="text-decoration: none">
+                <img src="@race.Arms" alt="Race arms" style="width:75%; height: 10rem;" />
+                <p class="text-light col-12" style="font-weight:500">@race.Name</p>
+            </a>
+        </div>
+    }
+</div>
