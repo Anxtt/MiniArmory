@@ -7,7 +7,7 @@ namespace MiniArmory.Core.Services.Contracts
 {
     public interface ICharacterService
     {
-        Task Add(CharacterFormModel model, Guid id);
+        Task<Guid> Add(CharacterFormModel model, Guid id);
 
         Task AddAchievementToCharacter(Guid id, string achievement);
 

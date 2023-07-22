@@ -37,7 +37,7 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
-        public async Task Add(CharacterFormModel model, Guid id)
+        public async Task<Guid> Add(CharacterFormModel model, Guid id)
         {
             Character character = new Character()
             {
@@ -60,6 +60,8 @@ namespace MiniArmory.Core.Services
 
             await this.db.Characters.AddAsync(character);
             await this.db.SaveChangesAsync();
+
+            return character.Id;
         }
 
         public async Task AddAchievementToCharacter(Guid id, string achievement)
@@ -376,6 +378,7 @@ namespace MiniArmory.Core.Services
                  .Include(x => x.Faction)
                  .Include(x => x.Class)
                  .Include(x => x.Realm)
+                 .Include(x => x.Partner)
                  .Select(x => new CharacterViewModel()
                  {
                      Id = x.Id,
@@ -385,7 +388,8 @@ namespace MiniArmory.Core.Services
                      Loss = x.Loss,
                      RealmName = x.Realm.Name,
                      Rating = x.Rating,
-                     Win = x.Win
+                     Win = x.Win,
+                     PartnerId = x.PartnerId
                  })
                  .ToListAsync();
 

@@ -23,7 +23,8 @@
             </thead>
             <tbody>
                 @foreach (var player in Model
-                        .OrderBy(x => x.Name))
+                        .OrderByDescending(x => x.Rating)
+                        .ThenBy(x => x.Name))
                 {
                     <tr>
                         <td class="text-center"><a asp-controller="Character" asp-action="Details" asp-route-id="@player.Id" class="text-decoration-none text-light">@player.Name</a></td>
