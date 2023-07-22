@@ -58,11 +58,13 @@ namespace MiniArmory.Web.Controllers
                 return this.View(model);
             }
 
+            Guid id;
+
             try
             {
                 Guid userId = this.User.GetId();
 
-                await this.charService.Add(model, userId);
+                id = await this.charService.Add(model, userId);
                 TempData[Temp.MESSAGE] = Temp.CREATE_CHARACTER;
             }
             catch (Exception)
@@ -70,7 +72,7 @@ namespace MiniArmory.Web.Controllers
                 return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
             }
 
-            return this.RedirectToAction(nameof(CharacterList));
+            return this.RedirectToAction(nameof(Details), new { id = id });
         }
 
         [Authorize(Roles = "Member, Admin, Owner")]
