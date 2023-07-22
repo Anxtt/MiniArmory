@@ -28,8 +28,8 @@
                     <td class="text-center text-light">@i</td>
                     <td class="text-center"><a asp-controller="Character" asp-action="Achievements" asp-route-id="@player.Id" class="text-decoration-none text-light">@player.Name</a></td>
                     <td class="text-center text-light">@player.RealmName</td>
-                    <td class="text-center text-light"><img src="@player.ClassImage" alt="Class image" style="height: 3rem;"/></td>
-                    <td class="text-center text-light"><img src="@player.FactionImage" alt="Faction image" style="height: 4rem;"/></td>
+                    <td class="text-center text-light"><img src="/images/classes/@{@player.ClassName}.png" alt="Class image" style="height: 3rem;" /></td>
+                    <td class="text-center text-light"><img src="/images/@{@player.FactionName}%20Logo.png" alt="Faction image" style="height: 4rem;" /></td>
                     <td class="text-center text-light">@player.Rating</td>
                 </tr>
 
