@@ -23,7 +23,7 @@
                 {
                     <tr>
                         <td class="text-light text-center">
-                            <img src="@character.ClassImage" alt="Class Image" />
+                            <img src="~/images/classes/@{@character.ClassName}.png" alt="@character.ClassName" style="height: 3em"/>
                         </td>
                         <td class="text-light text-center">
                             @if (character.FactionName == "Alliance")
