@@ -54,26 +54,13 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(AllSpells));
         }
 
-        public async Task<IActionResult> AllSpells()
+        public async Task<IActionResult> AllSpells(int pageNo = 1, int pageSize = 10)
         {
-            IEnumerable<SpellViewModel> models = default;
-            string cacheKey = Cache.ALL_SPELLS_KEY;
+            SpellListViewModel models = default;
 
             try
             {
-                models = this.memoryCache.Get<IEnumerable<SpellViewModel>>(cacheKey);
-
-                if (models == null)
-                {
-                    models = await this.spellService.AllSpells();
-
-                    var options = new MemoryCacheEntryOptions()
-                    {
-                        AbsoluteExpiration = DateTime.Now.AddDays(1)
-                    };
-
-                    this.memoryCache.Set(cacheKey, models, options);
-                }
+                models = await this.spellService.AllSpells(pageNo, pageSize);
             }
             catch (Exception)
             {
@@ -83,7 +70,7 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
-        public IActionResult SpellTypes() 
+        public IActionResult SpellTypes()
             => Json(new string[]
             {
                 "Class",
@@ -117,19 +104,19 @@ namespace MiniArmory.Web.Controllers
             return Json(races);
         }
 
-        public async Task<IActionResult> FilterSpells(string? type = null)
+        public async Task<IActionResult> FilterSpells(string? type = null, int pageNo = 1, int pageSize = 10)
         {
-            IEnumerable<SpellViewModel> filteredSpells = default;
+            SpellListViewModel filteredSpells = default;
 
             try
             {
                 if (type != null)
                 {
-                    filteredSpells = await this.spellService.FilteredSpells(type);
+                    filteredSpells = await this.spellService.FilteredSpells(type, pageNo, pageSize);
                 }
                 else
                 {
-                    filteredSpells = await this.spellService.AllSpells();
+                    filteredSpells = await this.spellService.AllSpells(pageNo, pageSize);
                 }
             }
             catch (Exception)

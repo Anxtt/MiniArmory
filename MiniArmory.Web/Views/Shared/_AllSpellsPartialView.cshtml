@@ -1,12 +1,12 @@
 ﻿@using MiniArmory.Core.Models.Spell
-@model List<SpellViewModel>
+@model SpellListViewModel
 
 @{
     ViewData["Title"] = "All Spells";
 }
 
 <div class="form-group offset-1">
-    @foreach (var spell in Model)
+    @foreach (var spell in Model.Spells)
     {
         <div class="card d-inline-flex bg-dark text-white m-2" style="width: 18rem; height: 18rem; border: 4px solid #808080">
             <div class="row">

@@ -28,8 +28,8 @@ namespace MiniArmory.Core.Services
             .Include(x => x.Realm)
             .Select(x => new CharacterViewModel()
             {
-                ClassImage = x.Class.ClassImage,
-                FactionImage = x.Faction.Image,
+                ClassName = x.Class.Name,
+                FactionName = x.Faction.Name,
                 Id = x.Id,
                 Name = x.Name,
                 RealmName = x.Realm.Name,
@@ -344,8 +344,8 @@ namespace MiniArmory.Core.Services
                         .Select(z => new CharacterViewModel()
                         {
                             Id = z.Id,
-                            ClassImage = z.Class.ClassImage,
-                            FactionImage = z.Faction.Image,
+                            ClassName = z.Class.Name,
+                            FactionName = z.Faction.Name,
                             Name = z.Name,
                             Loss = z.Loss,
                             Rating = z.Rating,
@@ -382,8 +382,9 @@ namespace MiniArmory.Core.Services
                  .Select(x => new CharacterViewModel()
                  {
                      Id = x.Id,
-                     ClassImage = x.Class.ClassImage,
+                     ClassName = x.Class.Name,
                      FactionImage = x.Faction.Image,
+                     FactionName = x.Faction.Name,
                      Name = x.Name,
                      Loss = x.Loss,
                      RealmName = x.Realm.Name,

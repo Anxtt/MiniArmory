@@ -65,6 +65,30 @@ namespace MiniArmory.Core.Services
             })
             .ToListAsync();
 
+        public async Task<SpellListViewModel> AllSpells(int pageNo, int pageSize)
+        {
+            SpellListViewModel models = new SpellListViewModel()
+            {
+                PageNo = pageNo,
+                PageSize = pageSize
+            };
+
+            models.TotalRecords = await this.db.Spells.CountAsync();
+            models.Spells = await this.db
+                .Spells
+                .Select(x => new SpellViewModel()
+                {
+                    Description = x.Description,
+                    Name = x.Name,
+                    Tooltip = x.Tooltip
+                })
+                .Skip(pageNo * pageSize - pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return models;
+        }
+
         public async Task<bool> DoesExist(string name)
             => await this.db
             .Spells
@@ -123,5 +147,30 @@ namespace MiniArmory.Core.Services
                     Tooltip = x.Tooltip
                 })
                 .ToListAsync();
+
+        public async Task<SpellListViewModel> FilteredSpells(string type, int pageNo, int pageSize)
+        {
+            SpellListViewModel models = new SpellListViewModel()
+            {
+                PageNo = pageNo,
+                PageSize = pageSize
+            };
+
+            models.TotalRecords = await this.db.Spells.CountAsync();
+            models.Spells = await this.db
+                .Spells
+                .Where(x => x.Type == type)
+                .Select(x => new SpellViewModel()
+                {
+                    Description = x.Description,
+                    Name = x.Name,
+                    Tooltip = x.Tooltip
+                })
+                .Skip(pageNo * pageSize - pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return models;
+        }
     }
 }

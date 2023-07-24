@@ -19,6 +19,10 @@ namespace MiniArmory.Core.Services.Contracts
 
         Task<IEnumerable<SpellViewModel>> AllSpells();
 
+        Task<SpellListViewModel> AllSpells(int pageNo, int pageSize);
+
         Task<IEnumerable<SpellViewModel>> FilteredSpells(string type);
+
+        Task<SpellListViewModel> FilteredSpells(string type, int pageNo, int pageSize);
     }
 }

@@ -1,5 +1,5 @@
 ﻿@using MiniArmory.Core.Models.Spell
-@model List<SpellViewModel>
+@model SpellListViewModel
 
 @{
     ViewData["Title"] = "All Spells";
@@ -13,6 +13,26 @@
 <div id="FilteredSpells">
     <partial name="_AllSpellsPartialView" />
 </div>
+
+@{
+    string prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    string nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-controller="Spell"
+   asp-action="AllSpells"
+   asp-route-pageNo="@(Model.PageNo - 1)"
+   asp-route-pageSize="@Model.PageSize"
+   class="btn btn-primary offset-5 @prevDisabled">
+    Previous
+</a>
+<a asp-controller="Spell"
+   asp-action="AllSpells"
+   asp-route-pageNo="@(Model.PageNo + 1)"
+   asp-route-pageSize="@Model.PageSize"
+   class="btn btn-primary @nextDisabled">
+    Next
+</a>
 
 @section Scripts {
 
@@ -54,7 +74,7 @@
             type: "GET",
             dataType: "html",
             url: "/Spell/FilterSpells",
-            data: { type: type },
+            data: { type: type, pageNo: @Model.PageNo, pageSize: @Model.PageSize },
             headers: {
                     RequestVerificationToken:
                         $('input:hidden[name="__RequestVerificationToken"]').val()
