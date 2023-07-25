@@ -97,7 +97,12 @@
             //D
             public const string DELETE_ROLE = "Role was deleted successfully.";
 
+            public const string DELETE_SPELL = "Spell was deleted successfully.";
+
             public const string DELETED = "Deleted character successfully.";
+
+            //Е
+            public const string EDIT_SPELL = "Successfully edited spell {0}";
 
             //L
             public const string LEAVE_TEAM = "You left your team.";

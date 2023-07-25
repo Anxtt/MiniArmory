@@ -77,6 +77,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.spellService.DeleteSpell(name);
+                TempData[Temp.MESSAGE] = Temp.DELETE_SPELL;
             }
             catch (Exception)
             {
@@ -110,6 +111,7 @@ namespace MiniArmory.Web.Controllers
             try
             {
                 await this.spellService.EditSpell(model);
+                TempData[Temp.MESSAGE] = string.Format(Temp.EDIT_SPELL, model.Name);
             }
             catch (Exception)
             {
