@@ -7,7 +7,21 @@ namespace MiniArmory.Core.Services.Contracts
     {
         Task Add(SpellFormModel model);
 
+        Task<IEnumerable<SpellViewModel>> AllSpells();
+
+        Task<SpellListViewModel> AllSpells(int pageNo, int pageSize);
+
+        Task DeleteSpell(string name);
+
         Task<bool> DoesExist(string name);
+
+        Task EditSpell(SpellFormModel model);
+
+        Task<IEnumerable<SpellViewModel>> FilteredSpells(string type);
+
+        Task<SpellListViewModel> FilteredSpells(string type, int pageNo, int pageSize);
+
+        Task<SpellFormModel> FindSpell(string name);
 
         Task<IEnumerable<JsonFormModel>> GetClasses(); 
 
@@ -16,13 +30,5 @@ namespace MiniArmory.Core.Services.Contracts
         Task<IEnumerable<JsonFormModel>> GetSameFactionRaces(int? raceId, int? factionId);
 
         Task<IEnumerable<JsonFormModel>> GetOppositeFactionRaces(int? factionId);
-
-        Task<IEnumerable<SpellViewModel>> AllSpells();
-
-        Task<SpellListViewModel> AllSpells(int pageNo, int pageSize);
-
-        Task<IEnumerable<SpellViewModel>> FilteredSpells(string type);
-
-        Task<SpellListViewModel> FilteredSpells(string type, int pageNo, int pageSize);
     }
 }

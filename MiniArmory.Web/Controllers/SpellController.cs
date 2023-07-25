@@ -70,12 +70,77 @@ namespace MiniArmory.Web.Controllers
             return this.View(models);
         }
 
-        public IActionResult SpellTypes()
-            => Json(new string[]
+        [HttpPost]
+        [Authorize(Roles = "Admind, Owner")]
+        public async Task<IActionResult> DeleteSpell(string name)
+        {
+            try
             {
-                "Class",
-                "Race"
-            });
+                await this.spellService.DeleteSpell(name);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.RedirectToAction(nameof(AllSpells));
+        }
+
+        [Authorize(Roles = "Admind, Owner")]
+        public async Task<IActionResult> EditSpell(string name)
+        {
+            SpellFormModel model = default;
+
+            try
+            {
+                model = await this.spellService.FindSpell(name);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admind, Owner")]
+        public async Task<IActionResult> EditSpell(SpellFormModel model)
+        {
+            try
+            {
+                await this.spellService.EditSpell(model);
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.RedirectToAction(nameof(AllSpells));
+        }
+
+        public async Task<IActionResult> FilterSpells(string? type = null, int pageNo = 1, int pageSize = 10)
+        {
+            SpellListViewModel filteredSpells = default;
+
+            try
+            {
+                if (type != null)
+                {
+                    filteredSpells = await this.spellService.FilteredSpells(type, pageNo, pageSize);
+                }
+                else
+                {
+                    filteredSpells = await this.spellService.AllSpells(pageNo, pageSize);
+                }
+            }
+            catch (Exception)
+            {
+                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
+            }
+
+            return this.PartialView("_AllSpellsPartialView", filteredSpells);
+        }
 
         public async Task<IActionResult> GetClasses()
         {
@@ -104,27 +169,11 @@ namespace MiniArmory.Web.Controllers
             return Json(races);
         }
 
-        public async Task<IActionResult> FilterSpells(string? type = null, int pageNo = 1, int pageSize = 10)
-        {
-            SpellListViewModel filteredSpells = default;
-
-            try
+        public IActionResult SpellTypes()
+            => Json(new string[]
             {
-                if (type != null)
-                {
-                    filteredSpells = await this.spellService.FilteredSpells(type, pageNo, pageSize);
-                }
-                else
-                {
-                    filteredSpells = await this.spellService.AllSpells(pageNo, pageSize);
-                }
-            }
-            catch (Exception)
-            {
-                return this.RedirectToAction(nameof(HomeController.Error), ControllerConst.HOME);
-            }
-
-            return this.PartialView("_AllSpellsPartialView", filteredSpells);
-        }
+                "Class",
+                "Race"
+            });
     }
 }

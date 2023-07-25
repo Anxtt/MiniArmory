@@ -8,7 +8,7 @@
 <div class="form-group offset-1">
     @foreach (var spell in Model.Spells)
     {
-        <div class="card d-inline-flex bg-dark text-white m-2" style="width: 18rem; height: 18rem; border: 4px solid #808080">
+        <div class="card d-inline-flex bg-dark text-white m-2" style="width: 18rem; height: 20rem; border: 4px solid #808080">
             <div class="row">
                 <div class="col-md-7">
                     <img src="@spell.Tooltip" alt="Spell tooltip" style="width: 5rem; border: 1px solid #808080">
@@ -22,6 +22,28 @@
             <div class="card-body">
                 <p class="card-text" style="text-align: justify;">@spell.Description</p>
             </div>
+
+            @if (this.User.IsInRole("Owner") ||
+                 this.User.IsInRole("Admin"))
+            {
+                <div class="text-start">
+                    <a
+                        asp-controller="Spell"
+                        asp-action="EditSpell"
+                        asp-route-name="@spell.Name"
+                        class="text-center btn btn-warning col-3 ms-2 mb-2">
+                        Edit
+                    </a>
+                    
+                    <form
+                        asp-controller="Spell"
+                        asp-action="DeleteSpell"
+                        asp-route-name="@spell.Name"
+                        class="col-3 ms-1 mb-2 d-inline-flex">
+                        <input type="submit" value="Delete" class="text-center btn btn-danger" />
+                    </form>
+                </div>
+            }
         </div>
     }
 </div>

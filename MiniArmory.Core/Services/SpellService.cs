@@ -89,10 +89,78 @@ namespace MiniArmory.Core.Services
             return models;
         }
 
+        public async Task DeleteSpell(string name)
+        {
+            Spell spell = await QueryableSpellByName(name)
+                .FirstAsync();
+
+            this.db.Spells.Remove(spell);
+            await this.db.SaveChangesAsync();
+        }
+
         public async Task<bool> DoesExist(string name)
             => await this.db
             .Spells
             .AnyAsync(x => x.Name == name);
+
+        public async Task EditSpell(SpellFormModel model)
+        {
+            Spell spell = await QueryableSpellByName(model.Name)
+                .FirstAsync();
+
+            spell.Range = model.Range;
+            spell.Cooldown = model.Cooldown;
+            spell.Description = model.Description;
+
+            await this.db.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<SpellViewModel>> FilteredSpells(string type)
+            => await this.db
+                .Spells
+                .Where(x => x.Type == type)
+                .Select(x => new SpellViewModel()
+                {
+                    Name = x.Name,
+                    Description = x.Description,
+                    Tooltip = x.Tooltip
+                })
+                .ToListAsync();
+
+        public async Task<SpellListViewModel> FilteredSpells(string type, int pageNo, int pageSize)
+        {
+            SpellListViewModel models = new SpellListViewModel()
+            {
+                PageNo = pageNo,
+                PageSize = pageSize
+            };
+
+            models.TotalRecords = await this.db.Spells.CountAsync();
+            models.Spells = await this.db
+                .Spells
+                .Where(x => x.Type == type)
+                .Select(x => new SpellViewModel()
+                {
+                    Description = x.Description,
+                    Name = x.Name,
+                    Tooltip = x.Tooltip
+                })
+                .Skip(pageNo * pageSize - pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return models;
+        }
+
+        public async Task<SpellFormModel> FindSpell(string name)
+            => await QueryableSpellByName(name)
+            .Select(x => new SpellFormModel()
+            {
+                Cooldown = x.Cooldown,
+                Description = x.Description,
+                Range = x.Range
+            })
+            .FirstAsync();
 
         public async Task<IEnumerable<JsonFormModel>> GetClasses()
             => await this.db
@@ -136,41 +204,9 @@ namespace MiniArmory.Core.Services
                    })
                    .ToListAsync();
 
-        public async Task<IEnumerable<SpellViewModel>> FilteredSpells(string type)
-            => await this.db
-                .Spells
-                .Where(x => x.Type == type)
-                .Select(x => new SpellViewModel()
-                {
-                    Name = x.Name,
-                    Description = x.Description,
-                    Tooltip = x.Tooltip
-                })
-                .ToListAsync();
-
-        public async Task<SpellListViewModel> FilteredSpells(string type, int pageNo, int pageSize)
-        {
-            SpellListViewModel models = new SpellListViewModel()
-            {
-                PageNo = pageNo,
-                PageSize = pageSize
-            };
-
-            models.TotalRecords = await this.db.Spells.CountAsync();
-            models.Spells = await this.db
-                .Spells
-                .Where(x => x.Type == type)
-                .Select(x => new SpellViewModel()
-                {
-                    Description = x.Description,
-                    Name = x.Name,
-                    Tooltip = x.Tooltip
-                })
-                .Skip(pageNo * pageSize - pageSize)
-                .Take(pageSize)
-                .ToListAsync();
-
-            return models;
-        }
+        private IQueryable<Spell> QueryableSpellByName(string name)
+             => this.db
+            .Spells
+            .Where(x => x.Name == name);
     }
 }

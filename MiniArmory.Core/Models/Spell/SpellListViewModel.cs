@@ -10,7 +10,7 @@
 
         public bool HasPreviousPage => PageNo > 1;
 
-        public bool HasNextPage => PageNo < TotalRecords;
+        public bool HasNextPage => PageNo < (int)(Math.Ceiling((double)TotalRecords / (double)PageSize));
 
         public List<SpellViewModel> Spells { get; set; } = new List<SpellViewModel>();
     }
