@@ -71,7 +71,7 @@ namespace MiniArmory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admind, Owner")]
+        [Authorize(Roles = "Admin, Owner")]
         public async Task<IActionResult> DeleteSpell(string name)
         {
             try
@@ -87,7 +87,7 @@ namespace MiniArmory.Web.Controllers
             return this.RedirectToAction(nameof(AllSpells));
         }
 
-        [Authorize(Roles = "Admind, Owner")]
+        [Authorize(Roles = "Admin, Owner")]
         public async Task<IActionResult> EditSpell(string name)
         {
             SpellFormModel model = default;
@@ -105,7 +105,7 @@ namespace MiniArmory.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admind, Owner")]
+        [Authorize(Roles = "Admin, Owner")]
         public async Task<IActionResult> EditSpell(SpellFormModel model)
         {
             try
