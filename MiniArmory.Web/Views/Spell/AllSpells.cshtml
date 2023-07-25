@@ -19,20 +19,22 @@
     string nextDisabled = !Model.HasNextPage ? "disabled" : "";
 }
 
-<a asp-controller="Spell"
-   asp-action="AllSpells"
-   asp-route-pageNo="@(Model.PageNo - 1)"
-   asp-route-pageSize="@Model.PageSize"
-   class="btn btn-primary offset-5 @prevDisabled">
-    Previous
-</a>
-<a asp-controller="Spell"
-   asp-action="AllSpells"
-   asp-route-pageNo="@(Model.PageNo + 1)"
-   asp-route-pageSize="@Model.PageSize"
-   class="btn btn-primary @nextDisabled">
-    Next
-</a>
+<div class="text-center">
+    <a asp-controller="Spell"
+       asp-action="AllSpells"
+       asp-route-pageNo="@(Model.PageNo - 1)"
+       asp-route-pageSize="@Model.PageSize"
+       class="btn btn-primary @prevDisabled">
+        Previous
+    </a>
+    <a asp-controller="Spell"
+       asp-action="AllSpells"
+       asp-route-pageNo="@(Model.PageNo + 1)"
+       asp-route-pageSize="@Model.PageSize"
+       class="btn btn-primary @nextDisabled">
+        Next
+    </a>
+</div>
 
 @section Scripts {
 

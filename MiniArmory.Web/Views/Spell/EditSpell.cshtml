@@ -1,0 +1,38 @@
+﻿@using MiniArmory.Core.Models.Spell
+@model SpellFormModel
+
+@{
+    ViewData["Title"] = "Edit Spell";
+}
+
+<h1 class="text-center text-light">Spell edit</h1>
+
+<hr />
+<div>
+    <div class="align-content-center">
+        <form asp-action="EditSpell">
+            <div asp-validation-summary="ModelOnly" class="text-danger text-center"></div>
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
+                <input asp-for="Name" class="form-control" hidden="hidden" />
+            </div>
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
+                <label asp-for="Range" class="control-label"></label>
+                <input asp-for="Range" class="form-control" />
+                <span asp-validation-for="Range" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
+                <label asp-for="Cooldown" class="control-label"></label>
+                <input asp-for="Cooldown" class="form-control" />
+                <span asp-validation-for="Cooldown" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4 mb-1 offset-md-4 text-light">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group col-4 text-center offset-md-4 text-light">
+                <input type="submit" value="Create" class="btn btn-success" />
+            </div>
+        </form>
+    </div>
+</div>
