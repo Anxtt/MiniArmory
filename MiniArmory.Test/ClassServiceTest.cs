@@ -63,7 +63,15 @@ namespace MiniArmory.Test
         }
 
         [Test]
-        public async Task DoesExist()
+        public async Task DoesExistById()
+        {
+            int id = 1;
+
+            Assert.That(await classService.DoesExist(id) == true);
+        }
+
+        [Test]
+        public async Task DoesExistByName()
         {
             string name = "qwertyu";
 

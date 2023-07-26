@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +15,8 @@ using MiniArmory.Core.Models.Mount;
 using MiniArmory.Core.Services;
 using MiniArmory.Core.Services.Contracts;
 
-using MiniArmory.Data.Data;
-using MiniArmory.Data.Data.Models;
+using MiniArmory.Data;
+using MiniArmory.Data.Models;
 
 using NUnit.Framework;
 
@@ -26,6 +28,7 @@ namespace MiniArmory.Test
         private InMemoryDbContext dbContext;
 
         private ICharacterService characterService;
+        private IImageService imageService;
         private MiniArmoryDbContext db;
 
         [SetUp]
@@ -37,11 +40,13 @@ namespace MiniArmory.Test
             serviceProvider = serviceCollection
                 .AddSingleton(x => dbContext.CreateContext())
                 .AddSingleton<ICharacterService, CharacterService>()
+                .AddSingleton<IImageService, ImageService>()
                 .AddSingleton<UserManager<User>>()
                 .BuildServiceProvider();
 
             db = serviceProvider.GetService<MiniArmoryDbContext>();
             characterService = serviceProvider.GetService<ICharacterService>();
+            imageService = serviceProvider.GetService<IImageService>();
 
             await SeedDbAsync();
         }
@@ -49,10 +54,17 @@ namespace MiniArmory.Test
         [Test]
         public async Task AddCharacter()
         {
+            byte[] bytes = await GetDummyImage();
+
             CharacterFormModel character = new CharacterFormModel()
             {
                 Name = "zxcvb",
-                Image = "aaaaa",
+                Image = new FormFile(new MemoryStream(bytes), 0, bytes.Length, "Data", "image.jpeg")
+                {
+                    Headers = new HeaderDictionary(),
+                    ContentDisposition = "multipart/form-data",
+                    ContentType = "image/jpeg"
+                },
                 Realm = 1,
                 Class = 1,
                 Faction = 1,
@@ -61,16 +73,18 @@ namespace MiniArmory.Test
 
             User user = await db.Users.FirstAsync();
 
-            await characterService.Add(character, user.Id);
+            Guid id = await characterService.Add(character, user.Id);
 
             Assert.That(await db.Characters
                 .AnyAsync(x => x.Name == "zxcvb") == true);
+
+            Assert.That(id != default);
         }
 
         [Test]
         public async Task DoesExistString()
         {
-            string name = "qwertyu";
+            string name = "one";
 
             Assert.That(await characterService.DoesExist(name) == true);
         }
@@ -185,7 +199,7 @@ namespace MiniArmory.Test
         [Test]
         public async Task SearchCharacters()
         {
-            string chars = "a";
+            string chars = "o";
 
             IEnumerable<CharacterViewModel> models = await characterService.SearchCharacters(chars);
 
@@ -220,7 +234,7 @@ namespace MiniArmory.Test
             {
                 Id = character.Id,
             };
-            
+
             await characterService.SignUp(model);
 
             Assert.That(character.IsLooking == true);
@@ -230,7 +244,7 @@ namespace MiniArmory.Test
         public async Task LFGCharacter()
         {
             Character character = await db.Characters.FirstAsync();
-            
+
             LFGFormModel model = await characterService.LFGCharacter(character.Id);
 
             Assert.That(model.Name == character.Name);
@@ -257,6 +271,8 @@ namespace MiniArmory.Test
             Character character = await db.Characters.FirstAsync();
             Character partner = await db.Characters.FirstAsync(x => x.Name != character.Name);
 
+            await this.characterService.TeamUp(character.Id, partner.Id);
+
             int characterOriginalRating = character.Rating;
             int partnerOriginalRating = character.Rating;
 
@@ -264,6 +280,32 @@ namespace MiniArmory.Test
 
             Assert.That(character.Rating != characterOriginalRating);
             Assert.That(partner.Rating != partnerOriginalRating);
+        }
+
+        [Test]
+        public async Task EarnRatingAsTeamVsTeam()
+        {
+            Character character = await db.Characters.FirstAsync(x => x.Name == "one");
+            Character partner = await db.Characters.FirstAsync(x => x.Name == "two");
+
+            Character enemy = await db.Characters.FirstAsync(x => x.Name == "three");
+            Character enemyPartner = await db.Characters.FirstAsync(x => x.Name == "four");
+
+            await this.characterService.TeamUp(character.Id, partner.Id);
+            await this.characterService.TeamUp(enemy.Id, enemyPartner.Id);
+
+            int characterOriginalRating = character.Rating;
+            int partnerOriginalRating = character.Rating;
+
+            int enemyOriginalRating = enemy.Rating;
+            int enemyPartnerRating = enemyPartner.Rating;
+
+            await characterService.EarnRatingAsTeamVsTeam(character.Id, partner.Id);
+
+            Assert.That(character.Rating != characterOriginalRating);
+            Assert.That(partner.Rating != partnerOriginalRating);
+            Assert.That(enemy.Rating != enemyOriginalRating);
+            Assert.That(enemyPartner.Rating != enemyPartnerRating);
         }
 
         [Test]
@@ -498,10 +540,44 @@ namespace MiniArmory.Test
                 UserName = "7891011"
             };
 
+            byte[] dummyOne = await GetDummyImage();
+            byte[] dummyTwo = await GetDummyImage();
+            byte[] dummyThree = await GetDummyImage();
+            byte[] dummyFour = await GetDummyImage();
+
+            ImageData imageOne = new ImageData()
+            {
+                Name = "imageOne",
+                ContentType = "image/jpeg",
+                OriginalContent = dummyOne
+            };
+
+            ImageData imageTwo = new ImageData()
+            {
+                Name = "imageTwo",
+                ContentType = "image/jpeg",
+                OriginalContent = dummyTwo
+            };
+
+            ImageData imageThree = new ImageData()
+            {
+                Name = "imageOne",
+                ContentType = "image/jpeg",
+                OriginalContent = dummyThree
+            };
+
+            ImageData imageFour = new ImageData()
+            {
+                Name = "imageTwo",
+                ContentType = "image/jpeg",
+                OriginalContent = dummyFour
+            };
+
             Character one = new Character()
             {
-                Name = "qwertyu",
-                Image = "aaaaa",
+                Name = "one",
+                ImageId = imageOne.Id,
+                Image = imageOne,
                 RealmId = 1,
                 ClassId = 1,
                 FactionId = 1,
@@ -513,8 +589,37 @@ namespace MiniArmory.Test
 
             Character two = new Character()
             {
-                Name = "asdfgh",
-                Image = "aaaaa",
+                Name = "two",
+                ImageId = imageTwo.Id,
+                Image = imageTwo,
+                RealmId = 1,
+                ClassId = 1,
+                FactionId = 1,
+                RaceId = 1,
+                UserId = userTwo.Id,
+                Win = 0,
+                Loss = 0
+            };
+
+            Character three = new Character()
+            {
+                Name = "three",
+                ImageId = imageThree.Id,
+                Image = imageThree,
+                RealmId = 1,
+                ClassId = 1,
+                FactionId = 1,
+                RaceId = 1,
+                UserId = userOne.Id,
+                Win = 0,
+                Loss = 0
+            };
+
+            Character four = new Character()
+            {
+                Name = "four",
+                ImageId = imageFour.Id,
+                Image = imageFour,
                 RealmId = 1,
                 ClassId = 1,
                 FactionId = 1,
@@ -535,20 +640,43 @@ namespace MiniArmory.Test
 
             await db.Factions.AddAsync(faction);
             await db.Factions.AddAsync(factionTwo);
+
             await db.Realms.AddAsync(realm);
+
             await db.Races.AddAsync(race);
             await db.Races.AddAsync(raceTwo);
+
             await db.Classes.AddAsync(classEntity);
+
             await db.Spells.AddAsync(classSpell);
+
             await db.Spells.AddAsync(racialSpell);
             await db.Spells.AddAsync(racialSpellTwo);
+
             await db.Mounts.AddAsync(mount);
+
             await db.Users.AddAsync(userOne);
             await db.Users.AddAsync(userTwo);
+
+            await db.Images.AddAsync(imageOne);
+            await db.Images.AddAsync(imageTwo);
+            await db.Images.AddAsync(imageThree);
+            await db.Images.AddAsync(imageFour);
+
             await db.Characters.AddAsync(one);
             await db.Characters.AddAsync(two);
+            await db.Characters.AddAsync(three);
+            await db.Characters.AddAsync(four);
+
             await db.Achievements.AddAsync(achie);
+
             await db.SaveChangesAsync();
+        }
+
+        private async Task<byte[]> GetDummyImage()
+        {
+            Stream stream = File.OpenRead("../../../Images/favicon.jpeg");
+            return await this.imageService.ConvertToByteArray(stream);
         }
     }
 }
