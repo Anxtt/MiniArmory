@@ -47,7 +47,7 @@ namespace MiniArmory.Core.Services
                 .Images
                 .FirstOrDefaultAsync(x => x.Id == id);
 
-            this.db.Remove(image!);
+            this.db.Images.Remove(image!);
         }
 
         public async Task<string> GetImageById(string type, Guid id)

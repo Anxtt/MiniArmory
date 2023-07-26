@@ -106,6 +106,100 @@ namespace MiniArmory.Test
             Assert.That(spells.Count() == db.Spells.Count());
         }
 
+        [Test]
+        public async Task AllSpellsByPage()
+        {
+            SpellListViewModel spells = await spellService.AllSpells(1, 1);
+
+            Assert.That(spells.Spells.Count == 1);
+            Assert.That(spells.PageNo == 1);
+            Assert.That(spells.PageSize == 1);
+            Assert.That(spells.HasNextPage == true);
+            Assert.That(spells.HasPreviousPage == false);
+            Assert.That(spells.TotalRecords == 2);
+        }
+
+        [Test]
+        public async Task EditSpell()
+        {
+            Spell spell = await this.db
+                .Spells
+                .FirstAsync(x => x.Id == 1);
+
+            await spellService.EditSpell(new SpellFormModel()
+            {
+                Name = spell.Name,
+                Range = 20,
+                Cooldown = 20,
+                Description = "random"
+            });
+
+            Assert.That(spell.Range == 20);
+            Assert.That(spell.Cooldown == 20);
+            Assert.That(spell.Description == "random");
+        }
+
+        [Test]
+        public async Task DeleteSpell()
+        {
+            IEnumerable<SpellViewModel> spells = await spellService.AllSpells();
+
+            Assert.That(spells.Count() == db.Spells.Count());
+        }
+
+        [Test]
+        public async Task FindSpell()
+        {
+            SpellFormModel spell = await spellService.FindSpell("qwertyu");
+
+            Assert.That(spell != null);
+        }
+
+        [Test]
+        public async Task FilteredSpellsByType()
+        {
+            string typeOne = "aaaaa";
+            string typeTwo = "bbbbb";
+
+            IEnumerable<SpellViewModel> spells = await spellService.FilteredSpells(typeOne);
+
+            foreach (var spell in spells)
+            {
+                Spell s = await this.db
+                    .Spells
+                    .FirstAsync(x => x.Name == spell.Name);
+
+                Assert.That(s.Type == typeOne);
+                Assert.That(s.Type != typeTwo);
+            }
+        }
+
+        [Test]
+        public async Task FilteredSpellsByTypeAndPage()
+        {
+            string typeOne = "aaaaa";
+            string typeTwo = "bbbbb";
+
+            SpellListViewModel spells = await spellService.FilteredSpells(typeOne, 1, 1);
+
+            foreach (var spell in spells.Spells)
+            {
+                Spell s = await this.db
+                    .Spells
+                    .FirstAsync(x => x.Name == spell.Name);
+
+                Assert.That(s.Type == typeOne);
+                Assert.That(s.Type != typeTwo);
+            }
+
+            Assert.That(spells.Spells.Count == 1);
+            Assert.That(spells.PageNo == 1);
+            Assert.That(spells.PageSize == 1);
+            Assert.That(spells.HasNextPage == true);
+            Assert.That(spells.HasPreviousPage == false);
+            Assert.That(spells.TotalRecords == 2);
+        }
+
         [TearDown]
         public void TearDown()
         {
