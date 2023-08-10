@@ -126,6 +126,10 @@ namespace MiniArmory.Test
                 .Spells
                 .FirstAsync(x => x.Id == 1);
 
+            int range = spell.Range;
+            int cooldown = spell.Cooldown;
+            string description = spell.Description;
+
             await spellService.EditSpell(new SpellFormModel()
             {
                 Name = spell.Name,
@@ -133,6 +137,10 @@ namespace MiniArmory.Test
                 Cooldown = 20,
                 Description = "random"
             });
+
+            Assert.That(spell.Range != range);
+            Assert.That(spell.Cooldown != cooldown);
+            Assert.That(spell.Description != description);
 
             Assert.That(spell.Range == 20);
             Assert.That(spell.Cooldown == 20);
@@ -144,7 +152,9 @@ namespace MiniArmory.Test
         {
             IEnumerable<SpellViewModel> spells = await spellService.AllSpells();
 
-            Assert.That(spells.Count() == db.Spells.Count());
+            await spellService.DeleteSpell(spells.FirstOrDefault()!.Name);
+
+            Assert.That(spells.Count() != db.Spells.Count());
         }
 
         [Test]
@@ -153,6 +163,7 @@ namespace MiniArmory.Test
             SpellFormModel spell = await spellService.FindSpell("qwertyu");
 
             Assert.That(spell != null);
+            Assert.That(spell.Name == "qwertyu");
         }
 
         [Test]
