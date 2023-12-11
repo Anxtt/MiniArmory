@@ -72,7 +72,7 @@ namespace MiniArmory.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin, Owner")]
-        public async Task<IActionResult> DeleteSpell(string name)
+        public async Task<IActionResult> DeleteSpell([FromQuery]string name)
         {
             try
             {
@@ -88,13 +88,14 @@ namespace MiniArmory.Web.Controllers
         }
 
         [Authorize(Roles = "Admin, Owner")]
-        public async Task<IActionResult> EditSpell(string name)
+        public async Task<IActionResult> EditSpell([FromQuery]string name)
         {
             SpellFormModel model = default;
 
             try
             {
                 model = await this.spellService.FindSpell(name);
+                model.Name = name;
             }
             catch (Exception)
             {

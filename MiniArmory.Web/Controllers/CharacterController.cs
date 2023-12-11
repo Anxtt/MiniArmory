@@ -295,7 +295,7 @@ namespace MiniArmory.Web.Controllers
         [HttpPost]
         [RequestSizeLimit(18 * 1024 * 1024)]
         [Authorize(Roles = "Member, Admin, Owner")]
-        public async Task<IActionResult> ChangeImage(Guid id, IFormFile image)
+        public async Task<IActionResult> ChangeImage([FromRoute]Guid id, IFormFile image)
         {
             try
             {
