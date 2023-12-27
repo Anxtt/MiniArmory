@@ -109,7 +109,7 @@ namespace MiniArmory.Core.Services
 
         public async Task<int> UsersCount()
             => await this.db
-            .Characters
+            .Users
             .CountAsync();
 
         public async Task<UserRolesViewModel> FindUserById(Guid id)
