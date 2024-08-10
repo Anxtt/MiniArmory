@@ -99,7 +99,7 @@ namespace MiniArmory.Test
         {
             ClassViewModel classViewModel = await classService.Details(1);
 
-            Assert.IsNotNull(classViewModel);
+            Assert.That(classViewModel is not null);
         }
 
         [TearDown]

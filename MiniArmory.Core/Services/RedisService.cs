@@ -20,7 +20,7 @@ namespace MiniArmory.Core.Services
 
         public async Task<T> RetrieveCache<T>(string key)
         {
-            var cachedObj = await this.db.StringGetAsync(key);
+            RedisValue cachedObj = await this.db.StringGetAsync(key);
 
             if (cachedObj.IsNull)
             {

@@ -90,7 +90,7 @@ namespace MiniArmory.Test
         {
             RaceViewModel races = await raceService.GetRace(1);
 
-            Assert.IsNotNull(races);
+            Assert.That(races is not null);
         }
 
         [TearDown]

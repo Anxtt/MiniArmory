@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /MiniArmory.Web/wwwroot/images
 /MiniArmory.Test/Images
+/MiniArmory.Web/appsettings.json

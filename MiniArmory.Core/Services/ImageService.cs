@@ -11,6 +11,9 @@ using MiniArmory.Data.Models;
 using static MiniArmory.GlobalConstants.Core;
 using static MiniArmory.GlobalConstants.Web;
 
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+
 namespace MiniArmory.Core.Services
 {
     public class ImageService : IImageService

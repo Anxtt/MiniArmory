@@ -54,21 +54,21 @@ public class Program
             .UseAuthentication()
             .UseAuthorization()
             .UseEndpoints(endpoints =>
-        {
-            endpoints.MapControllerRoute(
-            name: "Area",
-            pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+            {
+                endpoints.MapControllerRoute(
+                    name: "Area",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
-            endpoints.MapControllerRoute(
-            name: "TwoPlayers",
-            pattern: "{controller=Home}/{action=Index}/{id?}/{partnerId?}");
+                endpoints.MapControllerRoute(
+                    name: "TwoPlayers",
+                    pattern: "{controller=Home}/{action=Index}/{id?}/{partnerId?}");
 
-            endpoints.MapControllerRoute(
-                name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
 
-            endpoints.MapRazorPages();
-        });
+                endpoints.MapRazorPages();
+            });
 
         app.Run();
     }
